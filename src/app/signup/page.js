@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from 'react';
+import Link from "next/link";
+import TopNav from '../Components/TopNav';
 
 export default function SignUp() {
   // State for each form field
@@ -31,7 +33,7 @@ export default function SignUp() {
         body: JSON.stringify({
           name,
           email,
-          phone,     //add the address.
+          phone,     
           role,
           dob,
           password,
@@ -54,70 +56,72 @@ export default function SignUp() {
   
 
   return (
-    <div className="h-screen flex items-start justify-center">
-      <div className="w-full max-w-[400px] bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Sign Up</h2>
+    <main>
+      <div><TopNav/></div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12">
+      <div className="bg-white border-2 border-black rounded-lg shadow-lg p-8 w-96">
+        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
-        <form className="flex flex-col" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Name */}
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
           <input
             type="text"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Full Name"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           
           {/* Email */}
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
           <input
             type="email"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Email"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           {/* Phone Number */}
+          <label htmlFor="number" className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
             type="number"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Phone Number"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
 
           {/* Role */}
+          <label htmlFor="Role" className="block text-sm font-medium text-gray-700">Role</label>
           <input
             type="text"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Role"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />
 
           {/* Date of Birth */}
+          <label htmlFor="DateofBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
           <input
             type="date"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Date of Birth"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
           />
 
           {/* Password */}
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <input
             type="password"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Password"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           {/* Confirm Password */}
+          <label htmlFor="ConfirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
           <input
             type="password"
-            className="bg-gray-100 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-            placeholder="Confirm Password"
+            className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
@@ -128,12 +132,18 @@ export default function SignUp() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
+            className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
           >
             Submit
           </button>
+          <Link href="/login">
+                        <button type="button" className="w-full border border-black text-black py-2 rounded-md hover:bg-gray-200 transition">
+                            Log in
+                        </button>
+                    </Link>
         </form>
       </div>
     </div>
+    </main>
   );
 }
