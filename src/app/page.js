@@ -31,8 +31,11 @@ export default function Login() {
     };
 
     return (
+      <main>
+        <div>
+          <TopNav/> 
+        </div>
         <div className="container">
-            <div><TopNav/></div>
             <h1 className="title">Login</h1>
             <form onSubmit={handleLogin} className="form">
                 <div className="formGroup">
@@ -44,7 +47,7 @@ export default function Login() {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         className="input"
-                    />
+                        />
                 </div>
                 <div className="formGroup">
                     <label htmlFor="password" className="label">Password</label>
@@ -55,7 +58,7 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         className="input"
-                    />
+                        />
                 </div>
                 <button type="submit" className="button">Login</button>
                 <Link href = './signup'><button type="button" className="SignUpButton">Create an account</button></Link>
@@ -63,5 +66,6 @@ export default function Login() {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
         </div>
+      </main>
     );
 }
