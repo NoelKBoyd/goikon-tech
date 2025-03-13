@@ -17,7 +17,7 @@ export default function Homepage() {
 
     return (
         <main>
-            <TopNav />
+            <HomeNav />
             <div className="flex items-center justify-center">
                 <div className="text-center max-w-3xl pt-10">
                     <h1 className="text-3xl font-bold mb-4">
