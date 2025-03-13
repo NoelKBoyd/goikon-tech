@@ -33,9 +33,7 @@ export default function Homepage() {
                                     {feature.icon}
                                     <p className="mt-2 font-bold">{feature.title}</p>
                                 </div>
-                                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full
-                                                w-48 bg-white text-black text-sm p-2 rounded-lg shadow-lg
-                                                opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-48 bg-white text-black text-sm p-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     {feature.description}
                                 </div>
                             </div>
