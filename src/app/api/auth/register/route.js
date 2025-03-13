@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import prisma from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma'; // Ensure the path is correct
+
+
 
 export async function POST(req) {
     let body;
@@ -11,9 +13,9 @@ export async function POST(req) {
         return NextResponse.json({ message: 'Invalid JSON input' }, { status: 400 });
     }
 
-    const { email, password, name } = body;
+    const { email, password, name, phone, role, dob } = body;
 
-    if (!email || !password || !name) {
+    if (!email || !password || !name || !phone || !role || !dob) {
         return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
     }
 
@@ -28,21 +30,23 @@ export async function POST(req) {
             return NextResponse.json({ message: 'Email already exists' }, { status: 409 });
         }
 
-        // Assign default role (assuming 'user' is roleId = 2)
-        const defaultRole = await prisma.userRole.findFirst({
-            where: { name: 'user' }
+        const validRole = await prisma.userRole.findFirst({
+            where: { name: role } // Use the role provided by the user
         });
-
-        if (!defaultRole) {
-            return NextResponse.json({ message: 'Default role not found' }, { status: 500 });
+        
+        if (!validRole) {
+            return NextResponse.json({ message: 'Invalid role specified' }, { status: 400 });
         }
+        
 
         const user = await prisma.user.create({
             data: {
                 email,
                 password: hashedPassword,
                 name,
-                roleId: defaultRole.id
+                phone,
+                dateOfBirth: new Date(dob),
+                roleId: validRole.id
             },
         });
 

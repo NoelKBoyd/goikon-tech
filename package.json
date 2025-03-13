@@ -14,7 +14,6 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.13.0",
     "next": "15.2.1",
-    "prisma": "^6.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -23,6 +22,11 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
+    "prisma": "^6.5.0",
     "tailwindcss": "^4"
-  }
+  },
+  "prisma": {
+  "seed": "node prisma/seed.js"
+}
+
 }
