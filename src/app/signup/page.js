@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import Link from "next/link";
 import HomeNav from '../Components/HomeNav';
-import Spline from '@splinetool/react-spline/next';
+import Spline from '@splinetool/react-spline';
+
 
 export default function SignUp() {
   // State for each form field
