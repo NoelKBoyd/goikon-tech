@@ -84,20 +84,32 @@ export default function SignUp() {
           {/* Phone Number */}
           <label htmlFor="number" className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
-            type="number"
+            type="text" // Keeps out spinners
+            inputMode="numeric" // Shows numeric keyboard on mobile
+            pattern="\d*" // Ensures only digits are allowed
             className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => setPhone(e.target.value.replace(/\D/, ''))} // Filters out non-numeric characters as user types
           />
 
+
+
           {/* Role */}
-          <label htmlFor="Role" className="block text-sm font-medium text-gray-700">Role</label>
-          <input
-            type="text"
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+          <select
+            id="role"
             className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-          />
+          >
+            <option value="">Select a role</option>
+            <option value="Admin">Admin</option>
+            <option value="Field Owner">Field Owner</option>
+            <option value="Player">Player</option>
+            <option value="Referee">Referee</option>
+            <option value="Team Manager">Team Manager</option>
+          </select>
+
 
           {/* Date of Birth */}
           <label htmlFor="DateofBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
