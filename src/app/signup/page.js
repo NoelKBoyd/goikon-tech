@@ -14,20 +14,44 @@ export default function SignUp() {
   const [error, setError] = useState('');
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Check if passwords match
+  
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
-    // Clear error and proceed with form submission
+  
     setError('');
-    // Here you can handle the form data (e.g., send to API)
-    alert('Form submitted with data: ' + JSON.stringify({ name, email, phone, role, dob, password }));
+  
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,     //add the address.
+          role,
+          dob,
+          password,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        setError(data.message || 'Failed to sign up');
+      } else {
+        alert('Registration successful!');
+        // Optionally redirect the user or reset the form
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      setError('An unexpected error occurred. Please try again.');
+    }
   };
+  
 
   return (
     <div className="h-screen flex items-start justify-center">
