@@ -1,6 +1,7 @@
 'use client';
-
+import TopNav from './Components/TopNav';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -30,6 +31,7 @@ export default function Login() {
 
     return (
         <div className="container">
+            <div><TopNav/></div>
             <h1 className="title">Login</h1>
             <form onSubmit={handleLogin} className="form">
                 <div className="formGroup">
@@ -55,6 +57,7 @@ export default function Login() {
                     />
                 </div>
                 <button type="submit" className="button">Login</button>
+                <Link href = './signup'><button type="button" className="SignUpButton">Create an account</button></Link>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
