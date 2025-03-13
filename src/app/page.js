@@ -1,11 +1,63 @@
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">Yo Family</h1>
-        <p className="text-gray-500 mb-6">Welcome to your football tracker!</p>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl transition-all">Get Started</button>
-      </div>
-    </div>
-  );
+'use client';
+
+import { useState } from 'react';
+
+export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setSuccess(data.message);
+        } else {
+            setError(data.message);
+        }
+    };
+
+    return (
+        <div className="container">
+            <h1 className="title">Login</h1>
+            <form onSubmit={handleLogin} className="form">
+                <div className="formGroup">
+                    <label htmlFor="email" className="label">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="input"
+                    />
+                </div>
+                <div className="formGroup">
+                    <label htmlFor="password" className="label">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="input"
+                    />
+                </div>
+                <button type="submit" className="button">Login</button>
+            </form>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
+        </div>
+    );
 }
