@@ -31,7 +31,7 @@ export default function Login() {
 
     return (
         <main>
-        <div><TopNav/></div>
+        <div><HomeNav/></div>
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white border-2 border-black rounded-lg shadow-lg p-8 w-96">
                 <h1 className="text-2xl font-bold text-center mb-4">Login</h1>

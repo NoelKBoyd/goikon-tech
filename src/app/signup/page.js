@@ -57,7 +57,7 @@ export default function SignUp() {
 
   return (
     <main>
-      <div><TopNav/></div>
+      <div><HomeNav/></div>
     <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12">
       <div className="bg-white border-2 border-black rounded-lg shadow-lg p-8 w-96">
         <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
