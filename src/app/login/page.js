@@ -1,5 +1,5 @@
 'use client';
-import TopNav from './Components/TopNav';
+import TopNav from '../Components/TopNav';
 import { useState } from 'react';
 import Link from 'next/link';
 
