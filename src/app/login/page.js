@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import TopNav from '../Components/TopNav';
+import HomeNav from '../Components/HomeNav';
 
 export default function Login() {
     const [email, setEmail] = useState('');

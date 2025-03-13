@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from "next/link";
-import TopNav from '../Components/TopNav';
+import HomeNav from '../Components/HomeNav';
 
 export default function SignUp() {
   // State for each form field
