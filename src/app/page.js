@@ -2,6 +2,7 @@
 import TopNav from './Components/TopNav';
 import { useState } from 'react';
 import Link from 'next/link';
+import jwt from 'jsonwebtoken';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ export default function Login() {
         setError('');
         setSuccess('');
 
-        const response = await fetch('/api/login', {
+        const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
