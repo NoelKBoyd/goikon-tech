@@ -7,7 +7,9 @@ async function main() {
         data: [
             { name: 'user' },
             { name: 'admin' },
-            { name: 'manager' }
+            { name: 'manager' },
+            { name: 'player' },
+            { name: 'field owner' }
         ],
         skipDuplicates: true  // Prevents duplicate entries
     });
