@@ -20,8 +20,8 @@ export default function HomeNav() {
 
         <div className="h-full flex items-center">
             <ul className="flex justify-center items-center space-x-8 pr-10 w-full">
-                <li className="inline bg-gray-800 text-white px-5 pt-2 pb-2 rounded-md border border-black hover:bg-white hover:text-black duration-150"><a href="/login">Login</a></li>
-                <li className="inline border border-white hover:border-black px-5 pt-2 pb-2 rounded-md duration-150"><a href="/signup">Register</a></li>
+                <li className="inline bg-gray-800 text-white rounded-md border border-black hover:bg-white hover:text-black duration-250"><a href="/login" className="px-5 h-10">Login</a></li>
+                <li className="inline border border-white hover:border-black rounded-md duration-250"><a href="/signup" className="px-5 py-5">Register</a></li>
             </ul>
         </div>
 
