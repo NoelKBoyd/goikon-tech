@@ -2,7 +2,20 @@ import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma'; // Ensure the path is correct
 
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 
+function isValidPhoneNumber(phone) {
+    const phoneRegex = /^(\+?[1-9]\d{0,2})?[\s\-\.]?\(?\d{2,4}\)?[\s\-\.]?\d{3,4}[\s\-\.]?\d{4}$/;
+    return phoneRegex.test(phone);
+}
+
+function isValidPassword(password) {
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*()\-_+=\[\]{};:'",.<>?/`~])[A-Za-z\d!@#$%^&*()\-_+=\[\]{};:'",.<>?/`~]{8,}$/;
+    return passwordRegex.test(password);
+}
 
 export async function POST(req) {
     let body;
@@ -17,6 +30,18 @@ export async function POST(req) {
 
     if (!email || !password || !name || !phone || !role || !dob) {
         return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
+    }
+
+    if (!isValidEmail(email)) {
+        return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
+    }
+
+    if (!isValidPhoneNumber(phone)) {
+        return NextResponse.json({ message: 'Invalid phone number format' }, { status: 400 });
+    }
+
+    if (!isValidPassword(password)) {
+        return NextResponse.json({ message: 'Password must be at least 8 characters long and contain at least one number and one special character' }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

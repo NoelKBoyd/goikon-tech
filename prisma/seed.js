@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 async function main() {
     await prisma.userRole.createMany({
         data: [
-            { name: 'user' },
-            { name: 'admin' },
-            { name: 'manager' },
-            { name: 'player' },
-            { name: 'field owner' }
+            { name: 'Admin' },
+            { name: 'Team Manager' },
+            { name: 'Player' },
+            { name: 'Field Owner' },
+            { name: 'Referee' }
         ],
         skipDuplicates: true  // Prevents duplicate entries
     });
