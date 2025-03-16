@@ -6,7 +6,7 @@ export default function HomeNav() {
 
         <div className="h-full flex items-center pl-15">
           <div>
-            <FcConferenceCall className="h-18 w-18"/>
+            <a href="/"><FcConferenceCall className="h-18 w-18"/></a>
           </div>
         </div>
 
