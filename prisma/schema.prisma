@@ -50,7 +50,7 @@ model RolePermission {
 model Team {
   id           Int       @id @default(autoincrement())
   name         String
-  managerId    Int       @unique
+  managerId    Int      
   location     String
   ageGroup     String
   contactInfo  String?
