@@ -37,6 +37,14 @@ async function main() {
                 phone: '987-654-3210'
             },
             {
+                name: 'Burger Boy',
+                dateOfBirth: new Date('1985-05-15'),
+                email: 'Burger.Boy@example.com',
+                password: 'password123',
+                roleId: 2, // Team Manager
+                phone: '987-654-3210'
+            },
+            {
                 name: 'Mike Johnson',
                 dateOfBirth: new Date('1995-08-20'),
                 email: 'mike.johnson@example.com',
@@ -66,6 +74,13 @@ async function main() {
                 location: 'Los Angeles',
                 ageGroup: 'U21',
                 contactInfo: 'team.beta@example.com'
+            },
+            {
+                name: 'Team Gamma',
+                managerId: 1, 
+                location: 'Chicago',
+                ageGroup: 'U16',
+                contactInfo: ''
             }
         ],
         skipDuplicates: true
