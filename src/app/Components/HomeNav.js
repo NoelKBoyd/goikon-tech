@@ -14,7 +14,7 @@ export default function HomeNav() {
         <ul className="object-center flex space-x-40 border-b-1 border-gray-400">
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/" className="px-10 py-3">Home</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="" className="px-10 py-3">About</a></li>
-          <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="" className="px-10 py-3">Contact Us</a></li>
+          <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/contactus" className="px-10 py-3">Contact Us</a></li>
         </ul>
       </div>
 
