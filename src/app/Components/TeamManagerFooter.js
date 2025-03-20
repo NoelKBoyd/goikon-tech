@@ -6,7 +6,7 @@ export default function TeamManagerFooter() {
         <div className="w-full h-20 bg-white border-t border-gray-400 flex items-center justify-between px-6 fixed bottom-0 left-0">
     
           <div>
-            <a href="/logout" className="flex items-center text-black hover:bg-red-500 hover:text-white px-6 py-3 rounded-md text-xl">
+            <a href="/" className="flex items-center text-black hover:bg-red-500 hover:text-white px-6 py-3 rounded-md text-xl">
               <IoMdLogOut size={24} className="mr-2" /> Logout
             </a>
           </div>
