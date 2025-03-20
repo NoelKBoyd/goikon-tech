@@ -2,9 +2,9 @@ import Image from "next/image";
 import { VscAccount } from "react-icons/vsc";
 import { FcConferenceCall } from "react-icons/fc";
 
-export default function TopNav() {
+export default function FieldNav() {
     return (
-      <div className="w-full h-20 bg-white-500 flex items-end text-xl m-0 pl-0">
+      <div className="w-full h-20 bg-white-500 flex items-end text-xl m-0 pl-0 border-b-1 border-gray-400">
 
         <div className="h-full flex items-center pl-15">
           <div>
@@ -13,7 +13,7 @@ export default function TopNav() {
         </div>
 
       <div className="flex justify-center items-center w-full">
-        <ul className="object-center flex space-x-8 border-b-1 border-gray-400">
+        <ul className="object-center flex space-x-8">
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="" className="px-6 py-3">Dashboard</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="" className="px-6 py-3">Field Bookings</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="" className="px-6 py-3">Match Schedule</a></li>
