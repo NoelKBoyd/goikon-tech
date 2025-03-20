@@ -136,10 +136,10 @@ model Matches {
   fieldId      Int
   refereeId    Int
 
-  homeTeam     Team   @relation(fields: [homeTeamId], references: [id], name: "HomeTeam")
-  awayTeam     Team   @relation(fields: [awayTeamId], references: [id], name: "AwayTeam")
-  field        Field  @relation(fields: [fieldId], references: [id])
-  referee      User   @relation(fields: [refereeId], references: [id], name: "Referee")
+   homeTeam   team   @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam   team   @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  referee    user   @relation(fields: [refereeId], references: [id])
+  field      field  @relation(fields: [fieldId], references: [id])
   
   result       MatchResult?
   incidents    IncidentsReporting[]
