@@ -4,7 +4,7 @@ import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
 import { useState } from 'react';
 
-const TeamPage = () => {
+const Settings = () => {
     return (
         <div>
             <header>
@@ -16,7 +16,7 @@ const TeamPage = () => {
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Teams</strong></h1>
+                        <h1 className="text-xl"><strong>Settings</strong></h1>
                         
                     </div>
                 </div>
@@ -29,4 +29,4 @@ const TeamPage = () => {
     );
 };
 
-export default TeamPage;
+export default Settings;
