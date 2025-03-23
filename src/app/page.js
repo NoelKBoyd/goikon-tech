@@ -17,7 +17,9 @@ export default function Homepage() {
 
     return (
         <main className="bg-gray-100 text-black min-h-screen">
-            <HomeNav />
+            <header className='bg-white'>
+                <HomeNav />
+            </header>
             <div className="flex flex-col items-center justify-center px-4 py-10">
                 <h1 className="text-4xl font-extrabold mb-4 text-center">
                     Streamline Football Operations with Our All-in-One Platform
