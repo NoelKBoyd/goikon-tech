@@ -93,12 +93,19 @@ const rows = [
     createData(10, 'Aston Villa', 110, 'Birmingham', 'U16', 'astonvilla@example.com'),
 ];
 
+
 const TeamPage = () => {
-    const [searchQuery, setSearchQuery] = useState(''); 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedTeamId, setSelectedTeamId] = useState(null);
 
     const filteredRows = rows.filter((row) =>
         row.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleRowClick = (teamId) => {
+        setSelectedTeamId(teamId);
+    };
+
     return (
         <div>
             <header>
@@ -135,12 +142,19 @@ const TeamPage = () => {
                                             <StyledTableCell align="right">Manager ID</StyledTableCell>
                                             <StyledTableCell align="right">Location</StyledTableCell>
                                             <StyledTableCell align="right">Age</StyledTableCell>
-                                            <StyledTableCell align="right">Contact</StyledTableCell>
+                                            <StyledTableCell align="right">Contact Info</StyledTableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {filteredRows.map((row) => (
-                                            <StyledTableRow key={row.name}>
+                                            <StyledTableRow
+                                                key={row.teamId}
+                                                onClick={() => handleRowClick(row.teamId)}
+                                                style={{
+                                                    backgroundColor: row.teamId === selectedTeamId ? '#cae2fc' : 'inherit',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
                                                 <StyledTableCell component="th" scope="row">{row.teamId}</StyledTableCell>
                                                 <StyledTableCell align="right">{row.name}</StyledTableCell>
                                                 <StyledTableCell align="right">{row.managerId}</StyledTableCell>
