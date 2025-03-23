@@ -91,12 +91,23 @@ const rows = [
     createData(8, 'Everton', 108, 'Liverpool', 'U18', 'everton@example.com'),
     createData(9, 'West Ham United', 109, 'London', 'U21', 'westham@example.com'),
     createData(10, 'Aston Villa', 110, 'Birmingham', 'U16', 'astonvilla@example.com'),
+    createData(11, 'Newcastle United', 201, 'Newcastle', 'U18', 'newcastle@example.com'),
+    createData(12, 'Brighton & Hove Albion', 202, 'Brighton', 'U21', 'brighton@example.com'),
+    createData(13, 'Crystal Palace', 203, 'London', 'U18', 'crystalpalace@example.com'),
+    createData(14, 'Wolverhampton Wanderers', 204, 'Wolverhampton', 'U16', 'wolves@example.com'),
+    createData(15, 'Leeds United', 205, 'Leeds', 'U21', 'leeds@example.com'),
+    createData(16, 'Southampton', 206, 'Southampton', 'U18', 'southampton@example.com'),
+    createData(17, 'Burnley', 207, 'Burnley', 'U16', 'burnley@example.com'),
+    createData(18, 'Sheffield United', 208, 'Sheffield', 'U18', 'sheffield@example.com'),
+    createData(19, 'Nottingham Forest', 209, 'Nottingham', 'U21', 'nottingham@example.com'),
+    createData(20, 'Fulham', 210, 'London', 'U16', 'fulham@example.com'),
 ];
 
 
 const TeamPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTeamId, setSelectedTeamId] = useState(null);
+    const [rowsToShow] = useState(rows.length);
 
     const filteredRows = rows.filter((row) =>
         row.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -133,11 +144,11 @@ const TeamPage = () => {
                         </div>
 
                         <div className="pt-5">
-                            <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                            <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                                <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
                                     <TableHead>
                                         <TableRow>
-                                            <StyledTableCell>Team ID</StyledTableCell>
+                                            <StyledTableCell align="right">Team ID</StyledTableCell>
                                             <StyledTableCell align="right">Name</StyledTableCell>
                                             <StyledTableCell align="right">Manager ID</StyledTableCell>
                                             <StyledTableCell align="right">Location</StyledTableCell>
@@ -146,7 +157,7 @@ const TeamPage = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {filteredRows.map((row) => (
+                                        {filteredRows.slice(0, rowsToShow).map((row) => (
                                             <StyledTableRow
                                                 key={row.teamId}
                                                 onClick={() => handleRowClick(row.teamId)}
