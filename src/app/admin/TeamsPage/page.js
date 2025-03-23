@@ -30,7 +30,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -38,10 +37,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.90),
+    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+    backgroundColor: alpha(theme.palette.common.white, 1),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.90),
+      backgroundColor: alpha(theme.palette.common.white, 1),
     },
     marginLeft: 0,
     width: '100%',
@@ -66,7 +65,6 @@ const Search = styled('div')(({ theme }) => ({
     width: '100%',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
       [theme.breakpoints.up('sm')]: {
@@ -96,6 +94,11 @@ const rows = [
 ];
 
 const TeamPage = () => {
+    const [searchQuery, setSearchQuery] = useState(''); 
+
+    const filteredRows = rows.filter((row) =>
+        row.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     return (
         <div>
             <header>
@@ -108,7 +111,7 @@ const TeamPage = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-5">
 
-                        <div className="pt-5 w-full flex justify-center">
+                        <div className="pt-5 flex justify-center">
                             <Search>
                                 <SearchIconWrapper>
                                     <SearchIcon />
@@ -116,6 +119,8 @@ const TeamPage = () => {
                                 <StyledInputBase
                                     placeholder="Search…"
                                     inputProps={{ 'aria-label': 'search' }}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </Search>
                         </div>
@@ -134,7 +139,7 @@ const TeamPage = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {filteredRows.map((row) => (
                                             <StyledTableRow key={row.name}>
                                                 <StyledTableCell component="th" scope="row">{row.teamId}</StyledTableCell>
                                                 <StyledTableCell align="right">{row.name}</StyledTableCell>
