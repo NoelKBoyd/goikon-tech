@@ -64,6 +64,8 @@ function createData(homeTeam, awwayTeam, date, referee, venue) {
     return { homeTeam, awwayTeam, date, referee, venue };
 }
 
+
+//this is all just fake data as i cant get the database to work
 const matchData = [
     createData('Manchester United', 'Liverpool', '28-03-2025', 'John Doe', 'Old Trafford'),
     createData('Chelsea', 'Arsenal', '29-03-2025', 'Jane Smith', 'Stamford Bridge'),
@@ -84,6 +86,25 @@ const matchData = [
     createData('Stoke City', 'Sunderland', '13-04-2025', 'Mason Clark', 'Bet365 Stadium'),
     createData('Hull City', 'Rotherham United', '14-04-2025', 'Charlotte Hall', 'MKM Stadium'),
     createData('Coventry City', 'Bristol City', '15-04-2025', 'James Adams', 'Coventry Building Society Arena'),
+    createData('Manchester United', 'Liverpool', '16-04-2025', 'John Doe', 'Old Trafford'),
+    createData('Chelsea', 'Arsenal', '17-04-2025', 'Jane Smith', 'Stamford Bridge'),
+    createData('Manchester City', 'Tottenham Hotspur', '18-04-2025', 'Michael Brown', 'Etihad Stadium'),
+    createData('Leicester City', 'Everton', '19-04-2025', 'Emily Davis', 'King Power Stadium'),
+    createData('West Ham United', 'Aston Villa', '20-04-2025', 'Chris Wilson', 'London Stadium'),
+    createData('Newcastle United', 'Brighton & Hove Albion', '21-04-2025', 'Sarah Johnson', 'St James\' Park'),
+    createData('Crystal Palace', 'Wolverhampton Wanderers', '22-04-2025', 'David Lee', 'Selhurst Park'),
+    createData('Leeds United', 'Southampton', '23-04-2025', 'Laura Martinez', 'Elland Road'),
+    createData('Burnley', 'Sheffield United', '24-04-2025', 'James Anderson', 'Turf Moor'),
+    createData('Nottingham Forest', 'Fulham', '25-04-2025', 'Sophia Taylor', 'City Ground'),
+    createData('Brentford', 'Norwich City', '26-04-2025', 'Oliver Green', 'Gtech Community Stadium'),
+    createData('Watford', 'Bournemouth', '27-04-2025', 'Emma White', 'Vicarage Road'),
+    createData('Swansea City', 'Cardiff City', '28-04-2025', 'Liam Brown', 'Liberty Stadium'),
+    createData('Derby County', 'Middlesbrough', '29-04-2025', 'Sophia Wilson', 'Pride Park Stadium'),
+    createData('Reading', 'Huddersfield Town', '30-04-2025', 'Noah Taylor', 'Madejski Stadium'),
+    createData('Blackburn Rovers', 'Preston North End', '01-05-2025', 'Isabella Moore', 'Ewood Park'),
+    createData('Stoke City', 'Sunderland', '02-05-2025', 'Mason Clark', 'Bet365 Stadium'),
+    createData('Hull City', 'Rotherham United', '03-05-2025', 'Charlotte Hall', 'MKM Stadium'),
+    createData('Coventry City', 'Bristol City', '04-05-2025', 'James Adams', 'Coventry Building Society Arena'),
 ];
 
 const Matches = () => {
@@ -173,7 +194,7 @@ const Matches = () => {
                                     <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{paddingRight: '20px'}}/>
                                 </div>
                                 <div className="pt-10">
-                                    <Button variant="contained" color="primary">Schedule</Button>
+                                    <Button variant="contained" color="primary">Schedule Match</Button>
                                 </div>
                             </Box>
                         </div>
