@@ -68,7 +68,7 @@ const Search = styled('div')(({ theme }) => ({
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
       [theme.breakpoints.up('sm')]: {
-        width: '12ch',
+        width: '20ch',
         '&:focus': {
           width: '30ch',
         },
@@ -143,7 +143,7 @@ const TeamPage = () => {
                             </Search>
                         </div>
 
-                        <div className="pt-5">
+                        <div className="pt-1">
                             <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                 <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
                                     <TableHead>

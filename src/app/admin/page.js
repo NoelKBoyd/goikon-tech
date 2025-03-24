@@ -15,9 +15,9 @@ const AdminPage = () => {
                 <AdminSideBar className='col-start-1 col-end-2'/>
         
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-10">
+                    <div className="pt-10 w-full">
                         <h1 className="text-xl"><strong>Dashboard</strong></h1>
-                        <Calendar />    
+                        <Calendar/>    
                     </div>
                 </div>
             </main>

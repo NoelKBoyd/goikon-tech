@@ -171,32 +171,35 @@ const Matches = () => {
                                 </Search>
                             </div>
 
-                            <Box sx={{width: '100%', height: 500, maxWidth: 600, bgcolor: 'gray-100', borderRadius: '8px',}}>
-                                <FixedSizeList height={500} width={600} itemSize={70} itemCount={searchMatches.length} overscanCount={10}>
+                            <Box sx={{width: '100%', height: 500, maxWidth: 700, bgcolor: 'gray-100', borderRadius: '8px',}}>
+                                <FixedSizeList height={500} width={700} itemSize={70} itemCount={searchMatches.length} overscanCount={10}>
                                     {renderRow}
                                 </FixedSizeList>
                             </Box>
                         </div>
-                        <div className="pt-10 mb-30">
+                        <div className="pt-13 mb-30">
                             <h1 className="text-3xl pb-3 pl-2 flex justify-left">
                                 <strong>Schedule Matches</strong>
                             </h1>
-                            <Box sx={{width: '100%', height: 400, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
-                                <div className="pt-10">
-                                    <TextField id="outlined-basic" label="Home Team" variant="outlined" color="success" focused sx={{paddingRight: '20px'}}/>
-                                    <TextField id="outlined-basic" label="Away Team" variant="outlined" color="warning" focused/>
-                                </div>
-                                <div className="pt-10">
-                                    <TextField id="outlined-basic" label="Date" variant="outlined" sx={{paddingRight: '20px'}}/>
-                                    <TextField id="outlined-basic" label="Referee" variant="outlined"/>
-                                </div>
-                                <div className="pt-10">
-                                    <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{paddingRight: '20px'}}/>
-                                </div>
-                                <div className="pt-10">
-                                    <Button variant="contained" color="primary">Schedule Match</Button>
-                                </div>
-                            </Box>
+                            
+                            <div className="flex justify-center w-full">
+                                <Box sx={{width: '100%', height: 400, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
+                                    <div className="pt-10">
+                                        <TextField id="outlined-basic" label="Home Team" variant="outlined" color="success" sx={{paddingRight: '20px'}}/>
+                                        <TextField id="outlined-basic" label="Away Team" variant="outlined" color="warning"/>
+                                    </div>
+                                    <div className="pt-10">
+                                        <TextField id="outlined-basic" label="Date" variant="outlined" sx={{paddingRight: '20px'}}/>
+                                        <TextField id="outlined-basic" label="Referee" variant="outlined"/>
+                                    </div>
+                                    <div className="pt-10">
+                                        <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{paddingRight: '20px'}}/>
+                                    </div>
+                                    <div className="pt-10">
+                                        <Button variant="contained" color="primary">Schedule Match</Button>
+                                    </div>
+                                </Box>
+                            </div>
                         </div>
                     </div>
                 </div>
