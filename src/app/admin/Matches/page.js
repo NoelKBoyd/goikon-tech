@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
-
+import TextField from '@mui/material/TextField';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -60,21 +60,21 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
 
-function createData(homeTeam, awwayTeam, date, referee) {
-    return { homeTeam, awwayTeam, date, referee };
+function createData(homeTeam, awwayTeam, date, referee, venue) {
+    return { homeTeam, awwayTeam, date, referee, venue };
 }
 
 const matchData = [
-    createData('Manchester United', 'Liverpool', '28-03-2025', 'John Doe'),
-    createData('Chelsea', 'Arsenal', '29-03-2025', 'Jane Smith'),
-    createData('Manchester City', 'Tottenham Hotspur', '30-03-2025', 'Michael Brown'),
-    createData('Leicester City', 'Everton', '31-03-2025', 'Emily Davis'),
-    createData('West Ham United', 'Aston Villa', '01-04-2025', 'Chris Wilson'),
-    createData('Newcastle United', 'Brighton & Hove Albion', '02-04-2025', 'Sarah Johnson'),
-    createData('Crystal Palace', 'Wolverhampton Wanderers', '03-04-2025', 'David Lee'),
-    createData('Leeds United', 'Southampton', '04-04-2025', 'Laura Martinez'),
-    createData('Burnley', 'Sheffield United', '05-04-2025', 'James Anderson'),
-    createData('Nottingham Forest', 'Fulham', '06-04-2025', 'Sophia Taylor'),
+    createData('Manchester United', 'Liverpool', '28-03-2025', 'John Doe', 'Old Trafford'),
+    createData('Chelsea', 'Arsenal', '29-03-2025', 'Jane Smith', 'Stamford Bridge'),
+    createData('Manchester City', 'Tottenham Hotspur', '30-03-2025', 'Michael Brown', 'Etihad Stadium'),
+    createData('Leicester City', 'Everton', '31-03-2025', 'Emily Davis', 'King Power Stadium'),
+    createData('West Ham United', 'Aston Villa', '01-04-2025', 'Chris Wilson', 'London Stadium'),
+    createData('Newcastle United', 'Brighton & Hove Albion', '02-04-2025', 'Sarah Johnson', 'St James\' Park'),
+    createData('Crystal Palace', 'Wolverhampton Wanderers', '03-04-2025', 'David Lee', 'Selhurst Park'),
+    createData('Leeds United', 'Southampton', '04-04-2025', 'Laura Martinez', 'Elland Road'),
+    createData('Burnley', 'Sheffield United', '05-04-2025', 'James Anderson', 'Turf Moor'),
+    createData('Nottingham Forest', 'Fulham', '06-04-2025', 'Sophia Taylor', 'City Ground'),
 ];
 
 const Matches = () => {
@@ -116,7 +116,7 @@ const Matches = () => {
                 <AdminNav />
             </header>
 
-            <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen">
+            <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-full">
                 <AdminSideBar className="col-start-1 col-end-2" />
 
                 <div className="col-start-2 col-end-3 flex justify-center text-center">
@@ -146,10 +146,26 @@ const Matches = () => {
                                 </FixedSizeList>
                             </Box>
                         </div>
-                        <div className="pt-10">
-                            <h1 className="text-3xl">
+                        <div className="pt-10 mb-30">
+                            <h1 className="text-3xl pb-3">
                                 <strong>Schedule Matches</strong>
                             </h1>
+                            <Box sx={{width: '100%', height: 400, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
+                                <div className="pt-10">
+                                    <TextField id="outlined-basic" label="Home Team" variant="outlined" color="success" focused sx={{paddingRight: '20px'}}/>
+                                    <TextField id="outlined-basic" label="Away Team" variant="outlined" color="warning" focused/>
+                                </div>
+                                <div className="pt-10">
+                                    <TextField id="outlined-basic" label="Date" variant="outlined" sx={{paddingRight: '20px'}}/>
+                                    <TextField id="outlined-basic" label="Referee" variant="outlined"/>
+                                </div>
+                                <div className="pt-10">
+                                    <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{paddingRight: '20px'}}/>
+                                </div>
+                                <div className="pt-10">
+                                    <Button variant="contained" color="primary">Schedule</Button>
+                                </div>
+                            </Box>
                         </div>
                     </div>
                 </div>
@@ -159,7 +175,7 @@ const Matches = () => {
                 <AdminFooter />
             </footer>
 
-            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center' }}>
+            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
                 <DialogTitle>Match Details</DialogTitle>
                 <DialogContent sx={{ minWidth: '300px' }}>
                     {selectedMatch && (
@@ -175,6 +191,9 @@ const Matches = () => {
                             </p>
                             <p>
                                 <strong>Referee:</strong> {selectedMatch.referee}
+                            </p>
+                            <p>
+                                <strong>Venue:</strong> {selectedMatch.venue}
                             </p>
                         </div>
                     )}
