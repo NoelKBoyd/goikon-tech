@@ -52,7 +52,7 @@ const Search = styled('div')(({ theme }) => ({
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
       [theme.breakpoints.up('sm')]: {
-        width: '12ch',
+        width: '21ch',
         '&:focus': {
           width: '30ch',
         },
@@ -75,6 +75,15 @@ const matchData = [
     createData('Leeds United', 'Southampton', '04-04-2025', 'Laura Martinez', 'Elland Road'),
     createData('Burnley', 'Sheffield United', '05-04-2025', 'James Anderson', 'Turf Moor'),
     createData('Nottingham Forest', 'Fulham', '06-04-2025', 'Sophia Taylor', 'City Ground'),
+    createData('Brentford', 'Norwich City', '07-04-2025', 'Oliver Green', 'Gtech Community Stadium'),
+    createData('Watford', 'Bournemouth', '08-04-2025', 'Emma White', 'Vicarage Road'),
+    createData('Swansea City', 'Cardiff City', '09-04-2025', 'Liam Brown', 'Liberty Stadium'),
+    createData('Derby County', 'Middlesbrough', '10-04-2025', 'Sophia Wilson', 'Pride Park Stadium'),
+    createData('Reading', 'Huddersfield Town', '11-04-2025', 'Noah Taylor', 'Madejski Stadium'),
+    createData('Blackburn Rovers', 'Preston North End', '12-04-2025', 'Isabella Moore', 'Ewood Park'),
+    createData('Stoke City', 'Sunderland', '13-04-2025', 'Mason Clark', 'Bet365 Stadium'),
+    createData('Hull City', 'Rotherham United', '14-04-2025', 'Charlotte Hall', 'MKM Stadium'),
+    createData('Coventry City', 'Bristol City', '15-04-2025', 'James Adams', 'Coventry Building Society Arena'),
 ];
 
 const Matches = () => {
@@ -98,12 +107,13 @@ const Matches = () => {
 
     const renderRow = (props) => {
         const { index, style } = props;
-        const match = searchMatches[index]; 
-
+        const match = searchMatches[index];
+    
+        const backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#dedede';
+    
         return (
-            <ListItem style={style} key={index} component="div" disablePadding>
-                <ListItemButton
-                    sx={{'&:hover': {borderRadius: '8px', backgroundColor: '#f0f0f0', border: '1px dotted',}, textAlign: 'center', paddingTop: '1px',}} onClick={() => openPopup(match)}>
+            <ListItem style={{ ...style, backgroundColor, borderRadius: '8px'}} key={index} component="div" disablePadding>
+                <ListItemButton sx={{'&:hover': {backgroundColor: '#d0d0d0'}, textAlign: 'center', borderRadius: '8px'}} onClick={() => openPopup(match)}>
                     <ListItemText primary={`${match.homeTeam} || VS || ${match.awwayTeam}`} secondary={`Date: ${match.date}, Referee: ${match.referee}`}/>
                 </ListItemButton>
             </ListItem>
@@ -122,11 +132,11 @@ const Matches = () => {
                 <div className="col-start-2 col-end-3 flex justify-center text-center">
                     <div className="pt-10">
                         <div>
-                            <h1 className="text-3xl pb-3">
+                            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
                                 <strong>Match Timetable</strong>
                             </h1>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-left w-full">
                                 <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
                                     <SearchIconWrapper>
                                         <SearchIcon />
@@ -140,14 +150,14 @@ const Matches = () => {
                                 </Search>
                             </div>
 
-                            <Box sx={{width: '100%', height: 500, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
+                            <Box sx={{width: '100%', height: 500, maxWidth: 600, bgcolor: 'gray-100', borderRadius: '8px',}}>
                                 <FixedSizeList height={500} width={600} itemSize={70} itemCount={searchMatches.length} overscanCount={10}>
                                     {renderRow}
                                 </FixedSizeList>
                             </Box>
                         </div>
                         <div className="pt-10 mb-30">
-                            <h1 className="text-3xl pb-3">
+                            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
                                 <strong>Schedule Matches</strong>
                             </h1>
                             <Box sx={{width: '100%', height: 400, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
