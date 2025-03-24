@@ -130,7 +130,7 @@ const TeamPage = () => {
                     <div className="pt-5">
 
                         <div className="pt-5 flex justify-center">
-                            <Search>
+                            <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
                                 <SearchIconWrapper>
                                     <SearchIcon />
                                 </SearchIconWrapper>
