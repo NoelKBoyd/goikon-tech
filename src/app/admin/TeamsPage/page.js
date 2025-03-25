@@ -129,7 +129,11 @@ const TeamPage = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-5">
 
-                        <div className="pt-5 flex justify-center">
+                        <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+                            <strong>Teams</strong>
+                        </h1>
+
+                        <div className="flex justify-left">
                             <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
                                 <SearchIconWrapper>
                                     <SearchIcon />
@@ -160,7 +164,7 @@ const TeamPage = () => {
                                         {filteredRows.slice(0, rowsToShow).map((row) => (
                                             <StyledTableRow
                                                 key={row.teamId}
-                                                onClick={() => handleRowClick(row.teamId)}
+                                                onMouseOver={() => handleRowClick(row.teamId)}
                                                 style={{
                                                     backgroundColor: row.teamId === selectedTeamId ? '#cae2fc' : 'inherit',
                                                     cursor: 'pointer',

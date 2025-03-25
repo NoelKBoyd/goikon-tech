@@ -134,7 +134,7 @@ const Matches = () => {
     
         return (
             <ListItem style={{ ...style, backgroundColor, borderRadius: '8px'}} key={index} component="div" disablePadding>
-                <ListItemButton sx={{'&:hover': {backgroundColor: '#d0d0d0'}, textAlign: 'center', borderRadius: '8px'}} onClick={() => openPopup(match)}>
+                <ListItemButton sx={{'&:hover': {backgroundColor: '#cae2fc'}, textAlign: 'center', borderRadius: '8px'}} onClick={() => openPopup(match)}>
                     <ListItemText primary={`${match.homeTeam} || VS || ${match.awwayTeam}`} secondary={`Date: ${match.date}, Referee: ${match.referee}`}/>
                 </ListItemButton>
             </ListItem>

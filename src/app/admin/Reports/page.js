@@ -138,7 +138,11 @@ const Reports = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-5">
 
-                        <div className="pt-5 flex justify-center">
+                        <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+                            <strong>Reports</strong>
+                        </h1>
+
+                        <div className="flex justify-left">
                             <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
                                 <SearchIconWrapper>
                                     <SearchIcon />
@@ -171,9 +175,9 @@ const Reports = () => {
                                             <StyledTableRow
                                                 key={row.matchId}
                                                 onClick={() => {
-                                                    rowClick(row.matchId);
                                                     openPopup(row);
                                                 }}
+                                                onMouseOver={() => rowClick(row.matchId)}
                                                 style={{
                                                     backgroundColor: row.matchId === selectedTeamId ? '#cae2fc' : 'inherit',
                                                     cursor: 'pointer',
@@ -217,7 +221,6 @@ const Reports = () => {
                     )}
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button>Edit</Button>
                     <Button onClick={closePopup}>Close</Button>
                 </DialogActions>
             </Dialog>
