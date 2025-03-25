@@ -144,7 +144,7 @@ const Reports = () => {
         setEditMode(true); 
     };
 
-    const handleSaveClick = () => {
+    const saveClick = () => {
  
         setSelectedMatch(editableData);
 
@@ -282,7 +282,7 @@ const Reports = () => {
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
                     {isEditMode ? (
-                        <Button onClick={handleSaveClick}>Save</Button>
+                        <Button onClick={saveClick}>Save</Button>
                     ) : (
                         <Button onClick={handleEditClick}>Edit</Button>
                     )}
