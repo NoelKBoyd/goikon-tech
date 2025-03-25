@@ -19,7 +19,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { BarChart } from '@mui/x-charts/BarChart';
+import TextField from '@mui/material/TextField';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -115,8 +115,10 @@ const Reports = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTeamId, setSelectedTeamId] = useState(null);
     const [usersToShow] = useState(users.length);
-    const [selectedMatch, setSelectedMatch] = useState(null);
+    const [selectedUser, setSelectedMatch] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isEditMode, setEditMode] = useState(false); 
+    const [editableData, setEdit] = useState(null); 
 
     const filteredRows = users.filter((user) =>
         user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -128,12 +130,38 @@ const Reports = () => {
 
     const openPopup = (user) => {
         setSelectedMatch(user);
+        setEdit({ ...user });
         setPopupOpen(true);
     };
 
     const closePopup = () => {
         setSelectedMatch(null);
+        setEditMode(false); 
         setPopupOpen(false);
+    };
+
+    const handleEditClick = () => {
+        setEditMode(true); 
+    };
+
+    const handleSaveClick = () => {
+ 
+        setSelectedMatch(editableData);
+
+        const userIndex = users.findIndex((user) => user.userId === editableData.userId);
+        
+        if (userIndex !== -1) {
+            users[userIndex] = { ...editableData };
+        }
+
+        setEditMode(false);
+    };
+
+    const handleInputChange = (field, value) => {
+        setEdit((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
     };
 
     return (
@@ -217,19 +245,47 @@ const Reports = () => {
             <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
                 <DialogTitle>User Details</DialogTitle>
                 <DialogContent sx={{ width: '600px' }}>
-                    {selectedMatch && (
+                    {selectedUser && (
                         <div>
-                            <h2><strong>Name: </strong> {selectedMatch.name}</h2>
-                            <h2><strong>Address: </strong> {selectedMatch.address}</h2>
-                            <h2><strong>Date of birth: </strong> {selectedMatch.dateOfBirth}</h2>
-                            <h2><strong>Email: </strong> {selectedMatch.email}</h2>
-                            <h2><strong>Phone: </strong> {selectedMatch.phone}</h2>
-                            <h2><strong>Role ID: </strong> {selectedMatch.roleId}</h2>
+                            {isEditMode ? (
+                                <div>
+                                    <h2 className="pb-2"><strong>Name: </strong></h2>
+                                    <TextField slotProps={{ textField: { size: 'small' } }} id="outlined-basic" label="Name" variant="outlined" value={editableData.name} onChange={(e) => handleInputChange('name', e.target.value)}/>
+                                    
+                                    <h2 className="pb-2"><strong>Address: </strong></h2>
+                                    <TextField id="outlined-basic" label="Address" variant="outlined" value={editableData.address} onChange={(e) => handleInputChange('address', e.target.value)}/>
+                                    
+                                    <h2 className="pb-2"><strong>Date of birth: </strong></h2>
+                                    <TextField id="outlined-basic" label="Date of birth" variant="outlined" value={editableData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}/>
+                                    
+                                    <h2 className="pb-2"><strong>Email: </strong></h2>
+                                    <TextField id="outlined-basic" label="Email" variant="outlined" value={editableData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
+                                    
+                                    <h2 className="pb-2"><strong>Phone: </strong></h2>
+                                    <TextField id="outlined-basic" label="Phone" variant="outlined" value={editableData.phone} onChange={(e) => handleInputChange('phone', e.target.value)}/>
+                                    
+                                    <h2 className="pb-2"><strong>Role ID: </strong></h2>
+                                    <TextField id="outlined-basic" label="Role" variant="outlined" value={editableData.roleId} onChange={(e) => handleInputChange('roleId', e.target.value)}/>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h2 className="p-2"><strong>Name: </strong> {selectedUser.name}</h2>
+                                    <h2 className="p-2"><strong>Address: </strong> {selectedUser.address}</h2>
+                                    <h2 className="p-2"><strong>Date of birth: </strong> {selectedUser.dateOfBirth}</h2>
+                                    <h2 className="p-2"><strong>Email: </strong> {selectedUser.email}</h2>
+                                    <h2 className="p-2"><strong>Phone: </strong> {selectedUser.phone}</h2>
+                                    <h2 className="p-2"><strong>Role ID: </strong> {selectedUser.roleId}</h2>
+                                </div>
+                            )}
                         </div>
                     )}
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button>Edit</Button>
+                    {isEditMode ? (
+                        <Button onClick={handleSaveClick}>Save</Button>
+                    ) : (
+                        <Button onClick={handleEditClick}>Edit</Button>
+                    )}
                     <Button onClick={closePopup}>Close</Button>
                 </DialogActions>
             </Dialog>
