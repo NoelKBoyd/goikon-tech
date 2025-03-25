@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
+    "@mui/x-charts": "^7.28.0",
     "@prisma/client": "^6.4.1",
     "@splinetool/react-spline": "^4.0.0",
     "bcryptjs": "^3.0.2",

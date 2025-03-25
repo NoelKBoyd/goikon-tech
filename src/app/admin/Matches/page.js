@@ -113,7 +113,7 @@ const Matches = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const searchMatches = matchData.filter((match) =>
-        `${match.homeTeam} ${match.awwayTeam} ${match.date} ${match.referee}`.toLowerCase().includes(searchQuery.toLowerCase())
+        `${match.homeTeam} ${match.awwayTeam}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const openPopup = (match) => {
