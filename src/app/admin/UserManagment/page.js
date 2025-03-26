@@ -144,7 +144,7 @@ const Reports = () => {
         setEditMode(true); 
     };
 
-    const saveClick = () => {
+    const SaveClick = () => {
  
         setSelectedMatch(editableData);
 
@@ -248,23 +248,12 @@ const Reports = () => {
                     {selectedUser && (
                         <div>
                             {isEditMode ? (
-                                <div>
-                                    <h2 className="pb-2"><strong>Name: </strong></h2>
-                                    <TextField slotProps={{ textField: { size: 'small' } }} id="outlined-basic" label="Name" variant="outlined" value={editableData.name} onChange={(e) => handleInputChange('name', e.target.value)}/>
-                                    
-                                    <h2 className="pb-2"><strong>Address: </strong></h2>
+                                <div className="flex flex-col gap-5 items-center justify-center pt-3">
+                                    <TextField id="outlined-basic" label="Name" variant="outlined" value={editableData.name} onChange={(e) => handleInputChange('name', e.target.value)}/>
                                     <TextField id="outlined-basic" label="Address" variant="outlined" value={editableData.address} onChange={(e) => handleInputChange('address', e.target.value)}/>
-                                    
-                                    <h2 className="pb-2"><strong>Date of birth: </strong></h2>
                                     <TextField id="outlined-basic" label="Date of birth" variant="outlined" value={editableData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}/>
-                                    
-                                    <h2 className="pb-2"><strong>Email: </strong></h2>
                                     <TextField id="outlined-basic" label="Email" variant="outlined" value={editableData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
-                                    
-                                    <h2 className="pb-2"><strong>Phone: </strong></h2>
                                     <TextField id="outlined-basic" label="Phone" variant="outlined" value={editableData.phone} onChange={(e) => handleInputChange('phone', e.target.value)}/>
-                                    
-                                    <h2 className="pb-2"><strong>Role ID: </strong></h2>
                                     <TextField id="outlined-basic" label="Role" variant="outlined" value={editableData.roleId} onChange={(e) => handleInputChange('roleId', e.target.value)}/>
                                 </div>
                             ) : (
@@ -282,7 +271,7 @@ const Reports = () => {
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
                     {isEditMode ? (
-                        <Button onClick={saveClick}>Save</Button>
+                        <Button onClick={SaveClick}>Save</Button>
                     ) : (
                         <Button onClick={handleEditClick}>Edit</Button>
                     )}
