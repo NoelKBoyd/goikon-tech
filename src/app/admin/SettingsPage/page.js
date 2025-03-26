@@ -58,7 +58,6 @@ function TabPanel(props) {
 const Settings = () => {
 
     const [value, setValue] = React.useState(0);
-    const [usersToShow] = useState(users.length);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -79,10 +78,10 @@ const Settings = () => {
                     <div className="pt-10">
                         <h1 className="text-3xl pl-2 flex justify-left"><strong>Settings</strong></h1>
                         <div className="pt-5">
-                            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'auto', width: 'auto', borderRadius: '8px' }}>
+                            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'auto', width: 'auto', borderRadius: '8px', marginBottom: '20px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)', }}>
                                 <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
-                                    <Tab label="Genral Settings" {...a11yProps(0)} />
-                                    <Tab label="Account Settings" {...a11yProps(1)} />
+                                    <Tab label="Genral Settings" {...a11yProps(0)} sx={{'&:hover': {backgroundColor: '#cae2fc'}}}/>
+                                    <Tab label="Account Settings" {...a11yProps(1)} sx={{'&:hover': {backgroundColor: '#cae2fc'}}}/>
                                 </Tabs>
                                 <TabPanel value={value} index={0}>
                                     <div style={{ padding: '50px', backgroundColor: '#f9f9f9', borderRadius: '8px', width: '400px', }}>
@@ -117,6 +116,8 @@ const Settings = () => {
                                                                                     
                                                 <h2 className="pb-2"><strong>Phone: </strong></h2>
                                                 <TextField id="outlined-basic" label="Phone" variant="outlined" value={user.phone}/>
+
+                                                <Button variant="contained" sx={{marginTop: '30px'}}>Save Changes</Button>
                                             </div>
                                         </div>
                                     </div>
