@@ -183,7 +183,7 @@ const Matches = () => {
                         </div>
                         <div className="pt-13 mb-30">
                             <div className="flex justify-center w-full">
-                                <Box sx={{width: '100%', height: 550, maxWidth: 500, bgcolor: 'background.paper', borderRadius: '8px',}}>
+                                <Box sx={{width: '100%', height: 550, maxWidth: 480, bgcolor: 'background.paper', borderRadius: '8px',}}>
                                     <h1 className="text-3xl pb-3 pt-5 flex justify-center">
                                         <strong>Schedule Matches</strong>
                                     </h1>

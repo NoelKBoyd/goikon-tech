@@ -15,6 +15,10 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -107,6 +111,8 @@ const rows = [
 const TeamPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTeamId, setSelectedTeamId] = useState(null);
+    const [selectedMatch, setSelectedMatch] = useState(null);
+    const [isPopupOpen, setPopupOpen] = useState(false);
     const [rowsToShow] = useState(rows.length);
 
     const filteredRows = rows.filter((row) =>
@@ -115,6 +121,16 @@ const TeamPage = () => {
 
     const handleRowClick = (teamId) => {
         setSelectedTeamId(teamId);
+    };
+
+    const openPopup = (row) => {
+        setSelectedMatch(row);
+        setPopupOpen(true);
+    };
+
+    const closePopup = () => {
+        setSelectedMatch(null);
+        setPopupOpen(false);
     };
 
     return (
@@ -165,6 +181,7 @@ const TeamPage = () => {
                                             <StyledTableRow
                                                 key={row.teamId}
                                                 onMouseOver={() => handleRowClick(row.teamId)}
+                                                onClick={() => openPopup(row)}
                                                 style={{
                                                     backgroundColor: row.teamId === selectedTeamId ? '#cae2fc' : 'inherit',
                                                     cursor: 'pointer',
@@ -188,11 +205,6 @@ const TeamPage = () => {
                                     Add Team
                                 </Button>
                             </div>
-                            <div className="inline pl-2">
-                                <Button variant="contained">
-                                    Edit Team
-                                </Button>
-                            </div>
                         </div>
                         
                     </div>
@@ -202,6 +214,35 @@ const TeamPage = () => {
             <footer>
                 <AdminFooter />
             </footer>
+
+            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
+                <DialogTitle>Team Details</DialogTitle>
+                    <DialogContent sx={{ minWidth: '300px' }}>
+                        {selectedMatch && (
+                            <div>
+                                <p className="pb-2">
+                                    <strong>Team Name:</strong> {selectedMatch.name}
+                                </p>
+                                <p className="pb-2">
+                                    <strong>Manager ID:</strong> {selectedMatch.managerId}
+                                </p>
+                                <p className="pb-2">
+                                    <strong>Location:</strong> {selectedMatch.location}
+                                </p>
+                                <p className="pb-2">
+                                    <strong>Age Group:</strong> {selectedMatch.ageGroup}
+                                </p>
+                                <p className="pb-2">
+                                    <strong>Contact Info:</strong> {selectedMatch.contactInfo}
+                                </p>
+                            </div>
+                        )}
+                    </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center' }}>
+                    <Button>Edit</Button>
+                    <Button onClick={closePopup}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

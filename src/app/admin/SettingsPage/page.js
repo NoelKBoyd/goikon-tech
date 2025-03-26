@@ -3,8 +3,69 @@ import AdminNav from "@/app/Components/AdminNav";
 import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
 import { useState } from 'react';
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { MdLightMode } from "react-icons/md";
+import { MdDarkMode } from "react-icons/md";
+import TextField from '@mui/material/TextField';
+
+function userData(userId, name, address, dateOfBirth, email, phone, roleId) {
+    return { userId, name, address, dateOfBirth, email, phone, roleId };
+  }
+
+const users = [
+    userData(1, "Alice Johnson", "123 Main St, Springfield", "15-05-1990", "alice.johnson@example.com", "1234567890", 2),
+];
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <div>{children}</div>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      'aria-controls': `vertical-tabpanel-${index}`,
+    };
+  }
 
 const Settings = () => {
+
+    const [value, setValue] = React.useState(0);
+    const [usersToShow] = useState(users.length);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+
+
     return (
         <div>
             <header>
@@ -16,8 +77,53 @@ const Settings = () => {
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Settings</strong></h1>
-                        
+                        <h1 className="text-3xl pl-2 flex justify-left"><strong>Settings</strong></h1>
+                        <div className="pt-5">
+                            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'auto', width: 'auto', borderRadius: '8px' }}>
+                                <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
+                                    <Tab label="Genral Settings" {...a11yProps(0)} />
+                                    <Tab label="Account Settings" {...a11yProps(1)} />
+                                </Tabs>
+                                <TabPanel value={value} index={0}>
+                                    <div style={{ padding: '50px', backgroundColor: '#f9f9f9', borderRadius: '8px', width: '400px', }}>
+                                        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>General Settings</h2>
+                                        <div className="w-full">
+                                            <h3 className="text-xl pb-5">-- MODE --</h3>
+                                            <div>
+                                                <Button variant="outlined" sx={{marginRight: '5px', color: '#000', borderColor: '#000', '&:hover': {backgroundColor: '#f0f0f0', borderColor: '#000'}}}><MdLightMode className="mr-2"/> Light Mode</Button>
+                                                <Button variant="contained" sx={{marginLeft: '5px', color: '#fff', backgroundColor: '#555', '&:hover': {backgroundColor: '#555'}}}> <MdDarkMode className="mr-2"/> Dark Mode</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={value} index={1}>
+                                    {users.map((user) => (
+                                    <div style={{ padding: '50px', backgroundColor: '#f9f9f9', borderRadius: '8px', width: '400px', }}>
+                                        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>Account Seetings</h2>
+                                        <div className="w-full">
+                                            <h3 className="text-xl pb-5">-- Account Details --</h3>
+                                            <div>
+                                                <h2 className="pb-2"><strong>Name: </strong></h2>
+                                                <TextField id="outlined-basic" label="Name" variant="outlined" value={user.name}/>
+                                                                                    
+                                                <h2 className="pb-2"><strong>Address: </strong></h2>
+                                                <TextField id="outlined-basic" label="Address" variant="outlined" value={user.address}/>
+                                                                                    
+                                                <h2 className="pb-2"><strong>Date of birth: </strong></h2>
+                                                <TextField id="outlined-basic" label="Date of birth" variant="outlined" value={user.dateOfBirth}/>
+                                                                                    
+                                                <h2 className="pb-2"><strong>Email: </strong></h2>
+                                                <TextField id="outlined-basic" label="Email" variant="outlined" value={user.email}/>
+                                                                                    
+                                                <h2 className="pb-2"><strong>Phone: </strong></h2>
+                                                <TextField id="outlined-basic" label="Phone" variant="outlined" value={user.phone}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ))}
+                                </TabPanel>
+                            </Box>
+                        </div>
                     </div>
                 </div>
             </main>
