@@ -16,7 +16,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,17 +39,65 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+    backgroundColor: alpha(theme.palette.common.white, 1),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 1),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  }));
+  
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    width: '100%',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      [theme.breakpoints.up('sm')]: {
+        width: '20ch',
+        '&:focus': {
+          width: '30ch',
+        },
+      },
+    },
+  }));
+
 function TeamPage() {
-  const [teams, setTeams] = useState([]);
-  const [managers, setManagers] = useState([]);
-  const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
-  const [newTeam, setNewTeam] = useState({
+    const [searchQuery, setSearchQuery] = useState('');
+    const [teams, setTeams] = useState([]);
+    const searchedTeams = teams.length;
+    const [managers, setManagers] = useState([]);
+    const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+    const [newTeam, setNewTeam] = useState({
+    id: "",
     name: "",
     managerId: "",
     location: "",
     ageGroup: "",
     contactInfo: "",
   });
+
+  const filteredRows = teams.filter((team) =>
+    team.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   useEffect(() => {
     // Fetch the initial list of teams from the API
@@ -112,6 +162,19 @@ function TeamPage() {
             <h1 className="text-3xl pb-3 pl-2 flex justify-left">
               <strong>Teams</strong>
             </h1>
+            <div className="flex justify-left">
+                <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        placeholder="Search…"
+                        inputProps={{ 'aria-label': 'search' }}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </Search>
+            </div>
 
             <TableContainer
               component={Paper}
@@ -119,7 +182,7 @@ function TeamPage() {
             >
               <Table
                 stickyHeader
-                sx={{ minWidth: 700 }}
+                sx={{ minWidth: 800 }}
                 aria-label="customized table"
               >
                 <TableHead>
@@ -129,21 +192,19 @@ function TeamPage() {
                     <StyledTableCell align="right">Manager</StyledTableCell>
                     <StyledTableCell align="right">Location</StyledTableCell>
                     <StyledTableCell align="right">Age</StyledTableCell>
-                    <StyledTableCell align="right">
-                      Contact Info
-                    </StyledTableCell>
+                    <StyledTableCell align="right">Contact Info</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {teams.map((team) => {
+                  {filteredRows.slice(0, searchedTeams).map((team) => {
                     // Ensure manager is fetched correctly
                     const manager = team.manager
                       ? team.manager.name
                       : "Unknown"; // Ensure the manager name is used correctly
                     return (
-                      <StyledTableRow key={team.teamId || team.name}>
+                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'} }}>
                         <StyledTableCell component="th" scope="row">
-                          {team.teamId}
+                          {team.id}
                         </StyledTableCell>
                         <StyledTableCell align="right">
                           {team.name}

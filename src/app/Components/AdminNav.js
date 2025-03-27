@@ -1,5 +1,4 @@
 'use client';
-import { VscAccount } from "react-icons/vsc";
 import { FcConferenceCall } from "react-icons/fc";
 import * as React from 'react';
 import Box from '@mui/material/Box';

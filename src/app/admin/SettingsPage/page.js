@@ -80,7 +80,7 @@ const Settings = () => {
                         <div className="pt-5">
                             <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'auto', width: 'auto', borderRadius: '8px', marginBottom: '50px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)', }}>
                                 <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
-                                    <Tab label="Genral Settings" {...a11yProps(0)} sx={{'&:hover': {backgroundColor: '#cae2fc'}}}/>
+                                    <Tab label="General Settings" {...a11yProps(0)} sx={{'&:hover': {backgroundColor: '#cae2fc'}}}/>
                                     <Tab label="Account Settings" {...a11yProps(1)} sx={{'&:hover': {backgroundColor: '#cae2fc'}}}/>
                                 </Tabs>
                                 <TabPanel value={value} index={0}>
