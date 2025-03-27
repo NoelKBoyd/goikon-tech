@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
@@ -51,6 +50,15 @@ async function main() {
                 password: 'password123',
                 roleId: 3, // Player
                 phone: '555-555-5555'
+            },
+
+            {
+                name: 'Referee One',
+                dateOfBirth: new Date('1975-09-12'),
+                email: 'referee.one@example.com',
+                password: 'password123',
+                roleId: 5,
+                phone: '111-222-3333'
             }
         ],
         skipDuplicates: true
@@ -139,7 +147,7 @@ async function main() {
     console.log('Fields seeded successfully');
 
     // Seed Matches
-    await prisma.matches.createMany({
+    await prisma.matches.create({
         data: [
             {
                 homeTeamId: 1, // Team Alpha
@@ -158,6 +166,7 @@ async function main() {
         ],
         skipDuplicates: true
     });
+    
 
     console.log('Matches seeded successfully');
 }

@@ -3,6 +3,7 @@ import RefereeNav from '@/app/Components/RefereeNav';
 import RefereeSideBar from '@/app/Components/RefereeSideBar';
 import RefereeFooter from '@/app/Components/RefereeFooter';
 import { useState } from 'react';
+import SubmitReport from '@/app/Components/IncidentReport';
 
 const IncidentReports = () => {
     return (
@@ -17,13 +18,16 @@ const IncidentReports = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
                         <h1 className="text-xl"><strong>Incident Reports</strong></h1>
+                        <SubmitReport/>
                         
                     </div>
                 </div>
             </main>
 
             <footer>
-                <RefereeFooter />
+            <div className="mt-auto w-full mb-10">
+             <RefereeFooter />
+            </div>
             </footer>
         </div>
     );

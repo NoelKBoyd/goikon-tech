@@ -1,7 +1,9 @@
 'use client';
+
 import RefereeNav from '@/app/Components/RefereeNav';
 import RefereeSideBar from '@/app/Components/RefereeSideBar';
 import RefereeFooter from '@/app/Components/RefereeFooter';
+import AssignedMatches from '@/app/Components/RefereeAssignedMatches';
 import { useState } from 'react';
 
 const UpcomingMatches = () => {
@@ -17,7 +19,7 @@ const UpcomingMatches = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
                         <h1 className="text-xl"><strong>Upcoming Matches</strong></h1>
-                        
+                        <AssignedMatches />
                     </div>
                 </div>
             </main>
