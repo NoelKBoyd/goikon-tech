@@ -138,7 +138,7 @@ const Reports = () => {
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-5">
 
-                        <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+                        <h1 className="text-3xl pb-3 pl-3 flex justify-left">
                             <strong>Reports</strong>
                         </h1>
 

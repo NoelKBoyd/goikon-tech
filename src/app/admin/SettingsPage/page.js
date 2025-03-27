@@ -97,7 +97,7 @@ const Settings = () => {
                                 </TabPanel>
                                 <TabPanel value={value} index={1}>
                                     {users.map((user) => (
-                                    <div style={{ padding: '50px', backgroundColor: '#f5faff', borderRadius: '8px', width: '400px', }}>
+                                    <div key={user.userId} style={{ padding: '50px', backgroundColor: '#f5faff', borderRadius: '8px', width: '400px', }}>
                                         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>Account Seetings</h2>
                                         <div className="w-full">
                                             <h3 className="text-xl pb-5">-- Account Details --</h3>

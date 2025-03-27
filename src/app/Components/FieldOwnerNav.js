@@ -55,7 +55,7 @@ export default function FieldOwnerNav() {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                   >
-                    <Avatar sx={{ width: 50, height: 50 }}>A</Avatar>
+                    <Avatar sx={{ width: 50, height: 50, backgroundColor: '#b0edff' }}>A</Avatar>
                   </IconButton>
                 </Tooltip>
               </Box>
