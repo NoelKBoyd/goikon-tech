@@ -4,15 +4,16 @@ import prisma from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
-    const { email, password } = await req.json();
-
-    if (!email || !password) {
-        return NextResponse.json({ message: 'Email and password are required' }, { status: 400 });
-    }
-
     try {
+        const { email, password } = await req.json();
+
+        if (!email || !password) {
+            return NextResponse.json({ message: 'Email and password are required' }, { status: 400 });
+        }
+
         const user = await prisma.user.findUnique({
-            where: { email }
+            where: { email },
+            select: { id: true, password: true, roleId: true } // Only fetch necessary fields
         });
 
         if (!user) {
@@ -31,7 +32,11 @@ export async function POST(req) {
             { expiresIn: '1h' }
         );
 
-        return NextResponse.json({ message: 'Login successful', token });
+        return NextResponse.json({ 
+            message: 'Login successful', 
+            token, 
+            roleId: user.roleId // Include roleId in the response
+        });
     } catch (error) {
         return NextResponse.json({ message: 'Error logging in', error: error.message }, { status: 500 });
     }

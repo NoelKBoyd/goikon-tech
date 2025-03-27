@@ -11,25 +11,25 @@ model UserRole {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  users User[]
+  users       User[]
   permissions RolePermission[] @relation("RolePermissions")
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  name          String
-  address       String?
-  dateOfBirth   DateTime
-  email         String  @unique
-  password      String
-  phone   String?
-  roleId        Int
-  role          UserRole @relation(fields: [roleId], references: [id])
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String?
+  dateOfBirth DateTime
+  email       String   @unique
+  password    String
+  phone       String?
+  roleId      Int
+  role        UserRole @relation(fields: [roleId], references: [id])
 
-  managedTeams  Team[] @relation("Manager")
-  activityLogs  UserActivityLog[]
-  fields        Field[]
-  refereedMatches Matches[] @relation("Referee")
+  managedTeams    Team[]            @relation("Manager")
+  activityLogs    UserActivityLog[]
+  fields          Field[]
+  refereedMatches Matches[]         @relation("Referee") // ✅ Only specify relation name, no `fields` or `references`
 }
 
 model UserActivityLog {
@@ -42,46 +42,46 @@ model UserActivityLog {
 }
 
 model RolePermission {
-  id        Int    @id @default(autoincrement())
-  name      String @unique
-  roles     UserRole[] @relation("RolePermissions")
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  roles UserRole[] @relation("RolePermissions")
 }
 
 model Team {
-  id           Int       @id @default(autoincrement())
-  name         String
-  managerId    Int      
-  location     String
-  ageGroup     String
-  contactInfo  String?
+  id          Int     @id @default(autoincrement())
+  name        String
+  managerId   Int
+  location    String
+  ageGroup    String
+  contactInfo String?
 
-  manager      User      @relation(fields: [managerId], references: [id], name: "Manager")
-  players      Player[]
-  rosters      TeamRoster[]
-  bookings     FieldBooking[]
-  homeMatches  Matches[] @relation("HomeTeam")
-  awayMatches  Matches[] @relation("AwayTeam")
+  manager     User           @relation(fields: [managerId], references: [id], name: "Manager")
+  players     Player[]
+  rosters     TeamRoster[]
+  bookings    FieldBooking[]
+  homeMatches Matches[]      @relation("HomeTeam")
+  awayMatches Matches[]      @relation("AwayTeam")
 }
 
 model Player {
-  id        Int    @id @default(autoincrement())
-  name      String
+  id          Int      @id @default(autoincrement())
+  name        String
   dateOfBirth DateTime
-  teamId    Int
-  position  String
+  teamId      Int
+  position    String
 
-  team  Team @relation(fields: [teamId], references: [id])
-  rosters TeamRoster[]
-  incidents IncidentsReporting[]
+  team       Team                 @relation(fields: [teamId], references: [id])
+  rosters    TeamRoster[]
+  incidents  IncidentsReporting[]
   matchStats MatchRelatedStats[]
 }
 
 model TeamRoster {
-  id               Int    @id @default(autoincrement())
-  teamId          Int
-  playerId        Int
-  currentForm     String
-  injured         Boolean @default(false)
+  id                 Int     @id @default(autoincrement())
+  teamId             Int
+  playerId           Int
+  currentForm        String
+  injured            Boolean @default(false)
   availabilityStatus String
 
   team   Team   @relation(fields: [teamId], references: [id])
@@ -89,101 +89,102 @@ model TeamRoster {
 }
 
 model Field {
-  id                   Int       @id @default(autoincrement())
-  location             String
-  capacity             Int
-  amenities            String?
-  availabilityStatus   String
-  userId               Int
+  id                 Int     @id @default(autoincrement())
+  location           String
+  capacity           Int
+  amenities          String?
+  availabilityStatus String
+  userId             Int
 
-  user                 User      @relation(fields: [userId], references: [id])
-  bookings             FieldBooking[]
-  maintenance          FieldMaintenanceSchedule[]
-  revenueAnalytics     RevenueAnalytics[]
-  matches              Matches[] // Change Match to Matches here
+  user             User                       @relation(fields: [userId], references: [id])
+  bookings         FieldBooking[]
+  maintenance      FieldMaintenanceSchedule[]
+  revenueAnalytics RevenueAnalytics[]
+  matches          Matches[] // Change Match to Matches here
 }
 
 model FieldMaintenanceSchedule {
-  id            Int    @id @default(autoincrement())
-  fieldId       Int
-  scheduleType  String
+  id              Int     @id @default(autoincrement())
+  fieldId         Int
+  scheduleType    String
   scheduleDetails String
-  updates       String?
-  issues        String?
+  updates         String?
+  issues          String?
 
   field Field @relation(fields: [fieldId], references: [id])
 }
 
 model FieldBooking {
-  id             Int       @id @default(autoincrement())
-  teamId         Int
-  matchId        Int
-  fieldId        Int
-  timing         DateTime
-  acceptReject   String?
-  status         String
+  id           Int      @id @default(autoincrement())
+  teamId       Int
+  matchId      Int
+  fieldId      Int
+  timing       DateTime
+  acceptReject String?
+  status       String
 
-  team           Team      @relation(fields: [teamId], references: [id])
-  match          Matches   @relation(fields: [matchId], references: [id])
-  field          Field     @relation(fields: [fieldId], references: [id])
+  team  Team    @relation(fields: [teamId], references: [id])
+  match Matches @relation(fields: [matchId], references: [id])
+  field Field   @relation(fields: [fieldId], references: [id])
 }
 
 model Matches {
-  id           Int    @id @default(autoincrement())
-  homeTeamId   Int
-  awayTeamId   Int
-  date         DateTime
-  fieldId      Int
-  refereeId    Int
+  id         Int      @id @default(autoincrement())
+  homeTeamId Int
+  awayTeamId Int
+  date       DateTime
+  fieldId    Int
+  refereeId  Int
 
-   homeTeam   Team   @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeam   Team   @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  referee    User   @relation(fields: [refereeId], references: [id])
-  field      Field  @relation(fields: [fieldId], references: [id])
-  
-  result       MatchResult?
-  incidents    IncidentsReporting[]
-  bookings     FieldBooking[]
-  matchStats   MatchRelatedStats[]
+  homeTeam Team  @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam Team  @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  referee  User  @relation("Referee", fields: [refereeId], references: [id]) // ✅ Only here we use `fields` and `references`
+  field    Field @relation(fields: [fieldId], references: [id])
+
+  result     MatchResult?
+  incidents  IncidentsReporting[]
+  bookings   FieldBooking[]
+  matchStats MatchRelatedStats[]
 }
-model MatchResult {
-  id              Int       @id @default(autoincrement())
-  matchId         Int       @unique
-  homeTeamScore   Int
-  awayTeamScore   Int
-  status          String
-  timeStamp       DateTime
-  assists         Int?
-  yellowCard      Int?
-  redCard         Int?
-  penalties       Int?
-  shotsOnTarget   Int?
 
-  match           Matches   @relation(fields: [matchId], references: [id])
+model MatchResult {
+  id            Int      @id @default(autoincrement())
+  matchId       Int      @unique
+  homeTeamScore Int
+  awayTeamScore Int
+  status        String
+  timeStamp     DateTime
+  assists       Int?
+  yellowCard    Int?
+  redCard       Int?
+  penalties     Int?
+  shotsOnTarget Int?
+
+  match Matches @relation(fields: [matchId], references: [id])
 }
 
 model IncidentsReporting {
-  id          Int      @id @default(autoincrement())
-  matchId     Int
-  playerId    Int
-  type        String
-  suspension  String?
+  id         Int     @id @default(autoincrement())
+  matchId    Int
+  playerId   Int
+  type       String
+  suspension String?
 
-  match       Matches  @relation(fields: [matchId], references: [id])
-  player      Player   @relation(fields: [playerId], references: [id])
+  match  Matches @relation(fields: [matchId], references: [id])
+  player Player  @relation(fields: [playerId], references: [id])
 }
 
 model RevenueAnalytics {
-  id       Int    @id @default(autoincrement())
-  fieldId  Int
+  id         Int    @id @default(autoincrement())
+  fieldId    Int
   fieldUsage String
-  amount   Float
+  amount     Float
 
   field Field @relation(fields: [fieldId], references: [id])
 }
 
 model MatchRelatedStats {
-  id             Int      @id @default(autoincrement())
+  id            Int  @id @default(autoincrement())
   matchId       Int
   playerId      Int
   goals         Int?
@@ -193,6 +194,6 @@ model MatchRelatedStats {
   fouls         Int?
   shotsOnTarget Int?
 
-  match         Matches  @relation(fields: [matchId], references: [id])
-  player        Player   @relation(fields: [playerId], references: [id])
+  match  Matches @relation(fields: [matchId], references: [id])
+  player Player  @relation(fields: [playerId], references: [id])
 }
