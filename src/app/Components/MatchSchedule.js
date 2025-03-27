@@ -1,6 +1,49 @@
 'use client';
-
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 import { useEffect, useState } from 'react';
+
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+    backgroundColor: alpha(theme.palette.common.white, 1),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 1),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  }));
+  
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    width: '100%',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      [theme.breakpoints.up('sm')]: {
+        width: '20ch',
+        '&:focus': {
+          width: '30ch',
+        },
+      },
+    },
+  }));
 
 export default function MatchSchedule() {
   const [matches, setMatches] = useState([]);
@@ -22,13 +65,28 @@ export default function MatchSchedule() {
 
   return (
     <div className="p-4">
-      <input
+      {/* <input
         type="text"
         placeholder="Search matches..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
-      />
+      /> */}
+      
+      <div className="flex justify-left">
+        <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search…"
+            inputProps={{ 'aria-label': 'search' }}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Search>
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-lg">
           <thead className="bg-gray-800 text-white">

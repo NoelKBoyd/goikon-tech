@@ -96,7 +96,10 @@ function TeamPage() {
   });
 
   const filteredRows = teams.filter((team) =>
-    team.name.toLowerCase().includes(searchQuery.toLowerCase())
+    team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    team.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    team.ageGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    team.contactInfo.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
   useEffect(() => {

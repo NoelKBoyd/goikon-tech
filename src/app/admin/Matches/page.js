@@ -22,6 +22,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import MatchSchedule from "@/app/Components/MatchSchedule";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -64,61 +65,10 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
 
-function createData(homeTeam, awwayTeam, date, referee, venue) {
-    return { homeTeam, awwayTeam, date, referee, venue };
-}
-
-
-//this is all just fake data as i cant get the database to work
-const matchData = [
-    createData('Manchester United', 'Liverpool', '28-03-2025', 'John Doe', 'Old Trafford'),
-    createData('Chelsea', 'Arsenal', '29-03-2025', 'Jane Smith', 'Stamford Bridge'),
-    createData('Manchester City', 'Tottenham Hotspur', '30-03-2025', 'Michael Brown', 'Etihad Stadium'),
-    createData('Leicester City', 'Everton', '31-03-2025', 'Emily Davis', 'King Power Stadium'),
-    createData('West Ham United', 'Aston Villa', '01-04-2025', 'Chris Wilson', 'London Stadium'),
-    createData('Newcastle United', 'Brighton & Hove Albion', '02-04-2025', 'Sarah Johnson', 'St James\' Park'),
-    createData('Crystal Palace', 'Wolverhampton Wanderers', '03-04-2025', 'David Lee', 'Selhurst Park'),
-    createData('Leeds United', 'Southampton', '04-04-2025', 'Laura Martinez', 'Elland Road'),
-    createData('Burnley', 'Sheffield United', '05-04-2025', 'James Anderson', 'Turf Moor'),
-    createData('Nottingham Forest', 'Fulham', '06-04-2025', 'Sophia Taylor', 'City Ground'),
-    createData('Brentford', 'Norwich City', '07-04-2025', 'Oliver Green', 'Gtech Community Stadium'),
-    createData('Watford', 'Bournemouth', '08-04-2025', 'Emma White', 'Vicarage Road'),
-    createData('Swansea City', 'Cardiff City', '09-04-2025', 'Liam Brown', 'Liberty Stadium'),
-    createData('Derby County', 'Middlesbrough', '10-04-2025', 'Sophia Wilson', 'Pride Park Stadium'),
-    createData('Reading', 'Huddersfield Town', '11-04-2025', 'Noah Taylor', 'Madejski Stadium'),
-    createData('Blackburn Rovers', 'Preston North End', '12-04-2025', 'Isabella Moore', 'Ewood Park'),
-    createData('Stoke City', 'Sunderland', '13-04-2025', 'Mason Clark', 'Bet365 Stadium'),
-    createData('Hull City', 'Rotherham United', '14-04-2025', 'Charlotte Hall', 'MKM Stadium'),
-    createData('Coventry City', 'Bristol City', '15-04-2025', 'James Adams', 'Coventry Building Society Arena'),
-    createData('Manchester United', 'Liverpool', '16-04-2025', 'John Doe', 'Old Trafford'),
-    createData('Chelsea', 'Arsenal', '17-04-2025', 'Jane Smith', 'Stamford Bridge'),
-    createData('Manchester City', 'Tottenham Hotspur', '18-04-2025', 'Michael Brown', 'Etihad Stadium'),
-    createData('Leicester City', 'Everton', '19-04-2025', 'Emily Davis', 'King Power Stadium'),
-    createData('West Ham United', 'Aston Villa', '20-04-2025', 'Chris Wilson', 'London Stadium'),
-    createData('Newcastle United', 'Brighton & Hove Albion', '21-04-2025', 'Sarah Johnson', 'St James\' Park'),
-    createData('Crystal Palace', 'Wolverhampton Wanderers', '22-04-2025', 'David Lee', 'Selhurst Park'),
-    createData('Leeds United', 'Southampton', '23-04-2025', 'Laura Martinez', 'Elland Road'),
-    createData('Burnley', 'Sheffield United', '24-04-2025', 'James Anderson', 'Turf Moor'),
-    createData('Nottingham Forest', 'Fulham', '25-04-2025', 'Sophia Taylor', 'City Ground'),
-    createData('Brentford', 'Norwich City', '26-04-2025', 'Oliver Green', 'Gtech Community Stadium'),
-    createData('Watford', 'Bournemouth', '27-04-2025', 'Emma White', 'Vicarage Road'),
-    createData('Swansea City', 'Cardiff City', '28-04-2025', 'Liam Brown', 'Liberty Stadium'),
-    createData('Derby County', 'Middlesbrough', '29-04-2025', 'Sophia Wilson', 'Pride Park Stadium'),
-    createData('Reading', 'Huddersfield Town', '30-04-2025', 'Noah Taylor', 'Madejski Stadium'),
-    createData('Blackburn Rovers', 'Preston North End', '01-05-2025', 'Isabella Moore', 'Ewood Park'),
-    createData('Stoke City', 'Sunderland', '02-05-2025', 'Mason Clark', 'Bet365 Stadium'),
-    createData('Hull City', 'Rotherham United', '03-05-2025', 'Charlotte Hall', 'MKM Stadium'),
-    createData('Coventry City', 'Bristol City', '04-05-2025', 'James Adams', 'Coventry Building Society Arena'),
-];
 
 const Matches = () => {
     const [selectedMatch, setSelectedMatch] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const searchMatches = matchData.filter((match) =>
-        `${match.homeTeam} ${match.awwayTeam}`.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     const openPopup = (match) => {
         setSelectedMatch(match);
@@ -157,29 +107,10 @@ const Matches = () => {
                 <div className="col-start-2 col-end-3 flex justify-center text-center">
                     <div className="pt-10">
                         <div>
-                            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+                            <h1 className="text-3xl pb-1 pl-5 flex justify-left">
                                 <strong>Match Timetable</strong>
                             </h1>
-
-                            <div className="flex justify-left w-full">
-                                <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                                    <SearchIconWrapper>
-                                        <SearchIcon />
-                                    </SearchIconWrapper>
-                                    <StyledInputBase
-                                        placeholder="Search…"
-                                        inputProps={{ 'aria-label': 'search' }}
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </Search>
-                            </div>
-
-                            <Box sx={{width: '100%', height: 500, maxWidth: 700, bgcolor: 'gray-100', borderRadius: '8px',}}>
-                                <FixedSizeList height={500} width={700} itemSize={70} itemCount={searchMatches.length} overscanCount={10}>
-                                    {renderRow}
-                                </FixedSizeList>
-                            </Box>
+                            <MatchSchedule/>
                         </div>
                         <div className="pt-13 mb-30">
                             <div className="flex justify-center w-full">
