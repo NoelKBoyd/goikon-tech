@@ -628,6 +628,7 @@ async function main() {
         ],
         skipDuplicates: true
     });
+    
 
     console.log('Matches seeded successfully');
 
