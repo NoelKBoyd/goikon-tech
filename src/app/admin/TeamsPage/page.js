@@ -1,24 +1,22 @@
-'use client';
+"use client";
+import { useState, useEffect } from "react";
 import AdminNav from "@/app/Components/AdminNav";
 import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
-import { useState } from 'react';
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
+import { styled } from "@mui/material/styles";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,220 +29,223 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
+  "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  '&:last-child td, &:last-child th': {
+  "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
-    backgroundColor: alpha(theme.palette.common.white, 1),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 1),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
+function TeamPage() {
+  const [teams, setTeams] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+  const [newTeam, setNewTeam] = useState({
+    name: "",
+    managerId: "",
+    location: "",
+    ageGroup: "",
+    contactInfo: "",
+  });
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '30ch',
+  useEffect(() => {
+    // Fetch the initial list of teams from the API
+    const fetchTeams = async () => {
+      const response = await fetch("/api/auth/admin/getTeams");
+      const data = await response.json();
+      setTeams(data);
+    };
+
+    // Fetch the list of managers
+    const fetchManagers = async () => {
+      const response = await fetch("/api/auth/admin/viewManagers");
+      const data = await response.json();
+      setManagers(data);
+    };
+
+    fetchTeams();
+    fetchManagers();
+  }, []);
+
+  const handleAddTeamSubmit = async () => {
+    try {
+      const response = await fetch("/api/auth/admin/addTeams", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      },
-    },
-  }));
+        body: JSON.stringify(newTeam),
+      });
 
-function createData(teamId, name, managerId, location, ageGroup, contactInfo) {
-  return { teamId, name, managerId, location, ageGroup, contactInfo };
-}
+      if (!response.ok) {
+        throw new Error("Failed to add team");
+      }
 
-const rows = [
-    createData(1, 'Manchester United', 101, 'Manchester', 'U18', 'manutd@example.com'),
-    createData(2, 'Liverpool', 102, 'Liverpool', 'U21', 'liverpool@example.com'),
-    createData(3, 'Chelsea', 103, 'London', 'U18', 'chelsea@example.com'),
-    createData(4, 'Arsenal', 104, 'London', 'U16', 'arsenal@example.com'),
-    createData(5, 'Manchester City', 105, 'Manchester', 'U21', 'mancity@example.com'),
-    createData(6, 'Tottenham Hotspur', 106, 'London', 'U18', 'spurs@example.com'),
-    createData(7, 'Leicester City', 107, 'Leicester', 'U16', 'leicester@example.com'),
-    createData(8, 'Everton', 108, 'Liverpool', 'U18', 'everton@example.com'),
-    createData(9, 'West Ham United', 109, 'London', 'U21', 'westham@example.com'),
-    createData(10, 'Aston Villa', 110, 'Birmingham', 'U16', 'astonvilla@example.com'),
-    createData(11, 'Newcastle United', 201, 'Newcastle', 'U18', 'newcastle@example.com'),
-    createData(12, 'Brighton & Hove Albion', 202, 'Brighton', 'U21', 'brighton@example.com'),
-    createData(13, 'Crystal Palace', 203, 'London', 'U18', 'crystalpalace@example.com'),
-    createData(14, 'Wolverhampton Wanderers', 204, 'Wolverhampton', 'U16', 'wolves@example.com'),
-    createData(15, 'Leeds United', 205, 'Leeds', 'U21', 'leeds@example.com'),
-    createData(16, 'Southampton', 206, 'Southampton', 'U18', 'southampton@example.com'),
-    createData(17, 'Burnley', 207, 'Burnley', 'U16', 'burnley@example.com'),
-    createData(18, 'Sheffield United', 208, 'Sheffield', 'U18', 'sheffield@example.com'),
-    createData(19, 'Nottingham Forest', 209, 'Nottingham', 'U21', 'nottingham@example.com'),
-    createData(20, 'Fulham', 210, 'London', 'U16', 'fulham@example.com'),
-];
+      const addedTeam = await response.json();
+      setTeams((prevTeams) => [...prevTeams, addedTeam]); // Add the new team to the state
+      setIsAddTeamDialogOpen(false); // Close the dialog
+    } catch (error) {
+      console.error("Error adding team:", error);
+    }
+  };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewTeam((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-const TeamPage = () => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedTeamId, setSelectedTeamId] = useState(null);
-    const [selectedMatch, setSelectedMatch] = useState(null);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [rowsToShow] = useState(rows.length);
+  return (
+    <div>
+      <header>
+        <AdminNav />
+      </header>
 
-    const filteredRows = rows.filter((row) =>
-        row.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+      <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen">
+        <AdminSideBar className="col-start-1 col-end-2" />
 
-    const handleRowClick = (teamId) => {
-        setSelectedTeamId(teamId);
-    };
+        <div className="col-start-2 col-end-3 flex justify-center text-center">
+          <div className="pt-5">
+            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+              <strong>Teams</strong>
+            </h1>
 
-    const openPopup = (row) => {
-        setSelectedMatch(row);
-        setPopupOpen(true);
-    };
-
-    const closePopup = () => {
-        setSelectedMatch(null);
-        setPopupOpen(false);
-    };
-
-    return (
-        <div>
-            <header>
-                <AdminNav />
-            </header>
-
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <AdminSideBar className='col-start-1 col-end-2'/>
-
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-5">
-
-                        <h1 className="text-3xl pb-3 pl-2 flex justify-left">
-                            <strong>Teams</strong>
-                        </h1>
-
-                        <div className="flex justify-left">
-                            <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                                <SearchIconWrapper>
-                                    <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{ 'aria-label': 'search' }}
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </Search>
-                        </div>
-
-                        <div className="pt-1">
-                            <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell align="right">Team ID</StyledTableCell>
-                                            <StyledTableCell align="right">Name</StyledTableCell>
-                                            <StyledTableCell align="right">Manager ID</StyledTableCell>
-                                            <StyledTableCell align="right">Location</StyledTableCell>
-                                            <StyledTableCell align="right">Age</StyledTableCell>
-                                            <StyledTableCell align="right">Contact Info</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {filteredRows.slice(0, rowsToShow).map((row) => (
-                                            <StyledTableRow
-                                                key={row.teamId}
-                                                onMouseOver={() => handleRowClick(row.teamId)}
-                                                onClick={() => openPopup(row)}
-                                                style={{
-                                                    backgroundColor: row.teamId === selectedTeamId ? '#cae2fc' : 'inherit',
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                <StyledTableCell component="th" scope="row">{row.teamId}</StyledTableCell>
-                                                <StyledTableCell align="right">{row.name}</StyledTableCell>
-                                                <StyledTableCell align="right">{row.managerId}</StyledTableCell>
-                                                <StyledTableCell align="right">{row.location}</StyledTableCell>
-                                                <StyledTableCell align="right">{row.ageGroup}</StyledTableCell>
-                                                <StyledTableCell align="right">{row.contactInfo}</StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </div>
-                        <div className="pt-8">
-                            <div className="inline pr-2">
-                                <Button variant="contained" color="success">
-                                    Add Team
-                                </Button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </main>
-
-            <footer>
-                <AdminFooter />
-            </footer>
-
-            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
-                <DialogTitle>Team Details</DialogTitle>
-                    <DialogContent sx={{ minWidth: '300px' }}>
-                        {selectedMatch && (
-                            <div>
-                                <p className="pb-2">
-                                    <strong>Team Name:</strong> {selectedMatch.name}
-                                </p>
-                                <p className="pb-2">
-                                    <strong>Manager ID:</strong> {selectedMatch.managerId}
-                                </p>
-                                <p className="pb-2">
-                                    <strong>Location:</strong> {selectedMatch.location}
-                                </p>
-                                <p className="pb-2">
-                                    <strong>Age Group:</strong> {selectedMatch.ageGroup}
-                                </p>
-                                <p className="pb-2">
-                                    <strong>Contact Info:</strong> {selectedMatch.contactInfo}
-                                </p>
-                            </div>
-                        )}
-                    </DialogContent>
-                <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button>Edit</Button>
-                    <Button onClick={closePopup}>Close</Button>
-                </DialogActions>
-            </Dialog>
+            <TableContainer
+              component={Paper}
+              style={{ maxHeight: "500px", overflowY: "auto" }}
+            >
+              <Table
+                stickyHeader
+                sx={{ minWidth: 700 }}
+                aria-label="customized table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="right">Team ID</StyledTableCell>
+                    <StyledTableCell align="right">Name</StyledTableCell>
+                    <StyledTableCell align="right">Manager</StyledTableCell>
+                    <StyledTableCell align="right">Location</StyledTableCell>
+                    <StyledTableCell align="right">Age</StyledTableCell>
+                    <StyledTableCell align="right">
+                      Contact Info
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {teams.map((team) => {
+                    // Ensure manager is fetched correctly
+                    const manager = team.manager
+                      ? team.manager.name
+                      : "Unknown"; // Ensure the manager name is used correctly
+                    return (
+                      <StyledTableRow key={team.teamId || team.name}>
+                        <StyledTableCell component="th" scope="row">
+                          {team.teamId}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {team.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {manager}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {team.location}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {team.ageGroup}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {team.contactInfo}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setIsAddTeamDialogOpen(true)}
+              sx={{ marginTop: "15px" }}
+            >
+              Add Team
+            </Button>
+          </div>
         </div>
-    );
-};
+      </main>
+
+      <footer>
+        <AdminFooter />
+      </footer>
+
+      <Dialog
+        open={isAddTeamDialogOpen}
+        onClose={() => setIsAddTeamDialogOpen(false)}
+      >
+        <DialogTitle>Add Team</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Team Name"
+            fullWidth
+            variant="outlined"
+            name="name"
+            value={newTeam.name}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Manager ID"
+            fullWidth
+            variant="outlined"
+            name="managerId"
+            value={newTeam.managerId}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Location"
+            fullWidth
+            variant="outlined"
+            name="location"
+            value={newTeam.location}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Age Group"
+            fullWidth
+            variant="outlined"
+            name="ageGroup"
+            value={newTeam.ageGroup}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Contact Info"
+            fullWidth
+            variant="outlined"
+            name="contactInfo"
+            value={newTeam.contactInfo}
+            onChange={handleInputChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsAddTeamDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAddTeamSubmit} color="primary">
+            Add Team
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
 
 export default TeamPage;

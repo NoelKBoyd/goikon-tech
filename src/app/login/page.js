@@ -29,23 +29,23 @@ export default function Login() {
 
             // Redirect based on roleId
             switch (data.roleId) {
-                case 2:
-                    router.push('/admin'); // Admin page
+                case 24:
+                    router.push('/admin'); 
                     break;
-                case 4:
-                    router.push('/player'); // Manager page
+                case 26:
+                    router.push('/player');
                     break;
-                case 5:
-                    router.push('/fieldowner'); // Referee page
+                case 27:
+                    router.push('/fieldowner'); 
                     break;
-                case 7:
-                    router.push('/teammanager'); // teammanager page
+                case 25:
+                    router.push('/teammanager'); 
                     break;
-                case 8:
-                    router.push('/referee'); // referee page
+                case 28:
+                    router.push('/referee'); 
                     break;    
                 default:
-                    router.push('/'); // Default user page
+                    router.push('/'); 
             }
         } else {
             setError(data.message);
