@@ -6,6 +6,7 @@ import { GrUserManager } from "react-icons/gr";
 import { GiWhistle, GiSoccerField } from "react-icons/gi";
 import Link from 'next/link';
 import Calendar from './Components/Calendar';
+import MatchSchedule from './Components/MatchSchedule';
 
 export default function Homepage() {
     const features = [
@@ -60,6 +61,7 @@ export default function Homepage() {
                     <li><Link href='./fieldowner'>Field owner page   </Link></li>
                     <li><Link href='./teammanager'>Team Manager page   </Link></li>
                     <li><Link href='./admin'>Admin page   </Link></li>
+                    <MatchSchedule/>
                     </ul> 
                 </div>
             </div>

@@ -18,6 +18,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -113,7 +117,7 @@ const Matches = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const searchMatches = matchData.filter((match) =>
-        `${match.homeTeam} ${match.awwayTeam} ${match.date} ${match.referee}`.toLowerCase().includes(searchQuery.toLowerCase())
+        `${match.homeTeam} ${match.awwayTeam}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const openPopup = (match) => {
@@ -134,7 +138,7 @@ const Matches = () => {
     
         return (
             <ListItem style={{ ...style, backgroundColor, borderRadius: '8px'}} key={index} component="div" disablePadding>
-                <ListItemButton sx={{'&:hover': {backgroundColor: '#d0d0d0'}, textAlign: 'center', borderRadius: '8px'}} onClick={() => openPopup(match)}>
+                <ListItemButton sx={{'&:hover': {backgroundColor: '#cae2fc'}, textAlign: 'center', borderRadius: '8px'}} onClick={() => openPopup(match)}>
                     <ListItemText primary={`${match.homeTeam} || VS || ${match.awwayTeam}`} secondary={`Date: ${match.date}, Referee: ${match.referee}`}/>
                 </ListItemButton>
             </ListItem>
@@ -178,24 +182,29 @@ const Matches = () => {
                             </Box>
                         </div>
                         <div className="pt-13 mb-30">
-                            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
-                                <strong>Schedule Matches</strong>
-                            </h1>
-                            
                             <div className="flex justify-center w-full">
-                                <Box sx={{width: '100%', height: 400, maxWidth: 600, bgcolor: 'background.paper', borderRadius: '8px',}}>
-                                    <div className="pt-10">
-                                        <TextField id="outlined-basic" label="Home Team" variant="outlined" color="success" sx={{paddingRight: '20px'}}/>
-                                        <TextField id="outlined-basic" label="Away Team" variant="outlined" color="warning"/>
+                                <Box sx={{width: '100%', height: 550, maxWidth: 480, bgcolor: 'background.paper', borderRadius: '8px',}}>
+                                    <h1 className="text-3xl pb-3 pt-5 flex justify-center">
+                                        <strong>Schedule Matches</strong>
+                                    </h1>
+                                    <div className="pt-5">
+                                        <TextField id="outlined-basic" label="Home Team" variant="outlined" color="success" sx={{width: '250px'}}/>
                                     </div>
-                                    <div className="pt-10">
-                                        <TextField id="outlined-basic" label="Date" variant="outlined" sx={{paddingRight: '20px'}}/>
-                                        <TextField id="outlined-basic" label="Referee" variant="outlined"/>
+                                    <div className="pt-5">
+                                        <TextField id="outlined-basic" label="Away Team" variant="outlined" color="warning" sx={{width: '250px'}}/>
                                     </div>
-                                    <div className="pt-10">
-                                        <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{paddingRight: '20px'}}/>
+                                    <div className="pt-5">
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                            <DemoContainer components={['DatePicker']} sx={{display: 'flex', justifyContent: 'center', paddingBottom: '20px', }} >
+                                                <DatePicker label="Date" sx={{width: '250px'}}/>
+                                            </DemoContainer>
+                                        </LocalizationProvider>
+                                        <TextField id="outlined-basic" label="Referee" variant="outlined" sx={{width: '250px'}}/>
                                     </div>
-                                    <div className="pt-10">
+                                    <div className="pt-5">
+                                        <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{width: '250px'}}/>
+                                    </div>
+                                    <div className="pt-5">
                                         <Button variant="contained" color="primary">Schedule Match</Button>
                                     </div>
                                 </Box>
