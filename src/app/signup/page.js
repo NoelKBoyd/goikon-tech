@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import Link from "next/link";
 import HomeNav from '../Components/HomeNav';
-import Spline from '@splinetool/react-spline';
-
+import SplineButton from "../Components/SplineButton";  // ✅ Import SplineButton
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
 export default function SignUp() {
-  // State for each form field
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -16,159 +15,205 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [formErrors, setFormErrors] = useState({
+    nameError: '',
+    emailError: '',
+    phoneError: '',
+    roleError: '',
+    dobError: '',
+    passwordError: '',
+    confirmPasswordError: '',
+  });
 
-  // Handle form submission
+  const router = useRouter();
+
+  // Validation function
+  const validateFields = () => {
+    const errors = {};
+
+    // Validate each field
+    if (!name) errors.nameError = 'Name is required';
+    else if (!email) errors.emailError = 'Email is required';
+    else if (!phone) errors.phoneError = 'Phone number is required';
+    else if (!role) errors.roleError = 'Role is required';
+    else if (!dob) errors.dobError = 'Date of birth is required';
+    else if (!password) errors.passwordError = 'Password is required';
+    else if (!confirmPassword) errors.confirmPasswordError = 'Confirm password is required';
+    else if (password && confirmPassword && password !== confirmPassword) errors.confirmPasswordError = 'Passwords do not match';
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;  // return false if there are errors
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check passwords match
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
+    // Check if form is valid before submitting
+    const isValid = validateFields();
+    if (!isValid) return;  // Do not submit if form is invalid
 
-    setError(''); // Clear any previous errors
+    setError('');  // Clear any previous error
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          role,
-          dob,
-          password,
-        }),
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, role, dob, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Failed to sign up');
+        setError(data.message || "Failed to sign up");
       } else {
-        setSuccess(true);
-        // Optionally reset form fields here if you want
-        // setName(''); setEmail(''); setPhone(''); setRole(''); setDob(''); setPassword(''); setConfirmPassword('');
+        console.log("Form submitted successfully");
+        alert("Registration successful!");
+
+        router.push("/login"); // Navigate to the login page
       }
     } catch (error) {
-      console.error('Error during signup:', error);
-      setError('An unexpected error occurred. Please try again.');
+      console.error("Error during signup:", error);
+      setError("An unexpected error occurred. Please try again.");
     }
   };
 
+  // Check if there are no form errors
+  const isFormValid =
+  name &&
+  email &&
+  phone &&
+  role &&
+  dob &&
+  password &&
+  confirmPassword &&
+  password === confirmPassword &&
+  Object.values(formErrors).every((error) => error === '');
+
+  const isButtonDisabled = !isFormValid || Object.values(formErrors).some(error => error !== '');
+
   return (
     <main>
-      <div><HomeNav /></div>
+      <div>
+        <HomeNav />
+      </div>
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12 relative">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12">
+        <div className="bg-white border-2 border-black rounded-lg shadow-lg p-8 w-96">
+          <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
-        {/* ✅ Animation shown only when form is successfully submitted */}
-        {success && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-            <Spline scene="https://prod.spline.design/JEWQHUHXRKG5Fq9p/scene.splinecode" />
-          </div>
-        )}
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={name}
+              onChange={(e) => { 
+                setName(e.target.value);
+                setFormErrors({ ...formErrors, nameError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.nameError && <p className="text-red-500 text-sm">{formErrors.nameError}</p>}
 
-        {/* Form is hidden if success is true */}
-        {!success && (
-          <div className="bg-white border-2 border-black rounded-lg shadow-lg p-8 w-96 relative z-0">
-            <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={email}
+              onChange={(e) => { 
+                setEmail(e.target.value);
+                setFormErrors({ ...formErrors, emailError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.emailError && <p className="text-red-500 text-sm">{formErrors.emailError}</p>}
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* Name */}
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="\d*"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={phone}
+              onChange={(e) => { 
+                setPhone(e.target.value.replace(/\D/, ""));
+                setFormErrors({ ...formErrors, phoneError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.phoneError && <p className="text-red-500 text-sm">{formErrors.phoneError}</p>}
 
-              {/* Email */}
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <select
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={role}
+              onChange={(e) => { 
+                setRole(e.target.value);
+                setFormErrors({ ...formErrors, roleError: '' }); // Clear error on change
+              }}
+            >
+              <option value="">Select a role</option>
+              <option value="Admin">Admin</option>
+              <option value="Field Owner">Field Owner</option>
+              <option value="Player">Player</option>
+              <option value="Referee">Referee</option>
+              <option value="Team Manager">Team Manager</option>
+            </select>
+            {formErrors.roleError && <p className="text-red-500 text-sm">{formErrors.roleError}</p>}
 
-              {/* Phone */}
-              <label htmlFor="number" className="block text-sm font-medium text-gray-700">Phone Number</label>
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="\d*"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/\D/, ''))}
-              />
+            <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={dob}
+              onChange={(e) => { 
+                setDob(e.target.value);
+                setFormErrors({ ...formErrors, dobError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.dobError && <p className="text-red-500 text-sm">{formErrors.dobError}</p>}
 
-              {/* Role */}
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
-              <select
-                id="role"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="">Select a role</option>
-                <option value="Admin">Admin</option>
-                <option value="Field Owner">Field Owner</option>
-                <option value="Player">Player</option>
-                <option value="Referee">Referee</option>
-                <option value="Team Manager">Team Manager</option>
-              </select>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={password}
+              onChange={(e) => { 
+                setPassword(e.target.value);
+                setFormErrors({ ...formErrors, passwordError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.passwordError && <p className="text-red-500 text-sm">{formErrors.passwordError}</p>}
 
-              {/* Date of Birth */}
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-              <input
-                type="date"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-              />
+            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input
+              type="password"
+              className="w-full px-3 py-2 border border-black rounded-md"
+              value={confirmPassword}
+              onChange={(e) => { 
+                setConfirmPassword(e.target.value);
+                setFormErrors({ ...formErrors, confirmPasswordError: '' }); // Clear error on change
+              }}
+            />
+            {formErrors.confirmPasswordError && <p className="text-red-500 text-sm">{formErrors.confirmPasswordError}</p>}
 
-              {/* Password */}
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+            <p className="text-red-500 text-sm mb-0">{error}</p>
 
-              {/* Confirm Password */}
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
-              <input
-                type="password"
-                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring focus:ring-gray-400"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+            {/* Spline Animated Submit Button */}
+            <div 
+              className={`relative z-10 ${isFormValid ? "pointer-events-auto" : "pointer-events-none opacity-50"}`}
+            >
+              <SplineButton isValid={isFormValid} onClick={isFormValid ? handleSubmit : null} />
+            </div>
 
-              {/* Error Message */}
-              {error && <p className="text-red-500 text-sm">{error}</p>}
 
-              {/* ✅ Replaced Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
-              >
-                Submit
+
+
+            <Link href="/login">
+              <button type="button" className="w-full border border-black text-black py-2 rounded-md hover:bg-gray-200 transition">
+                Log in
               </button>
-
-              <Link href="/login">
-                <button type="button" className="w-full border border-black text-black py-2 rounded-md hover:bg-gray-200 transition">
-                  Log in
-                </button>
-              </Link>
-            </form>
-          </div>
-        )}
+            </Link>
+          </form>
+        </div>
       </div>
     </main>
   );

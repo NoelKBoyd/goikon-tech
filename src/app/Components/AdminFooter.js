@@ -3,7 +3,7 @@ import { IoMdLogOut } from "react-icons/io";
 
 export default function AdminFooter() {
   return (
-    <div className="w-full h-20 bg-white border-t border-gray-400 flex items-center justify-between px-6 fixed bottom-0 left-0">
+    <div className="w-full h-20 bg-white border-t border-gray-400 flex items-center justify-between px-6 fixed bottom-0 left-0 z-50">
 
       <div>
         <a href="/" className="flex items-center text-black hover:bg-red-500 hover:text-white px-6 py-3 rounded-md text-xl">
