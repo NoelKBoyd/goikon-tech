@@ -72,7 +72,7 @@ export default function MatchSchedule() {
         onChange={(e) => setSearch(e.target.value)}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
       /> */}
-      
+
       <div className="flex justify-left">
         <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
           <SearchIconWrapper>

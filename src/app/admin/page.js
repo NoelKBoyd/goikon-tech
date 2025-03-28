@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import AdminNav from '../Components/AdminNav';
 import AdminSideBar from '../Components/AdminSideBar';
@@ -10,6 +11,13 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Calendar from '../Components/Calendar';
+import { useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { Button } from '@mui/material';
+import Box from '@mui/material/Box';
 
 function createData(homeTeam, awwayTeam, date, referee, venue) {
     return { homeTeam, awwayTeam, date, referee, venue };
@@ -24,6 +32,19 @@ const matchData = [
 ]
 
 const AdminPage = () => {
+
+    const [selectedMatch, setSelectedMatch] = useState(null);
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    
+    const openMatch = (match) => {
+        setSelectedMatch(match);
+        setPopupOpen(true);
+    };
+    
+    const closeMatch = () => {
+        setSelectedMatch(null);
+        setPopupOpen(false);
+    };
 
     return (
         <div>
@@ -50,23 +71,28 @@ const AdminPage = () => {
                                     
                                 />
                             </div>
-                            <div className='w-1/3 m-5 bg-white rounded-lg shadow-xl flex flex-col justify-center items-center border-1 border-gray-300'>
+                            <div className='w-full flex'>
+                            <div className='w-1/3 m-5 bg-white rounded-lg shadow-xl border border-gray-300'>
                                 <h2 className='flex justify-center mt-2 pb-2'><strong>Upcoming Matches</strong></h2>
-                                <div className='overflow-y-auto flex flex-col items-center' style={{maxHeight: '300px', width: '100%'}}>
-                                    {matchData.map((match) => (
-                                    <List sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper'}} key={match.homeTeam}>
-                                        <ListItem alignItems="flex-center" sx={{'&:hover': {backgroundColor: '#cae2fc', boxShadow: 'inset 0 0 5px rgb(48, 48, 48, 0.5)'}}}>
-                                            <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
-                                                <Avatar src="/" style={{backgroundColor: '#baffcd', color: 'black'}}>{match.homeTeam.charAt(0)}</Avatar>
-                                            </ListItemAvatar>    
-                                                <ListItemText sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}} secondary={match.date}>VS</ListItemText>
-                                            <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
-                                                <Avatar src="/" style={{backgroundColor: '#ffbaba', color: 'black'}}>{match.awwayTeam.charAt(0)}</Avatar>
-                                            </ListItemAvatar>
-                                        </ListItem>
-                                        <Divider component="li" width='100%'/>
-                                    </List>
-                                    ))}
+                                    <div className='overflow-y-auto overflow-hidden rounded-b-lg' style={{ maxHeight: '260px' }}>
+                                        {matchData.map((match) => (
+                                        <List sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper' }} key={match.homeTeam}>
+                                            <ListItem alignItems="flex-center" sx={{'&:hover': {backgroundColor: '#cae2fc', boxShadow: 'inset 0 0 5px rgb(48, 48, 48, 0.5)'}}} onClick={() => { openMatch(match) }}>
+                                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                                    <Avatar src="/" style={{backgroundColor: '#baffcd', color: 'black'}}>{match.homeTeam.charAt(0)}</Avatar>
+                                                </ListItemAvatar>    
+                                                    <ListItemText sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}} secondary={match.date}>VS</ListItemText>
+                                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                                    <Avatar src="/" style={{backgroundColor: '#ffbaba', color: 'black'}}>{match.awwayTeam.charAt(0)}</Avatar>
+                                                </ListItemAvatar>
+                                            </ListItem>
+                                            <Divider component="li" width='100%'/>
+                                        </List>
+                                        ))}
+                                    </div>
+                                </div>    
+                                <div className='w-2/3 h-50 mt-5 mr-5 bg-white rounded-lg shadow-xl flex flex-col justify-center items-center border-1 border-gray-300'>
+                                            
                                 </div>
                             </div>
                         </div>
@@ -80,6 +106,45 @@ const AdminPage = () => {
             <footer>
                 <AdminFooter />
             </footer>
+
+            <Dialog open={isPopupOpen} onClose={closeMatch}>
+                <DialogTitle sx={{textAlign: 'center'}}>Match Details</DialogTitle>
+                <DialogContent sx={{ minWidth: '300px' }}>
+                    {selectedMatch && (
+                        <div>
+                            <div className='flex pb-5'>
+                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                    <Avatar src="/" style={{backgroundColor: '#baffcd', color: 'black'}}>{selectedMatch.homeTeam.charAt(0)}</Avatar>
+                                </ListItemAvatar>    
+                                    <ListItemText sx={{textAlign: 'center'}}><strong>VS</strong></ListItemText>
+                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                    <Avatar src="/" style={{backgroundColor: '#ffbaba', color: 'black'}}>{selectedMatch.awwayTeam.charAt(0)}</Avatar>
+                                </ListItemAvatar>
+                            </div>
+                            <div className='text-center'>
+                                <p>
+                                    <strong>Home Team:</strong> {selectedMatch.homeTeam}
+                                </p>
+                                <p>
+                                    <strong>Away Team:</strong> {selectedMatch.awwayTeam}
+                                </p>
+                                <p>
+                                    <strong>Date:</strong> {selectedMatch.date}
+                                </p>
+                                <p>
+                                    <strong>Referee:</strong> {selectedMatch.referee}
+                                </p>
+                                <p>
+                                    <strong>Venue:</strong> {selectedMatch.venue}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center' }}>
+                    <Button onClick={closeMatch}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
