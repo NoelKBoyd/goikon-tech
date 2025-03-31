@@ -138,7 +138,7 @@ const Matches = () => {
                   </MenuItem>,
                   ...managers.map((manager) => (
                     <MenuItem key={manager.id} value={manager.id}>
-                      {manager.firstName} {manager.lastName}
+                      {manager.name}
                     </MenuItem>
                   )),
                 ]

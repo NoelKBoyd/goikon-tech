@@ -1,3 +1,6 @@
+import { NextResponse } from "next/server";
+
+
 export async function GET() {
   try {
     const managers = await prisma.user.findMany({
@@ -6,8 +9,7 @@ export async function GET() {
       },
       select: {  // Be explicit about fields you need
         id: true,
-        firstName: true,
-        lastName: true,
+        name: true,
         email: true
       },
     });
