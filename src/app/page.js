@@ -61,7 +61,6 @@ export default function Homepage() {
                     <li><Link href='./fieldowner'>Field owner page   </Link></li>
                     <li><Link href='./teammanager'>Team Manager page   </Link></li>
                     <li><Link href='./admin'>Admin page   </Link></li>
-                    <MatchSchedule/>
                     </ul> 
                 </div>
             </div>
