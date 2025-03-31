@@ -177,7 +177,7 @@ const Reports = () => {
                     <div className="pt-5">
 
                             <h1 className="text-3xl pb-3 pl-2 flex justify-left">
-                                <strong>User Managment</strong>
+                                <strong>User Management</strong>
                             </h1>
 
                         <div className="flex justify-left">

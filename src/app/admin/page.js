@@ -115,8 +115,7 @@ const AdminPage = () => {
                                             data: [2, 6, 2, 9, 2, 5, 7, 4, 6, 5, 9, 3, 8, 7, 3, 8, 4, 6, 9, 2, 7, 4, 7, 5]
                                         },
                                     ]}
-                                    style={{ height: 400, width: '100%' }}
-                                    
+                                    style={{ height: 400, width: '100%' }}                                   
                                 />
                             </div>
                             <div className='w-full flex'>
@@ -197,7 +196,12 @@ const AdminPage = () => {
                             </div>
                         </div>
                         <div className='col-start-2 col-end-3 p-5 h-700px mb-50 bg-white rounded-lg shadow-lg mr-8'>
-                            <Calendar/>
+                            <div>
+                                <Calendar/>
+                            </div>
+                            <div className='mt-10'>
+                                <h2><strong>Latest Actions Taken</strong></h2>
+                            </div>
                         </div>
                     </div>
                 </div>
