@@ -1,154 +1,94 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import AdminNav from "@/app/Components/AdminNav";
 import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import TextField from "@mui/material/TextField";
-import { styled, alpha } from "@mui/material/styles";
-import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
-    backgroundColor: alpha(theme.palette.common.white, 1),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 1),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '30ch',
-        },
-      },
-    },
-  }));
-
-function TeamPage() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [teams, setTeams] = useState([]);
-    const searchedTeams = teams.length;
-    const [managers, setManagers] = useState([]);
-    const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
-    const [newTeam, setNewTeam] = useState({
-    id: "",
+const Team = () => {
+  const [managers, setManagers] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [selectedManager, setSelectedManager] = useState("");
+  const [teamData, setTeamData] = useState({
     name: "",
-    managerId: "",
     location: "",
     ageGroup: "",
     contactInfo: "",
   });
 
-  const filteredRows = teams.filter((team) =>
-    team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    team.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    team.ageGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    team.contactInfo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
   useEffect(() => {
-    // Fetch the initial list of teams from the API
-    const fetchTeams = async () => {
-      const response = await fetch("/api/auth/admin/getTeams");
-      const data = await response.json();
-      setTeams(data);
-    };
+    async function fetchManagers() {
+      try {
+        const response = await fetch("/api/auth/admin/viewManagers");
+        if (!response.ok) throw new Error("Failed to fetch managers");
+        const data = await response.json();
+        setManagers(data);
+      } catch (error) {
+        console.error("Error fetching managers:", error);
+      }
+    }
 
-    // Fetch the list of managers
-    const fetchManagers = async () => {
-      const response = await fetch("/api/auth/admin/viewManagers");
-      const data = await response.json();
-      setManagers(data);
-    };
+    async function fetchTeams() {
+      try {
+        const response = await fetch("/api/auth/admin/viewTeams");
+        if (!response.ok) throw new Error("Failed to fetch teams");
+        const data = await response.json();
+        setTeams(data);
+      } catch (error) {
+        console.error("Error fetching teams:", error);
+      }
+    }
 
-    fetchTeams();
     fetchManagers();
+    fetchTeams();
   }, []);
 
-  const handleAddTeamSubmit = async () => {
+  const handleInputChange = (e) => {
+    setTeamData({
+      ...teamData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedManager) {
+      alert("Please select a manager.");
+      return;
+    }
+
+    const teamPayload = {
+      ...teamData,
+      managerId: selectedManager,
+    };
+
     try {
       const response = await fetch("/api/auth/admin/addTeams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newTeam),
+        body: JSON.stringify(teamPayload),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add team");
+      const result = await response.json();
+      if (response.ok) {
+        alert("Team added successfully");
+        setTeams([...teams, result]); // Update the teams list
+      } else {
+        alert(result.error || "Failed to add team");
       }
-
-      const addedTeam = await response.json();
-      setTeams((prevTeams) => [...prevTeams, addedTeam]); // Add the new team to the state
-      setIsAddTeamDialogOpen(false); // Close the dialog
     } catch (error) {
       console.error("Error adding team:", error);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewTeam((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
   };
 
   return (
@@ -156,160 +96,66 @@ function TeamPage() {
       <header>
         <AdminNav />
       </header>
-
-      <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen">
+      <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-full">
         <AdminSideBar className="col-start-1 col-end-2" />
-
-        <div className="col-start-2 col-end-3 flex justify-center text-center">
-          <div className="pt-5">
-            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
-              <strong>Teams</strong>
+        <div className="col-start-2 col-end-3 flex flex-col items-center text-center">
+          <div className="pt-10">
+            <h1 className="text-3xl pb-1 pl-5 flex justify-left">
+              <strong>Add New Team</strong>
             </h1>
-            <div className="flex justify-left">
-                <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </Search>
-            </div>
-
-            <TableContainer
-              component={Paper}
-              style={{ maxHeight: "500px", overflowY: "auto" }}
-            >
-              <Table
-                stickyHeader
-                sx={{ minWidth: 800 }}
-                aria-label="customized table"
-              >
+            <TextField label="Team Name" name="name" value={teamData.name} onChange={handleInputChange} sx={{ width: "250px", marginBottom: "10px" }} />
+            <TextField label="Location" name="location" value={teamData.location} onChange={handleInputChange} sx={{ width: "250px", marginBottom: "10px" }} />
+            <TextField label="Age Group" name="ageGroup" value={teamData.ageGroup} onChange={handleInputChange} sx={{ width: "250px", marginBottom: "10px" }} />
+            <TextField label="Contact Info" name="contactInfo" value={teamData.contactInfo} onChange={handleInputChange} sx={{ width: "250px", marginBottom: "10px" }} />
+            <TextField select label="Select Manager" value={selectedManager} onChange={(e) => setSelectedManager(e.target.value)} sx={{ width: "250px", marginBottom: "10px" }}>
+              {managers.length === 0 ? (
+                <MenuItem disabled value="">
+                  No Managers Available
+                </MenuItem>
+              ) : (
+                managers.map((manager) => (
+                  <MenuItem key={manager.id} value={manager.id}>
+                    {manager.name}
+                  </MenuItem>
+                ))
+              )}
+            </TextField>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>Add Team</Button>
+          </div>
+          <div className="mt-10 w-3/4">
+            <h2 className="text-2xl mb-4">Teams</h2>
+            <TableContainer component={Paper}>
+              <Table>
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="right">Team ID</StyledTableCell>
-                    <StyledTableCell align="right">Name</StyledTableCell>
-                    <StyledTableCell align="right">Manager</StyledTableCell>
-                    <StyledTableCell align="right">Location</StyledTableCell>
-                    <StyledTableCell align="right">Age</StyledTableCell>
-                    <StyledTableCell align="right">Contact Info</StyledTableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Location</TableCell>
+                    <TableCell>Age Group</TableCell>
+                    <TableCell>Contact Info</TableCell>
+                    <TableCell>Manager</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredRows.slice(0, searchedTeams).map((team) => {
-                    // Ensure manager is fetched correctly
-                    const manager = team.manager
-                      ? team.manager.name
-                      : "Unknown"; // Ensure the manager name is used correctly
-                    return (
-                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'} }}>
-                        <StyledTableCell component="th" scope="row">
-                          {team.id}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {manager}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.location}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.ageGroup}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.contactInfo}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    );
-                  })}
+                  {teams.map((team) => (
+                    <TableRow key={team.id}>
+                      <TableCell>{team.name}</TableCell>
+                      <TableCell>{team.location}</TableCell>
+                      <TableCell>{team.ageGroup}</TableCell>
+                      <TableCell>{team.contactInfo}</TableCell>
+                      <TableCell>{team.manager ? team.manager.name : "Unassigned"}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setIsAddTeamDialogOpen(true)}
-              sx={{ marginTop: "15px" }}
-            >
-              Add Team
-            </Button>
           </div>
         </div>
       </main>
-
       <footer>
         <AdminFooter />
       </footer>
-
-      <Dialog
-        open={isAddTeamDialogOpen}
-        onClose={() => setIsAddTeamDialogOpen(false)}
-      >
-        <DialogTitle>Add Team</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Team Name"
-            fullWidth
-            variant="outlined"
-            name="name"
-            value={newTeam.name}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Manager ID"
-            fullWidth
-            variant="outlined"
-            name="managerId"
-            value={newTeam.managerId}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Location"
-            fullWidth
-            variant="outlined"
-            name="location"
-            value={newTeam.location}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Age Group"
-            fullWidth
-            variant="outlined"
-            name="ageGroup"
-            value={newTeam.ageGroup}
-            onChange={handleInputChange}
-          />
-          <TextField
-            margin="dense"
-            label="Contact Info"
-            fullWidth
-            variant="outlined"
-            name="contactInfo"
-            value={newTeam.contactInfo}
-            onChange={handleInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsAddTeamDialogOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAddTeamSubmit} color="primary">
-            Add Team
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
-}
+};
 
-export default TeamPage;
+export default Team;
