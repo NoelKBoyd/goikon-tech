@@ -20,6 +20,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { BarChart } from '@mui/x-charts/BarChart';
+import TextField from '@mui/material/TextField';
+
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -108,6 +110,19 @@ const Reports = () => {
     const [selectedMatch, setSelectedMatch] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [matches, setMatches] = useState([]);
+    const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+
+
+    const openNewUser = () => {
+      setSelectedUser();
+      setIsUserDialogOpen(true);
+  };
+  
+  const closeNewUser = () => {
+      setSelectedUser();
+      setIsUserDialogOpen(false);
+  };
     
 
     const rowClick = (teamId) => {
@@ -115,7 +130,7 @@ const Reports = () => {
     };
 
     const filteredMatches = matches.filter((match) =>
-        match.id.toString().includes(searchQuery.toLowerCase())
+        match.homeTeam.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     
       const openPopup = (match) => {
@@ -197,6 +212,7 @@ const Reports = () => {
                             key={match.id}
                             onClick={() => openPopup(match)}
                             style={{ cursor: 'pointer' }}
+                            sx={{ '&:hover': {backgroundColor: '#cae2fc'}}}
                           >
                             <StyledTableCell align="center">{match.id}</StyledTableCell>
                             <StyledTableCell align="center">{match.homeTeam.name}</StyledTableCell>
@@ -212,6 +228,7 @@ const Reports = () => {
                       </TableBody>
                     </Table>
                   </TableContainer>
+                  <Button variant="contained" sx={{marginTop: '20px'}} onClick={() => { openNewUser() }}>Add Report</Button>
                 </div>
               </div>
             </div>
@@ -226,7 +243,7 @@ const Reports = () => {
             <DialogContent sx={{ width: '600px' }}>
               {selectedMatch && (
                 <div>
-                  <h2>Match ID: {selectedMatch.id}</h2>
+                  <h2>{selectedMatch.homeTeam.name} VS {selectedMatch.awayTeam.name}</h2>
                   <BarChart
                     xAxis={[{ scaleType: 'band', data: ['Goals', 'Assists', 'Yellow cards', 'Red cards', 'Fouls', 'Shots on target'] }]}
                     series={[{ data: [selectedMatch.result.homeTeamScore, selectedMatch.result.assists, selectedMatch.result.yellowCard, selectedMatch.result.redCard, selectedMatch.result.fouls, selectedMatch.result.shotsOnTarget] }]}
@@ -241,6 +258,26 @@ const Reports = () => {
               <Button onClick={closePopup}>Close</Button>
             </DialogActions>
           </Dialog>
+
+          <Dialog open={isUserDialogOpen} onClose={closeNewUser}>
+                <DialogTitle sx={{textAlign: 'center'}}>Add New Report</DialogTitle>
+                <DialogContent sx={{ minWidth: '300px' }}>
+                    <div className="flex flex-col gap-5 items-center justify-center pt-3 mx-10">
+                        <TextField id="outlined-basic" label="Home Team" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Away Team" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Goals" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Assists" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Yellow Crads" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Red Cards" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Fouls" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Shots On Target" variant="outlined" sx={{width: '100%'}}/>
+                    </div>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', marginBottom: '10px' }}>
+                    <Button variant="contained">Add New Report</Button>
+                    <Button onClick={closeNewUser} variant="outlined">Close</Button>
+                </DialogActions>
+            </Dialog>
         </div>
       );
     };
