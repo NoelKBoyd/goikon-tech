@@ -92,7 +92,7 @@ export default function Calendar() {
           {hoveredMatch.map(matches => (
             <div key={matches.id}>
               Match: {matches.homeTeam.name} vs {matches.awayTeam.name} <br />
-              Field: {matches.field.name} | Referee: {matches.referee.name}
+              Field: {matches.field.location} | Referee: {matches.referee.name}
             </div>
           ))}
         </div>
