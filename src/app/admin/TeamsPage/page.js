@@ -83,12 +83,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function TeamPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [teams, setTeams] = useState([]);
-  const searchedTeams = teams.length;
-  const [managers, setManagers] = useState([]);
-  const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
-  const [newTeam, setNewTeam] = useState({
+    const [searchQuery, setSearchQuery] = useState('');
+    const [teams, setTeams] = useState([]);
+    const searchedTeams = teams.length;
+    const [managers, setManagers] = useState([]);
+    const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+    const [isTeamDialogOpen, setTeamDialogOpen] = useState(false);
+    const [newTeam, setNewTeam] = useState({
     id: "",
     name: "",
     managerId: "",
@@ -207,7 +208,7 @@ function TeamPage() {
                       ? team.manager.name
                       : "Unknown"; // Ensure the manager name is used correctly
                     return (
-                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': { backgroundColor: '#cae2fc' } }}>
+                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'}}} onClick={() => {setTeamDialogOpen(true)}}>
                         <StyledTableCell component="th" scope="row">
                           {team.id}
                         </StyledTableCell>
@@ -316,6 +317,19 @@ function TeamPage() {
           <Button onClick={handleAddTeamSubmit} color="primary">
             Add Team
           </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog open={isTeamDialogOpen} onClose={() => setTeamDialogOpen(false)}>
+        <DialogTitle sx={{textAlign: 'center'}}>Create New Match</DialogTitle>
+        <DialogContent sx={{ minWidth: '300px' }}>
+            {/* content might get added here */}
+        </DialogContent>
+        <DialogActions sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
+          <Button variant="contained">Edit</Button>
+          <Button variant="contained">Delete</Button>
+          <Button onClick={() => setTeamDialogOpen(false)} variant="outlined">Close</Button>
         </DialogActions>
       </Dialog>
     </div>

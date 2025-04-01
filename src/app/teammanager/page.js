@@ -4,23 +4,27 @@ import TeamManagerSideBar from '../Components/TeamManagerSideBar';
 import TeamManagerFooter from '../Components/TeamManagerFooter';
 import Calendar from '../Components/Calendar';
 import UpcomingMatch from '../Components/UpcomingMatch'
+import MessagingPanel from '../Components/MessagingPanel';
 
 const TeamManagerPage = () => {
     return (
-        <div>
+        <div className="w-full h-screen flex flex-col bg-gray-100">
             <header>
                 <TeamManagerNav/>
             </header>
                 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <div className='col-start-1 col-end-2'>
+            <main className='relative flex flex-1 h-full'>
+                <div className='w-64'>
                     <TeamManagerSideBar/>
                 </div>
-                <div className='col-start-2 col-end-3'>
+                <div className='flex-1 flex justify-center items-start mt-6'>
             <UpcomingMatch/>
             </div>
-                <div className='col-start-4 col-end-6'>
+                <div className='absolute bottom-4 left-[270px]'>
                     <Calendar/>
+                </div>
+                <div className= 'absolute bottom-4 right-4'>
+                <MessagingPanel/>
                 </div>
             </main>
                 

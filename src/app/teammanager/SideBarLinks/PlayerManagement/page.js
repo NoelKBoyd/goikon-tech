@@ -3,8 +3,9 @@ import TeamManagerNav from '@/app/Components/TeamManagerNav';
 import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
+import BasicTable from '@/app/Components/PlayerStats';
 
-const PlayerManagement = () => {
+const PlayerStats = () => {
     return (
         <div>
             <header>
@@ -14,11 +15,8 @@ const PlayerManagement = () => {
             <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
                 <TeamManagerSideBar className='col-start-1 col-end-2'/>
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-10">
-                        <h1 className="text-xl"><strong>Player Management</strong></h1>
-                        
-                    </div>
+                <div className= 'col-start-2 col-end-3 pt-10'>
+                    <BasicTable></BasicTable>
                 </div>
             </main>
 
@@ -29,4 +27,4 @@ const PlayerManagement = () => {
     );
 };
 
-export default PlayerManagement;
+export default PlayerStats;
