@@ -19,6 +19,8 @@ import TextField from "@mui/material/TextField";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import MenuItem from '@mui/material/MenuItem';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,53 +42,53 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+  position: 'relative',
+  borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+  backgroundColor: alpha(theme.palette.common.white, 1),
+  '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 1),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 1),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '30ch',
-        },
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: '20ch',
+      '&:focus': {
+        width: '30ch',
       },
     },
-  }));
+  },
+}));
 
 function TeamPage() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [teams, setTeams] = useState([]);
-    const searchedTeams = teams.length;
-    const [managers, setManagers] = useState([]);
-    const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
-    const [newTeam, setNewTeam] = useState({
+  const [searchQuery, setSearchQuery] = useState('');
+  const [teams, setTeams] = useState([]);
+  const searchedTeams = teams.length;
+  const [managers, setManagers] = useState([]);
+  const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+  const [newTeam, setNewTeam] = useState({
     id: "",
     name: "",
     managerId: "",
@@ -100,7 +102,7 @@ function TeamPage() {
     team.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
     team.ageGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
     team.contactInfo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  );
 
   useEffect(() => {
     // Fetch the initial list of teams from the API
@@ -166,17 +168,17 @@ function TeamPage() {
               <strong>Teams</strong>
             </h1>
             <div className="flex justify-left">
-                <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </Search>
+              <Search sx={{ marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)', }}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Search>
             </div>
 
             <TableContainer
@@ -205,7 +207,7 @@ function TeamPage() {
                       ? team.manager.name
                       : "Unknown"; // Ensure the manager name is used correctly
                     return (
-                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'} }}>
+                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': { backgroundColor: '#cae2fc' } }}>
                         <StyledTableCell component="th" scope="row">
                           {team.id}
                         </StyledTableCell>
@@ -263,14 +265,22 @@ function TeamPage() {
             onChange={handleInputChange}
           />
           <TextField
+            select
             margin="dense"
-            label="Manager ID"
+            label="Manager"
             fullWidth
             variant="outlined"
             name="managerId"
             value={newTeam.managerId}
             onChange={handleInputChange}
-          />
+          >
+            {managers.map((manager) => (
+              <MenuItem key={manager.id} value={manager.id}>
+                {manager.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             margin="dense"
             label="Location"
