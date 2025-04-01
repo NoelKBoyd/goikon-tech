@@ -105,14 +105,14 @@ function TeamPage() {
   useEffect(() => {
     // Fetch the initial list of teams from the API
     const fetchTeams = async () => {
-      const response = await fetch("/api/auth/admin/getTeams");
+      const response = await fetch("/api/auth/admin/teams/getTeams");
       const data = await response.json();
       setTeams(data);
     };
 
     // Fetch the list of managers
     const fetchManagers = async () => {
-      const response = await fetch("/api/auth/admin/viewManagers");
+      const response = await fetch("/api/auth/admin/teams/viewManagers");
       const data = await response.json();
       setManagers(data);
     };
@@ -123,7 +123,7 @@ function TeamPage() {
 
   const handleAddTeamSubmit = async () => {
     try {
-      const response = await fetch("/api/auth/admin/addTeams", {
+      const response = await fetch("/api/auth/admin/teams/addTeams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
