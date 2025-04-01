@@ -1,8 +1,8 @@
 'use client';
+import { useState, useEffect } from 'react';
 import AdminNav from "@/app/Components/AdminNav";
 import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
-import { useState } from 'react';
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -107,125 +107,142 @@ const Reports = () => {
     const [rowsToShow] = useState(rows.length);
     const [selectedMatch, setSelectedMatch] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
-
-    const filteredRows = rows.filter((row) =>
-        row.matchId.toString().includes(searchQuery.toLowerCase())
-    );
+    const [matches, setMatches] = useState([]);
+    
 
     const rowClick = (teamId) => {
         setSelectedTeamId(teamId);
     };
 
-    const openPopup = (row) => {
-        setSelectedMatch(row);
+    const filteredMatches = matches.filter((match) =>
+        match.id.toString().includes(searchQuery.toLowerCase())
+      );
+    
+      const openPopup = (match) => {
+        setSelectedMatch(match);
         setPopupOpen(true);
-    };
-
-    const closePopup = () => {
+      };
+    
+      const closePopup = () => {
         setSelectedMatch(null);
         setPopupOpen(false);
-    };
+      };
 
-    return (
+    useEffect(() => {
+        const fetchMatches = async () => {
+          try {
+            const response = await fetch('/api/auth/admin/reports/getReports'); // Adjust the API route if necessary
+            const data = await response.json();
+            if (response.ok) {
+              setMatches(data); // Update state with fetched match data
+            } else {
+              console.error('Error fetching match data:', data.error);
+            }
+          } catch (error) {
+            console.error('Error fetching match data:', error);
+          }
+        };
+    
+        fetchMatches();
+      }, []);
+
+      return (
         <div>
-            <header>
-                <AdminNav />
-            </header>
-
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <AdminSideBar className='col-start-1 col-end-2'/>
-
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-5">
-
-                        <h1 className="text-3xl pb-3 pl-3 flex justify-left">
-                            <strong>Reports</strong>
-                        </h1>
-
-                        <div className="flex justify-left">
-                            <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                                <SearchIconWrapper>
-                                    <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{ 'aria-label': 'search' }}
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </Search>
-                        </div>
-
-                        <div className="pt-1">
-                            <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table stickyHeader sx={{ minWidth: 800 }} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell align="center">Match ID</StyledTableCell>
-                                            <StyledTableCell align="center">Goals</StyledTableCell>
-                                            <StyledTableCell align="center">Assists</StyledTableCell>
-                                            <StyledTableCell align="center">Yellow Card</StyledTableCell>
-                                            <StyledTableCell align="center">Red Card</StyledTableCell>
-                                            <StyledTableCell align="center">Fouls</StyledTableCell>
-                                            <StyledTableCell align="center">Shots On Target</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {filteredRows.slice(0, rowsToShow).map((row) => (
-                                            <StyledTableRow
-                                                key={row.matchId}
-                                                onClick={() => {
-                                                    openPopup(row);
-                                                }}
-                                                onMouseOver={() => rowClick(row.matchId)}
-                                                style={{
-                                                    backgroundColor: row.matchId === selectedTeamId ? '#cae2fc' : 'inherit',
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                <StyledTableCell component="th" scope="row" align="center">{row.matchId}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.goals}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.assists}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.yellowCard}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.redCard}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.fouls}</StyledTableCell>
-                                                <StyledTableCell align="center">{row.shotsOnTarget}</StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </div>
-                    </div>
+          <header>
+            <AdminNav />
+          </header>
+    
+          <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
+            <AdminSideBar className='col-start-1 col-end-2' />
+    
+            <div className='col-start-2 col-end-3 flex justify-center text-center'>
+              <div className="pt-5">
+                <h1 className="text-3xl pb-3 pl-3 flex justify-left">
+                  <strong>Reports</strong>
+                </h1>
+    
+                <div className="flex justify-left">
+                  <Search sx={{ marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)' }}>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Search…"
+                      inputProps={{ 'aria-label': 'search' }}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </Search>
                 </div>
-            </main>
-
-            <footer>
-                <AdminFooter />
-            </footer>
-
-            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
-                <DialogTitle>Match Details</DialogTitle>
-                <DialogContent sx={{ width: '600px' }}>
-                    {selectedMatch && (
-                        <div>
-                            <h2>Match ID: {selectedMatch.matchId}</h2>
-                            <BarChart
-                                xAxis={[{ scaleType: 'band', data: ['Goals', 'Assists', 'Yellow cards', 'Red cards', 'Fouls', 'Shots on target'] }]}
-                                series={[{ data: [selectedMatch.goals, selectedMatch.assists, selectedMatch.yellowCard, selectedMatch.redCard, selectedMatch.fouls, selectedMatch.shotsOnTarget] }]}
-                                width={600}
-                                height={400}
-                                barLabel="value"
-                            />
-                        </div>
-                    )}
-                </DialogContent>
-                <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button onClick={closePopup}>Close</Button>
-                </DialogActions>
-            </Dialog>
+    
+                <div className="pt-1">
+                  <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                    <Table stickyHeader sx={{ minWidth: 800 }} aria-label="customized table">
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell align="center">Match ID</StyledTableCell>
+                          <StyledTableCell align="center">Home Team</StyledTableCell>
+                          <StyledTableCell align="center">Away Team</StyledTableCell>
+                          <StyledTableCell align="center">Goals</StyledTableCell>
+                          <StyledTableCell align="center">Assists</StyledTableCell>
+                          <StyledTableCell align="center">Yellow Card</StyledTableCell>
+                          <StyledTableCell align="center">Red Card</StyledTableCell>
+                          <StyledTableCell align="center">Fouls</StyledTableCell>
+                          <StyledTableCell align="center">Shots On Target</StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {filteredMatches.map((match) => (
+                          <StyledTableRow
+                            key={match.id}
+                            onClick={() => openPopup(match)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <StyledTableCell align="center">{match.id}</StyledTableCell>
+                            <StyledTableCell align="center">{match.homeTeam.name}</StyledTableCell>
+                            <StyledTableCell align="center">{match.awayTeam.name}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.homeTeamScore}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.assists}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.yellowCard}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.redCard}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.fouls}</StyledTableCell>
+                            <StyledTableCell align="center">{match.result?.shotsOnTarget}</StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </div>
+            </div>
+          </main>
+    
+          <footer>
+            <AdminFooter />
+          </footer>
+    
+          <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center' }}>
+            <DialogTitle>Match Details</DialogTitle>
+            <DialogContent sx={{ width: '600px' }}>
+              {selectedMatch && (
+                <div>
+                  <h2>Match ID: {selectedMatch.id}</h2>
+                  <BarChart
+                    xAxis={[{ scaleType: 'band', data: ['Goals', 'Assists', 'Yellow cards', 'Red cards', 'Fouls', 'Shots on target'] }]}
+                    series={[{ data: [selectedMatch.result.homeTeamScore, selectedMatch.result.assists, selectedMatch.result.yellowCard, selectedMatch.result.redCard, selectedMatch.result.fouls, selectedMatch.result.shotsOnTarget] }]}
+                    width={600}
+                    height={400}
+                    barLabel="value"
+                  />
+                </div>
+              )}
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+              <Button onClick={closePopup}>Close</Button>
+            </DialogActions>
+          </Dialog>
         </div>
-    );
-};
-
-export default Reports;
+      );
+    };
+    
+    export default Reports;
