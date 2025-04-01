@@ -6,7 +6,7 @@ export default function NextMatch() {
   const [nextMatch, setNextMatch] = useState(null);
 
   useEffect(() => {
-    fetch('/api/auth/matches')
+    fetch('/api/auth/admin/matches/getMatches')
       .then(res => res.json())
       .then(data => {
         if (data.matches && data.matches.length > 0) {

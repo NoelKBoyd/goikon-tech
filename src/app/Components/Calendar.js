@@ -10,7 +10,7 @@ export default function Calendar() {
   const [hoveredMatch, setHoveredMatch] = useState(null);
 
   useEffect(() => {
-    fetch('/api/auth/matches')
+    fetch('/api/auth/admin/matches/getMatches')
       .then(res => res.json())
       .then(data => {
         console.log('Fetched Matches:', data); // ADD THIS
