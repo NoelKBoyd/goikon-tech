@@ -29,19 +29,19 @@ export default function Login() {
 
             // Redirect based on roleId
             switch (data.roleId) {
-                case 24:
+                case 1:
                     router.push('/admin'); 
                     break;
-                case 26:
+                case 3:
                     router.push('/player');
                     break;
-                case 27:
+                case 4:
                     router.push('/fieldowner'); 
                     break;
-                case 25:
+                case 2:
                     router.push('/teammanager'); 
                     break;
-                case 28:
+                case 5:
                     router.push('/referee'); 
                     break;    
                 default:

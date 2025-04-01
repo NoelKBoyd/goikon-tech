@@ -26,6 +26,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import { FaUserPlus } from "react-icons/fa";
+import { MdGroupAdd } from "react-icons/md";
+import { IoIosFootball } from "react-icons/io";
 
 
 function createData(homeTeam, awwayTeam, date, referee, venue) {
@@ -75,6 +81,26 @@ function tableData(team, goals, wins, loses) {
     tableData("Juventus", 69, 22, 6),
     tableData("Inter Milan", 73, 23, 4),
     tableData("Atletico Madrid", 70, 21, 7)
+  ];
+
+  function actionsTaken(action) {
+    return {action}
+  }
+
+  const actions = [
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
+    actionsTaken("Added a new team to the database"),
   ];
 
 
@@ -196,11 +222,48 @@ const AdminPage = () => {
                             </div>
                         </div>
                         <div className='col-start-2 col-end-3 p-5 h-700px mb-50 bg-white rounded-lg shadow-lg mr-8'>
+
+                            <div>
+                                <h2 className='mt-2'><strong>Latest Actions Taken</strong></h2>
+                            </div>                        
+
+                            <div className='overflow-y-auto h-95 mt-5'>
+                                {actions.map((action) => (
+                                    <List sx={{ width: '100%', bgcolor: 'background.paper'}} key={action}>
+                                        <ListItem alignItems="flex-center" sx={{'&:hover': {backgroundColor: '#cae2fc'}, display: 'flex', justifyContent: 'center'}} >
+                                            <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                                <Avatar src="/" style={{backgroundColor: '#cae2fc', color: 'black'}}>A</Avatar>
+                                            </ListItemAvatar>
+                                            <h2 className='ml-5'>{action.action}</h2>
+                                        </ListItem>
+                                        <Divider component="li" width='100%'/>
+                                    </List>
+                                ))}
+                            </div>
+
+                            <div className='grid w-full grid-cols-[auto_auto_auto] h-50'>
+                                <div className='col-start-1 col-end-2 flex flex-col justify-center items-center w-full h-full'>
+                                    <Fab size="large" color="primary" aria-label="add">
+                                        <FaUserPlus style={{height: '25px', width: '25px'}}/>
+                                    </Fab>
+                                    <h1 className='mt-3'><strogn>Add New User</strogn></h1>
+                                </div>
+                                <div className='col-start-2 col-end-3 flex flex-col justify-center items-center w-full h-full'>
+                                    <Fab size="large" color="secondary" aria-label="add">
+                                        <MdGroupAdd style={{height: '30px', width: '30px'}}/>
+                                    </Fab>
+                                    <h1 className='mt-3'><strogn>Add New Team</strogn></h1>
+                                </div>
+                                <div className='col-start-3 col-end-4 flex flex-col justify-center items-center w-full h-full'>
+                                    <Fab size="large" color="extended" aria-label="add">
+                                        <IoIosFootball style={{height: '30px', width: '30px'}}/>
+                                    </Fab>
+                                    <h1 className='mt-3'><strogn>Create New Match</strogn></h1>
+                                </div>
+                            </div>
+
                             <div>
                                 <Calendar/>
-                            </div>
-                            <div className='mt-10'>
-                                <h2><strong>Latest Actions Taken</strong></h2>
                             </div>
                         </div>
                     </div>

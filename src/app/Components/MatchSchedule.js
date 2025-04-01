@@ -50,7 +50,7 @@ export default function MatchSchedule() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetch('/api/auth/matches')
+    fetch('/api/auth/admin/matches/getMatches')
       .then(res => res.json())
       .then(data => setMatches(data.matches))
       .catch(err => console.error(err));
