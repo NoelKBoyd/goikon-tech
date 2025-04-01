@@ -3,6 +3,7 @@ import TeamManagerNav from '../Components/TeamManagerNav';
 import TeamManagerSideBar from '../Components/TeamManagerSideBar';
 import TeamManagerFooter from '../Components/TeamManagerFooter';
 import Calendar from '../Components/Calendar';
+import UpcomingMatch from '../Components/UpcomingMatch'
 
 const TeamManagerPage = () => {
     return (
@@ -15,7 +16,10 @@ const TeamManagerPage = () => {
                 <div className='col-start-1 col-end-2'>
                     <TeamManagerSideBar/>
                 </div>
-                <div className='col-start-2 col-end-3 pt-10'>
+                <div className='col-start-2 col-end-3'>
+            <UpcomingMatch/>
+            </div>
+                <div className='col-start-4 col-end-6'>
                     <Calendar/>
                 </div>
             </main>

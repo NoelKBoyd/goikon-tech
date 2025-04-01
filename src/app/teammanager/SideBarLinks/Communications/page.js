@@ -4,7 +4,7 @@ import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
 
-const TeamOverview = () => {
+const Communications = () => {
     return (
         <div>
             <header>
@@ -16,7 +16,7 @@ const TeamOverview = () => {
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Team Overview</strong></h1>
+                        <h1 className="text-xl"><strong>Communications</strong></h1>
                         
                     </div>
                 </div>
@@ -29,4 +29,4 @@ const TeamOverview = () => {
     );
 };
 
-export default TeamOverview;
+export default Communications;

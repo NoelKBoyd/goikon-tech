@@ -35,7 +35,7 @@ export default function TeamManagerNav() {
 
       <div className="flex justify-center items-center w-full">
         <ul className="object-center flex space-x-8">
-          <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/teammanager/NavBarLinks/Dashboard" className="px-6 py-3">Dashboard</a></li>
+          <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/teammanager" className="px-6 py-3">Dashboard</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/teammanager/NavBarLinks/TeamRoster" className="px-6 py-3">Team Roster</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/teammanager/NavBarLinks/UpcomingMatches" className="px-6 py-3">Upcoming Matches</a></li>
           <li className="inline hover:bg-gray-200 pb-3 pt-3"><a href="/teammanager/NavBarLinks/TrainingSchedule" className="px-6 py-3">Training Schedule</a></li>
