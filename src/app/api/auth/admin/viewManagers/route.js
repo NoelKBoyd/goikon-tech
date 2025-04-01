@@ -7,7 +7,7 @@ export async function GET() {
     // Fetch all managers with their associated role
     const managers = await prisma.user.findMany({
       where: {
-        roleId: 25, // Use roleId instead of roleID
+        roleId: 2, // Use roleId instead of roleID
       },
       include: {
         role: true, // Optional: Include role details if needed
