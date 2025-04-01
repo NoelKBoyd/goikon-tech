@@ -4,7 +4,7 @@ import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
 
-const PlayerManagement = () => {
+const Communications = () => {
     return (
         <div>
             <header>
@@ -16,7 +16,7 @@ const PlayerManagement = () => {
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Player Management</strong></h1>
+                        <h1 className="text-xl"><strong>Communications</strong></h1>
                         
                     </div>
                 </div>
@@ -29,4 +29,4 @@ const PlayerManagement = () => {
     );
 };
 
-export default PlayerManagement;
+export default Communications;
