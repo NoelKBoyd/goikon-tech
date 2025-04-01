@@ -88,6 +88,7 @@ function TeamPage() {
     const searchedTeams = teams.length;
     const [managers, setManagers] = useState([]);
     const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+    const [isTeamDialogOpen, setTeamDialogOpen] = useState(false);
     const [newTeam, setNewTeam] = useState({
     id: "",
     name: "",
@@ -207,7 +208,7 @@ function TeamPage() {
                       ? team.manager.name
                       : "Unknown"; // Ensure the manager name is used correctly
                     return (
-                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'} }}>
+                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'}}} onClick={() => {setTeamDialogOpen(true)}}>
                         <StyledTableCell component="th" scope="row">
                           {team.id}
                         </StyledTableCell>
