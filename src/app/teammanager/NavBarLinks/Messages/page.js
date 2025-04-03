@@ -3,27 +3,29 @@ import TeamManagerNav from '@/app/Components/TeamManagerNav';
 import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
+import LargeMessagingPanel from '@/app/Components/LargeMessagingPanel';
 
 const Messages = () => {
     return (
-        <div>
-            <header>
-                <TeamManagerNav/>
+        <div className="flex flex-col h-screen">
+            <header className="flex-shrink-0">
+                <TeamManagerNav />
             </header>
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <TeamManagerSideBar className='col-start-1 col-end-2'/>
+            <main className="flex-1 flex overflow-hidden">
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-10">
-                        <h1 className="text-xl"><strong>Messages</strong></h1>
-                        
+                <TeamManagerSideBar className="w-[260px] h-full" />
+
+                <div className="flex-1 flex flex-col">
+
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <LargeMessagingPanel />
                     </div>
                 </div>
             </main>
 
-            <footer>
-                <TeamManagerFooter/>
+            <footer className="flex-shrink-0">
+                <TeamManagerFooter />
             </footer>
         </div>
     );
