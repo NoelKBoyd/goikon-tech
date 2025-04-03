@@ -3,33 +3,49 @@ import TeamManagerNav from '../Components/TeamManagerNav';
 import TeamManagerSideBar from '../Components/TeamManagerSideBar';
 import TeamManagerFooter from '../Components/TeamManagerFooter';
 import Calendar from '../Components/Calendar';
-import UpcomingMatch from '../Components/UpcomingMatch'
+import UpcomingMatch from '../Components/UpcomingMatch';
 import MessagingPanel from '../Components/MessagingPanel';
+import TeamStats from '../Components/TeamStats';
 
 const TeamManagerPage = () => {
     return (
-        <div className="w-full h-screen flex flex-col bg-gray-100">
+        <div className="flex flex-col h-screen">
             <header>
-                <TeamManagerNav/>
+                <TeamManagerNav />
             </header>
-                
-            <main className='relative flex flex-1 h-full'>
-                <div className='w-64'>
-                    <TeamManagerSideBar/>
-                </div>
-                <div className=' flex-1 flex justify-center items-start mt-6'>
-            <UpcomingMatch/>
-            </div>
-                <div className='absolute bottom-20 left-[270px] w-100'>
-                    <Calendar/>
-                </div>
-                <div className= 'absolute bottom-20 right-4'>
-                <MessagingPanel/>
+
+            <main className="flex-grow bg-gray-100">
+                <div className="flex">
+                    <div className="w-64">
+                        <TeamManagerSideBar />
+                    </div>
+
+                    <div className="flex-1 grid grid-cols-3 grid-rows-2 gap-4 p-4">
+                        <div className="row-start-1 col-start-1">
+                            <TeamStats />
+                        </div>
+
+                        <div className="row-start-1 col-start-2 justify-center">
+                            <UpcomingMatch />
+                        </div>
+
+                        <div className="row-start-2 col-start-1">
+                            <Calendar />
+                        </div>
+
+                        <div className="row-start-2 col-start-3 flex justify-end">
+                            <MessagingPanel />
+                        </div>
+
+                        {/* Future placeholders */}
+                        <div className="row-start-1 col-start-3">{/* Top Right Component */}</div>
+                        <div className="row-start-2 col-start-2">{/* Bottom Middle Component */}</div>
+                    </div>
                 </div>
             </main>
-                
-            <footer>
-                <TeamManagerFooter/>
+
+            <footer className="mt-auto">
+                <TeamManagerFooter />
             </footer>
         </div>
     );

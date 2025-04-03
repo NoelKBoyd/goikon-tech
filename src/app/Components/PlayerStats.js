@@ -19,7 +19,7 @@ const rows = [
   createData('Shrek', 4.0, 356, 136, 489, 200),
 ];
 
-export default function BasicTable() {
+export default function PlayerStats() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
