@@ -17,13 +17,13 @@ const TeamManagerPage = () => {
                 <div className='w-64'>
                     <TeamManagerSideBar/>
                 </div>
-                <div className='flex-1 flex justify-center items-start mt-6'>
+                <div className=' flex-1 flex justify-center items-start mt-6'>
             <UpcomingMatch/>
             </div>
-                <div className='absolute bottom-4 left-[270px]'>
+                <div className='absolute bottom-20 left-[270px] w-100'>
                     <Calendar/>
                 </div>
-                <div className= 'absolute bottom-4 right-4'>
+                <div className= 'absolute bottom-20 right-4'>
                 <MessagingPanel/>
                 </div>
             </main>
