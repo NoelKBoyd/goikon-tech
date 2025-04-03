@@ -1,19 +1,41 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Assuming you're using Prisma client here
+import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // Fetch all teams with their associated manager
+    // Fetch all teams with their associated manager and players
     const teams = await prisma.team.findMany({
       include: {
-        manager: true,  // Ensure manager data is included
+        manager: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        players: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       },
     });
 
-    // Return teams along with their managers
-    return NextResponse.json(teams, { status: 200 });
+    // Format the data for the frontend
+    const formattedTeams = teams.map(team => ({
+      id: team.id,
+      name: team.name,
+      managerId: team.managerId,
+      manager: team.manager ? team.manager.name : "Unknown",
+      location: team.location,
+      ageGroup: team.ageGroup,
+      contactInfo: team.contactInfo || "",
+      players: team.players.map(player => player.name).join(', ') || "No players"
+    }));
+
+    return NextResponse.json(formattedTeams, { status: 200 });
   } catch (error) {
     console.error('Error fetching teams:', error);
-    return NextResponse.json([], { status: 500 }); // Return empty array on error
+    return NextResponse.json([], { status: 500 });
   }
 }
