@@ -21,7 +21,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -83,37 +82,35 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function TeamPage() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [teams, setTeams] = useState([]);
-    const searchedTeams = teams.length;
-    const [managers, setManagers] = useState([]);
-    const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
-    const [isTeamDialogOpen, setTeamDialogOpen] = useState(false);
-    const [newTeam, setNewTeam] = useState({
-    id: "",
+  const [searchQuery, setSearchQuery] = useState('');
+  const [teams, setTeams] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
+  const [isTeamDialogOpen, setTeamDialogOpen] = useState(false);
+  const [newTeam, setNewTeam] = useState({
     name: "",
     managerId: "",
     location: "",
     ageGroup: "",
     contactInfo: "",
+    players: "" // This will be a comma-separated string of player names
   });
 
   const filteredRows = teams.filter((team) =>
     team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     team.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
     team.ageGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    team.contactInfo.toLowerCase().includes(searchQuery.toLowerCase())
+    team.contactInfo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    team.players.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   useEffect(() => {
-    // Fetch the initial list of teams from the API
     const fetchTeams = async () => {
       const response = await fetch("/api/auth/admin/teams/getTeams");
       const data = await response.json();
       setTeams(data);
     };
 
-    // Fetch the list of managers
     const fetchManagers = async () => {
       const response = await fetch("/api/auth/admin/teams/viewManagers");
       const data = await response.json();
@@ -126,12 +123,27 @@ function TeamPage() {
 
   const handleAddTeamSubmit = async () => {
     try {
+      // Split the players string into an array and trim whitespace
+      const playerNames = newTeam.players.split(',').map(name => name.trim()).filter(name => name !== '');
+      
+      // Prepare the team data with players to create
+      const teamData = {
+        ...newTeam,
+        players: {
+          create: playerNames.map(name => ({
+            name,
+            dateOfBirth: new Date(), // You might want to add a date picker for this
+            position: "Unknown" // Default position, could be made configurable
+          }))
+        }
+      };
+
       const response = await fetch("/api/auth/admin/teams/addTeams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newTeam),
+        body: JSON.stringify(teamData),
       });
 
       if (!response.ok) {
@@ -139,8 +151,16 @@ function TeamPage() {
       }
 
       const addedTeam = await response.json();
-      setTeams((prevTeams) => [...prevTeams, addedTeam]); // Add the new team to the state
-      setIsAddTeamDialogOpen(false); // Close the dialog
+      setTeams((prevTeams) => [...prevTeams, addedTeam]);
+      setIsAddTeamDialogOpen(false);
+      setNewTeam({
+        name: "",
+        managerId: "",
+        location: "",
+        ageGroup: "",
+        contactInfo: "",
+        players: ""
+      });
     } catch (error) {
       console.error("Error adding team:", error);
     }
@@ -169,7 +189,7 @@ function TeamPage() {
               <strong>Teams</strong>
             </h1>
             <div className="flex justify-left">
-              <Search sx={{ marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)', }}>
+              <Search sx={{ marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)' }}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -199,37 +219,39 @@ function TeamPage() {
                     <StyledTableCell align="right">Location</StyledTableCell>
                     <StyledTableCell align="right">Age</StyledTableCell>
                     <StyledTableCell align="right">Contact Info</StyledTableCell>
+                    <StyledTableCell align="right">Players</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredRows.slice(0, searchedTeams).map((team) => {
-                    // Ensure manager is fetched correctly
-                    const manager = team.manager
-                      ? team.manager.name
-                      : "Unknown"; // Ensure the manager name is used correctly
-                    return (
-                      <StyledTableRow key={team.id || team.name} sx={{ '&:hover': {backgroundColor: '#cae2fc'}}} onClick={() => {setTeamDialogOpen(true)}}>
-                        <StyledTableCell component="th" scope="row">
-                          {team.id}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {manager}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.location}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.ageGroup}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {team.contactInfo}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    );
-                  })}
+                  {filteredRows.map((team) => (
+                    <StyledTableRow 
+                      key={team.id} 
+                      sx={{ '&:hover': {backgroundColor: '#cae2fc'}}}
+                      onClick={() => {setTeamDialogOpen(true)}}
+                    >
+                      <StyledTableCell component="th" scope="row">
+                        {team.id}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.manager}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.location}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.ageGroup}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.contactInfo}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {team.players}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -281,7 +303,6 @@ function TeamPage() {
               </MenuItem>
             ))}
           </TextField>
-
           <TextField
             margin="dense"
             label="Location"
@@ -309,6 +330,16 @@ function TeamPage() {
             value={newTeam.contactInfo}
             onChange={handleInputChange}
           />
+          <TextField
+            margin="dense"
+            label="Players (comma-separated names)"
+            fullWidth
+            variant="outlined"
+            name="players"
+            value={newTeam.players}
+            onChange={handleInputChange}
+            helperText="Enter player names separated by commas (e.g., John Doe, Jane Smith)"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsAddTeamDialogOpen(false)} color="primary">
@@ -320,11 +351,10 @@ function TeamPage() {
         </DialogActions>
       </Dialog>
 
-
       <Dialog open={isTeamDialogOpen} onClose={() => setTeamDialogOpen(false)}>
-        <DialogTitle sx={{textAlign: 'center'}}>Create New Match</DialogTitle>
+        <DialogTitle sx={{textAlign: 'center'}}>Create New Team</DialogTitle>
         <DialogContent sx={{ minWidth: '300px' }}>
-            {/* content might get added here */}
+          {/* content might get added here */}
         </DialogContent>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
           <Button variant="contained">Edit</Button>
