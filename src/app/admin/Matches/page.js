@@ -22,24 +22,57 @@ const Matches = () => {
     const [selectedMatch, setSelectedMatch] = useState({ homeTeam: '', awayTeam: '', date: null, referee: '', venue: '' });
 
     useEffect(() => {
-        // Fetch teams
         fetch('/api/auth/admin/teams/getTeams')
             .then(response => response.json())
             .then(data => setTeams(data))
             .catch(error => console.error('Error fetching teams:', error));
 
-        // Fetch referees
         fetch('/api/auth/admin/matches/getReferees')
             .then(response => response.json())
             .then(data => setReferees(data))
             .catch(error => console.error('Error fetching referees:', error));
 
-        // Fetch fields
         fetch('/api/auth/admin/matches/getFields')
             .then(response => response.json())
             .then(data => setFields(data))
             .catch(error => console.error('Error fetching fields:', error));
     }, []);
+
+    const handleScheduleMatch = async () => {
+        console.log("fields:", fields);
+        console.log("selectedMatch.venue:", selectedMatch.venue);
+    
+        const field = fields.find(field => field.location === selectedMatch.venue);
+        const referee = referees.find(ref => ref.name === selectedMatch.referee);
+        
+        if (!field || !referee) {
+            alert("Please ensure all fields are correctly selected.");
+            return;
+        }
+    
+        const matchData = {
+            homeTeamId: teams.find(team => team.name === selectedMatch.homeTeam).id,
+            awayTeamId: teams.find(team => team.name === selectedMatch.awayTeam).id,
+            date: selectedMatch.date,
+            fieldId: field.id,
+            refereeId: referee.id,
+        };
+    
+        const response = await fetch('/api/auth/admin/matches/addMatches', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(matchData),
+        });
+    
+        if (response.ok) {
+            alert('Match scheduled successfully!');
+        } else {
+            alert('Error scheduling match.');
+        }
+    };
+    
 
     return (
         <div>
@@ -49,14 +82,12 @@ const Matches = () => {
 
             <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-full">
                 <AdminSideBar className="col-start-1 col-end-2" />
-
                 <div className="col-start-2 col-end-3 flex justify-center text-center">
                     <div className="pt-10">
                         <h1 className="text-3xl pb-1 pl-5 flex justify-left">
                             <strong>Match Timetable</strong>
                         </h1>
                         <MatchSchedule />
-
                         <div className="pt-13 mb-30 flex justify-center w-full">
                             <Box sx={{ width: '100%', height: 550, maxWidth: 480, bgcolor: 'background.paper', borderRadius: '8px' }}>
                                 <h1 className="text-3xl pb-3 pt-5 flex justify-center">
@@ -65,8 +96,7 @@ const Matches = () => {
                                 <div className="pt-5">
                                     <TextField select label="Home Team" variant="outlined" sx={{ width: '250px' }}
                                         value={selectedMatch.homeTeam}
-                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, homeTeam: e.target.value })}
-                                    >
+                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, homeTeam: e.target.value })}>
                                         {teams.map(team => (
                                             <MenuItem key={team.id} value={team.name}>{team.name}</MenuItem>
                                         ))}
@@ -75,8 +105,7 @@ const Matches = () => {
                                 <div className="pt-5">
                                     <TextField select label="Away Team" variant="outlined" sx={{ width: '250px' }}
                                         value={selectedMatch.awayTeam}
-                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, awayTeam: e.target.value })}
-                                    >
+                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, awayTeam: e.target.value })}>
                                         {teams.map(team => (
                                             <MenuItem key={team.id} value={team.name}>{team.name}</MenuItem>
                                         ))}
@@ -86,15 +115,13 @@ const Matches = () => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DatePicker label="Date" sx={{ width: '250px' }}
                                             value={selectedMatch.date}
-                                            onChange={(date) => setSelectedMatch({ ...selectedMatch, date })}
-                                        />
+                                            onChange={(date) => setSelectedMatch({ ...selectedMatch, date })} />
                                     </LocalizationProvider>
                                 </div>
                                 <div className="pt-5">
                                     <TextField select label="Referee" variant="outlined" sx={{ width: '250px' }}
                                         value={selectedMatch.referee}
-                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, referee: e.target.value })}
-                                    >
+                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, referee: e.target.value })}>
                                         {referees.map(ref => (
                                             <MenuItem key={ref.id} value={ref.name}>{ref.name}</MenuItem>
                                         ))}
@@ -102,16 +129,17 @@ const Matches = () => {
                                 </div>
                                 <div className="pt-5">
                                     <TextField select label="Venue" variant="outlined" sx={{ width: '250px' }}
-                                        value={selectedMatch.field}
-                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, field: e.target.value })}
-                                    >
+                                        value={selectedMatch.venue}
+                                        onChange={(e) => setSelectedMatch({ ...selectedMatch, venue: e.target.value })}>
                                         {fields.map(field => (
                                             <MenuItem key={field.id} value={field.location}>{field.location}</MenuItem>
                                         ))}
                                     </TextField>
                                 </div>
                                 <div className="pt-5">
-                                    <Button variant="contained" color="primary">Schedule Match</Button>
+                                    <Button variant="contained" color="primary" onClick={handleScheduleMatch}>
+                                        Schedule Match
+                                    </Button>
                                 </div>
                             </Box>
                         </div>
