@@ -3,7 +3,7 @@ import TeamManagerNav from '@/app/Components/TeamManagerNav';
 import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
-import Calendar from '@/app/Components/Calendar';
+import LargeCalendar from '@/app/Components/LargeCalendar';
 
 const CalendarPage = () => {
     return (
@@ -19,7 +19,7 @@ const CalendarPage = () => {
 
                 <div className="flex-1 overflow-auto p-4 flex justify-center items-start">
                     <div className="w-full">
-                        <Calendar />
+                        <LargeCalendar />
                     </div>
                 </div>
             </main>
