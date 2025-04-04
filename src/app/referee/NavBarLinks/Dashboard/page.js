@@ -1,32 +1,44 @@
 'use client';
-import RefereeNav from '@/app/Components/RefereeNav';
-import RefereeSideBar from '@/app/Components/RefereeSideBar';
+import React from 'react';
+import RefereeNav from '@/app/Components/RefereeNav'; 
+import RefereeSideBar from '@/app/Components/RefereeSideBar'; 
 import RefereeFooter from '@/app/Components/RefereeFooter';
-import { useState } from 'react';
+import AssignedMatchesDashboard from '@/app/Components/RefereeAssignedMatchesDashboard';
+import IncidentReport from '@/app/Components/IncidentReport';
+import DisciplinaryActions from '@/app/Components/DisciplinaryActions';
+const RefereeDashboard = () => {
+  return (
+    <div className="min-h-screen flex flex-col">
 
-const Dashboard = () => {
-    return (
+      <header>
+        <RefereeNav />
+      </header>
+
+      <main className="grid grid-cols-[260px_auto] gap-6">
+        <RefereeSideBar />
+
         <div>
-            <header>
-                <RefereeNav/>
-            </header>
+          <div className="w-full grid grid-cols-2 gap-6">
+            <div className="bg-white p-3 rounded-xl shadow-md">
+              <AssignedMatchesDashboard/>
+            </div>
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <RefereeSideBar className='col-start-1 col-end-2'/>
+            <div className="bg-white p-3 rounded-xl shadow-md">
+              <IncidentReport />
+            </div>
+          </div>
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-10">
-                        <h1 className="text-xl"><strong>Dashboard</strong></h1>
-                        
-                    </div>
-                </div>
-            </main>
+          <div className="bg-white p-3 rounded-xl shadow-md">
+              <DisciplinaryActions />
+            </div>
+          </div>
+      </main>
 
-            <footer>
-                <RefereeFooter />
-            </footer>
-        </div>
-    );
+      <footer className="mt-auto w-full mb-20">
+        <RefereeFooter />
+      </footer>
+    </div>
+  );
 };
 
-export default Dashboard;
+export default RefereeDashboard;

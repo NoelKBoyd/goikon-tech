@@ -7,9 +7,6 @@ export async function GET(req) {
         const refereeId = parseInt(searchParams.get('refereeId'), 10);
 
 
-        if (isNaN(refereeId) || refereeId <= 0) {
-            return NextResponse.json({ message: 'Invalid Referee ID' }, { status: 400 });
-        }
         const matches = await prisma.matches.findMany({
             where: {
                 refereeId,
