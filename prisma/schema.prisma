@@ -156,8 +156,8 @@ model MatchResult {
   assists       Int?
   yellowCard    Int?
   redCard       Int?
-  penalties     Int?
-  shotsOnTarget Int?
+  fouls         Int?     // Add this
+  shotsOnTarget Int?     // Change from optional to required
 
   match Matches @relation(fields: [matchId], references: [id])
 }
@@ -183,7 +183,7 @@ model RevenueAnalytics {
 }
 
 model MatchRelatedStats {
-  id            Int  @id @default(autoincrement())
+  id            Int    @id @default(autoincrement())
   matchId       Int
   playerId      Int
   goals         Int?
