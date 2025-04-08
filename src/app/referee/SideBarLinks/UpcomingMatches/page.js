@@ -10,14 +10,15 @@ const UpcomingMatches = () => {
     return (
         <div>
             <header>
-                <RefereeNav/>
+                <RefereeNav />
             </header>
 
             <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <RefereeSideBar/>
+                <RefereeSideBar />
 
-                <div className='text-center'>
+                <div className='text-center px-6'>
                     <div className="pt-10">
+                        <h1 className="text-2xl font-bold mb-2"> Upcoming Matches</h1>
                         <AssignedMatchesDashboard />
                     </div>
                 </div>

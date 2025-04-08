@@ -71,9 +71,7 @@ export default function SubmitMatchResult() {
   };
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-md mx-auto">
-      <h1 className="text-lg font-bold text-center mb-4 text-gray-800">Submit Match Result</h1>
-
+    <div className="bg-white border border-gray-200 rounded-xl shadow-md p-6 max-w-md mx-auto">
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div className="space-y-1">
@@ -82,7 +80,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={matchid}
               onChange={(e) => setMatchID(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -92,7 +90,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={homeTeamScore}
               onChange={(e) => setHomeTeamScore(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -102,7 +100,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={awayTeamScore}
               onChange={(e) => setAwayTeamScore(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -111,7 +109,7 @@ export default function SubmitMatchResult() {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select the match status type</option>
               <option value="Complete">Complete</option>
@@ -127,7 +125,7 @@ export default function SubmitMatchResult() {
               type="text"
               value={timeStamp}
               onChange={(e) => setTimeStamp(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="YYYY-MM-DDTHH:MM"
             />
           </div>
@@ -138,7 +136,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={assists}
               onChange={(e) => setAssists(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -148,7 +146,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={yellowCard}
               onChange={(e) => setYellowCard(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -158,7 +156,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={redCard}
               onChange={(e) => setRedCard(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -168,7 +166,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={penalties}
               onChange={(e) => setPenalties(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -178,15 +176,16 @@ export default function SubmitMatchResult() {
               type="number"
               value={shotsOnTarget}
               onChange={(e) => setShotsOnTarget(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-          {success && <p className="mt-2 text-sm text-green-500">{success}</p>}
+          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+          {success && <p className="mt-2 text-sm text-green-600">{success}</p>}
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
+            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300"
           >
             Submit Report
           </button>
