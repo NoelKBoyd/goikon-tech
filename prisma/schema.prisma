@@ -73,6 +73,7 @@ model Player {
   rosters    TeamRoster[]
   incidents  IncidentsReporting[]
   matchStats MatchRelatedStats[]
+  disciplinaryActions DisciplinaryActions[]
 }
 
 model TeamRoster {
@@ -144,6 +145,8 @@ model Matches {
   incidents  IncidentsReporting[]
   bookings   FieldBooking[]
   matchStats MatchRelatedStats[]
+  disciplinaryActions DisciplinaryActions[]
+
 }
 
 model MatchResult {
@@ -192,6 +195,17 @@ model MatchRelatedStats {
   redCard       Int?
   fouls         Int?
   shotsOnTarget Int?
+
+  match  Matches @relation(fields: [matchId], references: [id])
+  player Player  @relation(fields: [playerId], references: [id])
+}
+
+model DisciplinaryActions {
+  id        Int    @id @default(autoincrement())
+  matchId   Int
+  playerId  Int
+  type      String
+  action    String
 
   match  Matches @relation(fields: [matchId], references: [id])
   player Player  @relation(fields: [playerId], references: [id])
