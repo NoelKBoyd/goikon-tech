@@ -81,13 +81,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
 function TeamPage() {
+  const [selectedTeam, setSelectedTeam] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [teams, setTeams] = useState([]);
   const [managers, setManagers] = useState([]);
   const [isAddTeamDialogOpen, setIsAddTeamDialogOpen] = useState(false);
   const [isTeamDialogOpen, setTeamDialogOpen] = useState(false);
   const [newTeam, setNewTeam] = useState({
+
     name: "",
     managerId: "",
     location: "",
@@ -125,7 +128,7 @@ function TeamPage() {
     try {
       // Split the players string into an array and trim whitespace
       const playerNames = newTeam.players.split(',').map(name => name.trim()).filter(name => name !== '');
-      
+
       // Prepare the team data with players to create
       const teamData = {
         ...newTeam,
@@ -173,6 +176,37 @@ function TeamPage() {
       [name]: value,
     }));
   };
+
+  async function deleteTeam(teamId) {
+    try {
+      const response = await fetch('/api/auth/admin/teams/deleteTeams', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamId }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete team');
+      }
+  
+      console.log('Success:', data.message);
+  
+      // ✅ Refresh teams after deletion
+      const refreshed = await fetch("/api/auth/admin/teams/getTeams");
+      const refreshedData = await refreshed.json();
+      setTeams(refreshedData); // Now accessible
+      setTeamDialogOpen(false); // Now accessible
+      setSelectedTeam(null); // Now accessible
+  
+    } catch (error) {
+      console.error('Error deleting team:', error.message);
+    }
+  }
+  
 
   return (
     <div>
@@ -224,11 +258,15 @@ function TeamPage() {
                 </TableHead>
                 <TableBody>
                   {filteredRows.map((team) => (
-                    <StyledTableRow 
-                      key={team.id} 
-                      sx={{ '&:hover': {backgroundColor: '#cae2fc'}}}
-                      onClick={() => {setTeamDialogOpen(true)}}
+                    <StyledTableRow
+                      key={team.id}
+                      sx={{ '&:hover': { backgroundColor: '#cae2fc' } }}
+                      onClick={() => {
+                        setSelectedTeam(team);
+                        setTeamDialogOpen(true);
+                      }}
                     >
+
                       <StyledTableCell component="th" scope="row">
                         {team.id}
                       </StyledTableCell>
@@ -352,16 +390,33 @@ function TeamPage() {
       </Dialog>
 
       <Dialog open={isTeamDialogOpen} onClose={() => setTeamDialogOpen(false)}>
-        <DialogTitle sx={{textAlign: 'center'}}>Create New Team</DialogTitle>
-        <DialogContent sx={{ minWidth: '300px' }}>
-          {/* content might get added here */}
+        <DialogTitle>Team Details</DialogTitle>
+        <DialogContent>
+          {selectedTeam && (
+            <div>
+              <p><strong>Name:</strong> {selectedTeam.name}</p>
+              <p><strong>Manager:</strong> {selectedTeam.manager}</p>
+              <p><strong>Location:</strong> {selectedTeam.location}</p>
+              <p><strong>Age Group:</strong> {selectedTeam.ageGroup}</p>
+              <p><strong>Contact Info:</strong> {selectedTeam.contactInfo}</p>
+              <p><strong>Players:</strong> {selectedTeam.players}</p>
+            </div>
+          )}
         </DialogContent>
-        <DialogActions sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
-          <Button variant="contained">Edit</Button>
-          <Button variant="contained">Delete</Button>
-          <Button onClick={() => setTeamDialogOpen(false)} variant="outlined">Close</Button>
+        <DialogActions>
+          <Button onClick={() => setTeamDialogOpen(false)} color="primary">
+            Close
+          </Button>
+          <Button
+            onClick={() => deleteTeam(selectedTeam?.id)}
+            color="error"
+            variant="contained"
+          >
+            Delete Team
+          </Button>
         </DialogActions>
       </Dialog>
+
     </div>
   );
 }
