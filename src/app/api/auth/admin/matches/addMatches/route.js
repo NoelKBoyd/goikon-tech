@@ -1,24 +1,33 @@
-// app/api/auth/admin/matches/addMatches/route.js
-
-import prisma from '@/lib/prisma';
-
 export async function POST(request) {
   try {
-    const { homeTeamId, awayTeamId, date, fieldId, refereeId } = await request.json();
+    const { homeTeamId, awayTeamId, dateTime, fieldId, refereeId } = await request.json();
 
     // Basic input validation
-    if (!homeTeamId || !awayTeamId || !date || !fieldId || !refereeId) {
+    if (!homeTeamId || !awayTeamId || !dateTime || !fieldId || !refereeId) {
       return new Response(
-        JSON.stringify({ message: 'All fields (homeTeamId, awayTeamId, date, fieldId, refereeId) are required.' }),
+        JSON.stringify({ message: 'All fields (homeTeamId, awayTeamId, dateTime, fieldId, refereeId) are required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Check if field is already booked
+    // Check if teams, field, and referee exist
+    const homeTeam = await prisma.team.findUnique({ where: { id: homeTeamId } });
+    const awayTeam = await prisma.team.findUnique({ where: { id: awayTeamId } });
+    const field = await prisma.field.findUnique({ where: { id: fieldId } });
+    const referee = await prisma.user.findUnique({ where: { id: refereeId } });
+
+    if (!homeTeam || !awayTeam || !field || !referee) {
+      return new Response(
+        JSON.stringify({ message: 'Invalid home/away team, field, or referee.' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check if the field is already booked
     const existingBooking = await prisma.fieldBooking.findFirst({
       where: {
         fieldId,
-        timing: new Date(date),
+        timing: new Date(dateTime),
       },
     });
 
@@ -34,19 +43,19 @@ export async function POST(request) {
       data: {
         homeTeamId,
         awayTeamId,
-        date: new Date(date),
+        date: new Date(dateTime),
         fieldId,
         refereeId,
       },
     });
 
-    // Create the field booking, associating it with the home team
+    // Create the field booking
     await prisma.fieldBooking.create({
       data: {
         matchId: match.id,
         fieldId,
-        teamId: homeTeamId, // Associate the booking with the home team
-        timing: new Date(date),
+        teamId: homeTeamId,
+        timing: new Date(dateTime),
         status: 'Booked',
       },
     });

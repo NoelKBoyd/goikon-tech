@@ -97,9 +97,12 @@ const Matches = () => {
         homeTeam: '',
         awayTeam: '',
         date: null,
+        time: '',
         referee: '',
         venue: ''
     });
+    
+    
 
     const filteredMatches = matches.filter((match) =>
         match.homeTeam.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -147,23 +150,29 @@ const Matches = () => {
 
         fetchData();
     }, []);
+    
     const handleAddMatchSubmit = async () => {
         const field = fields.find(field => field.location === newMatch.venue);
         const referee = referees.find(ref => ref.name === newMatch.referee);
-
+    
         if (!field || !referee) {
             alert("Please ensure all fields are correctly selected.");
             return;
         }
-
+    
+        // Combine the selected date and time into a single dateTime value
+        const matchDateTime = new Date(newMatch.date);
+        const timeParts = newMatch.time.split(":");
+        matchDateTime.setHours(timeParts[0], timeParts[1]);
+    
         const matchData = {
             homeTeamId: teams.find(team => team.name === newMatch.homeTeam).id,
             awayTeamId: teams.find(team => team.name === newMatch.awayTeam).id,
-            date: newMatch.date,
+            dateTime: matchDateTime.toISOString(), // Store dateTime as ISO string
             fieldId: field.id,
             refereeId: referee.id,
         };
-
+    
         try {
             const response = await fetch('/api/auth/admin/matches/addMatches', {
                 method: 'POST',
@@ -172,7 +181,7 @@ const Matches = () => {
                 },
                 body: JSON.stringify(matchData),
             });
-
+    
             if (response.ok) {
                 const addedMatch = await response.json();
                 const newMatchFormatted = {
@@ -180,12 +189,13 @@ const Matches = () => {
                     homeTeam: newMatch.homeTeam,
                     awayTeam: newMatch.awayTeam,
                     date: newMatch.date.toLocaleDateString(),
+                    time: newMatch.time, // Include the time in the table
                     referee: newMatch.referee,
                     venue: newMatch.venue
                 };
                 setMatches(prev => [...prev, newMatchFormatted]);
                 setIsAddMatchDialogOpen(false);
-                setNewMatch({ homeTeam: '', awayTeam: '', date: null, referee: '', venue: '' });
+                setNewMatch({ homeTeam: '', awayTeam: '', date: null, time: '', referee: '', venue: '' });
             } else {
                 throw new Error('Failed to add match');
             }
@@ -193,6 +203,7 @@ const Matches = () => {
             console.error('Error adding match:', error);
         }
     };
+    
 
     const handleDeleteMatch = async (matchId) => {
         try {
@@ -284,6 +295,7 @@ const Matches = () => {
                                         </StyledTableRow>
                                     ))}
                                 </TableBody>
+
                             </Table>
                         </TableContainer>
                         <Button
@@ -344,6 +356,15 @@ const Matches = () => {
                             )}
                         />
                     </LocalizationProvider>
+                    <TextField
+    margin="dense"
+    label="Time"
+    type="time"
+    fullWidth
+    variant="outlined"
+    value={newMatch.time}
+    onChange={(e) => handleInputChange('time', e.target.value)}
+/>
                     <TextField
                         select
                         margin="dense"
