@@ -54,7 +54,6 @@ model Team {
   location    String
   ageGroup    String
   contactInfo String?
-
   manager     User           @relation(fields: [managerId], references: [id], name: "Manager")
   players     Player[]
   rosters     TeamRoster[]

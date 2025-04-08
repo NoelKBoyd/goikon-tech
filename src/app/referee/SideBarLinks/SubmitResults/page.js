@@ -15,8 +15,9 @@ const SubmitResults = () => {
             <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
                 <RefereeSideBar/>
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div>
+                <div className='text-center px-6'>
+                    <div className="pt-10">
+                        <h1 className="text-2xl font-bold mb-2">Submit Match Results</h1>
                         <SubmitMatchResult />
                     </div>
                 </div>

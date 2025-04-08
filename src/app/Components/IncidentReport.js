@@ -11,7 +11,6 @@ export default function IncidentReport() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMatchID('');
@@ -53,64 +52,63 @@ export default function IncidentReport() {
   };
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-md mx-auto">
-      <h1 className="text-lg font-bold text-center mb-4 text-gray-800">Incident Report</h1>
+    <div className="p-6 bg-white rounded-xl shadow-lg max-w-md mx-auto">
+      <h1 className="text-xl font-bold text-center text-gray-800 mb-5">Incident Report</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Enter Match ID</label>
-            <input
-              type="number"
-              value={matchid}
-              onChange={(e) => setMatchID(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Enter Player ID</label>
-            <input
-              type="number"
-              value={playerid}
-              onChange={(e) => setPlayerID(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Incident Type</label>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
-            >
-              <option value="">Select the incident type</option>
-              <option value="Misconduct">Misconduct</option>
-              <option value="Injuries">Injuries</option>
-              <option value="Player Behaviour">Player Behaviour</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Suspension Amount</label>
-            <input
-              type="text"
-              value={suspension}
-              onChange={(e) => setSuspension(e.target.value)}
-              className="w-full border p-2 rounded mb-2"
-            />
-          </div>
-
-          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-          {success && <p className="mt-2 text-sm text-green-500">{success}</p>}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
-          >
-            Submit Report
-          </button>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Match ID</label>
+          <input
+            type="number"
+            value={matchid}
+            onChange={(e) => setMatchID(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Player ID</label>
+          <input
+            type="number"
+            value={playerid}
+            onChange={(e) => setPlayerID(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Incident Type</label>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select the incident type</option>
+            <option value="Misconduct">Misconduct</option>
+            <option value="Injuries">Injuries</option>
+            <option value="Player Behaviour">Player Behaviour</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Suspension Amount</label>
+          <input
+            type="text"
+            value={suspension}
+            onChange={(e) => setSuspension(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {error && <p className="text-sm text-red-500">{error}</p>}
+        {success && <p className="text-sm text-green-500">{success}</p>}
+
+        <button
+          type="submit"
+          className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition duration-300"
+        >
+          {loading ? 'Submitting...' : 'Submit Report'}
+        </button>
       </form>
     </div>
   );
