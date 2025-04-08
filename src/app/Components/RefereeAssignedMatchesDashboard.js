@@ -7,9 +7,9 @@ export default function AssignedMatchesDashboard() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
   const [venueFilter, setVenueFilter] = useState('');
-  const [sortOrder, setSortOrder] = useState('newest');
+  const [sortBy, setSortBy] = useState('newest');
 
   const fetchAssignedMatches = async () => {
     setLoading(true);
@@ -42,12 +42,12 @@ export default function AssignedMatchesDashboard() {
       const away = match.awayTeam.name.toLowerCase();
       const venue = match.field.location.toLowerCase();
       return (
-        (home.includes(searchTerm.toLowerCase()) || away.includes(searchTerm.toLowerCase())) &&
+        (home.includes(search.toLowerCase()) || away.includes(search.toLowerCase())) &&
         venue.includes(venueFilter.toLowerCase())
       );
     })
     .sort((a, b) => {
-      if (sortOrder === 'newest') {
+      if (sortBy === 'newest') {
         return new Date(b.date) - new Date(a.date);
       } else {
         return new Date(a.date) - new Date(b.date);
@@ -56,7 +56,6 @@ export default function AssignedMatchesDashboard() {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-center text-gray-800 mb-5">Assigned Matches</h1>
 
       <button
         onClick={fetchAssignedMatches}
@@ -74,8 +73,8 @@ export default function AssignedMatchesDashboard() {
           <input
             type="text"
             placeholder="Search by team name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -86,8 +85,8 @@ export default function AssignedMatchesDashboard() {
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="newest">Sort by Newest</option>

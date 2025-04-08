@@ -12,7 +12,7 @@ const IncidentReports = () => {
             </header>
 
             <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <RefereeSideBar className='col-start-1 col-end-2'/>
+                <RefereeSideBar/>
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
