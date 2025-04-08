@@ -38,6 +38,21 @@ const Matches = () => {
             .catch(error => console.error('Error fetching fields:', error));
     }, []);
 
+    const getMatches = async () => {
+        const response = await fetch('/api/auth/admin/matches/getMatches', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Matches:', data);
+        } else {
+            alert('Error fetching matches.');
+        }
+    };
+
     const handleScheduleMatch = async () => {
         console.log("fields:", fields);
         console.log("selectedMatch.venue:", selectedMatch.venue);
@@ -67,9 +82,9 @@ const Matches = () => {
         });
     
         if (response.ok) {
-            alert('Match scheduled successfully!');
+            getMatches(); // Refresh the match list after scheduling a new match
         } else {
-            alert('Error scheduling match.');
+            console.error('Error scheduling match:', response.statusText);
         }
     };
     
@@ -136,9 +151,12 @@ const Matches = () => {
                                         ))}
                                     </TextField>
                                 </div>
-                                <div className="pt-5">
+                                <div className="pt-5 gap-2 flex justify-center">
                                     <Button variant="contained" color="primary" onClick={handleScheduleMatch}>
                                         Schedule Match
+                                    </Button>
+                                    <Button variant="contained" color="primary" onClick={console.log("delete Match")}>
+                                        Delete Match
                                     </Button>
                                 </div>
                             </Box>
