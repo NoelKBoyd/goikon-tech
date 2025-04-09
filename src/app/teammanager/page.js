@@ -4,6 +4,7 @@ import TeamManagerSideBar from '../Components/TeamManagerSideBar';
 import TeamManagerFooter from '../Components/TeamManagerFooter';
 import Calendar from '../Components/Calendar';
 import UpcomingMatch from '../Components/UpcomingMatch'
+import NestedModal from '../Components/MatchPreparation';
 
 const TeamManagerPage = () => {
     return (
@@ -21,6 +22,9 @@ const TeamManagerPage = () => {
             </div>
                 <div className='col-start-4 col-end-6'>
                     <Calendar/>
+                </div>
+                <div className='col-start-6 col-end-7'>
+                    <NestedModal/>
                 </div>
             </main>
                 
