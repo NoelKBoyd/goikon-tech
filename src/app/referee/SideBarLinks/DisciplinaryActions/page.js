@@ -2,9 +2,9 @@
 import RefereeNav from '@/app/Components/RefereeNav';
 import RefereeSideBar from '@/app/Components/RefereeSideBar';
 import RefereeFooter from '@/app/Components/RefereeFooter';
-import { useState } from 'react';
+import DisciplinaryActions from '@/app/Components/DisciplinaryActions';
 
-const DisciplinaryActions = () => {
+const IncidentReports = () => {
     return (
         <div>
             <header>
@@ -12,12 +12,11 @@ const DisciplinaryActions = () => {
             </header>
 
             <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <RefereeSideBar className='col-start-1 col-end-2'/>
+                <RefereeSideBar/>
 
                 <div className='col-start-2 col-end-3 flex justify-center text-center'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Disciplinary Actions</strong></h1>
-                        
+                        <DisciplinaryActions />
                     </div>
                 </div>
             </main>
@@ -29,4 +28,4 @@ const DisciplinaryActions = () => {
     );
 };
 
-export default DisciplinaryActions;
+export default IncidentReports;

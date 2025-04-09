@@ -26,12 +26,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import { FaUserPlus } from "react-icons/fa";
 import { MdGroupAdd } from "react-icons/md";
 import { IoIosFootball } from "react-icons/io";
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 function createData(homeTeam, awwayTeam, date, referee, venue) {
@@ -94,13 +101,6 @@ function tableData(team, goals, wins, loses) {
     actionsTaken("Added a new team to the database"),
     actionsTaken("Added a new team to the database"),
     actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
-    actionsTaken("Added a new team to the database"),
   ];
 
 
@@ -108,16 +108,46 @@ function tableData(team, goals, wins, loses) {
 const AdminPage = () => {
 
     const [selectedMatch, setSelectedMatch] = useState(null);
-    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isMatchDialogOpen, setIsMatchDialogOpen] = useState(false);
+    const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(false);
+    const [isAddTeamOpen, setAddTeam] = useState(false);
+    const [isAddMatchOpen, setAddMatch] = useState(false);
     
     const openMatch = (match) => {
         setSelectedMatch(match);
-        setPopupOpen(true);
+        setIsMatchDialogOpen(true);
     };
     
     const closeMatch = () => {
         setSelectedMatch(null);
-        setPopupOpen(false);
+        setIsMatchDialogOpen(false);
+    };
+
+    const openNewUser = () => {
+        setSelectedUser();
+        setIsUserDialogOpen(true);
+    };
+    
+    const closeNewUser = () => {
+        setSelectedUser();
+        setIsUserDialogOpen(false);
+    };
+
+    const openNewTeam = () => {
+        setAddTeam(true);
+    };
+
+    const closeNewTeam = () => {
+        setAddTeam(false);
+    };
+
+    const openNewMatch = () => {
+        setAddMatch(true);
+    };
+
+    const closeNewMatch = () => {
+        setAddMatch(false);
     };
 
     return (
@@ -243,22 +273,22 @@ const AdminPage = () => {
 
                             <div className='grid w-full grid-cols-[auto_auto_auto] h-50'>
                                 <div className='col-start-1 col-end-2 flex flex-col justify-center items-center w-full h-full'>
-                                    <Fab size="large" color="primary" aria-label="add">
+                                    <Fab size="large" color="primary" aria-label="add" onClick={() => {openNewUser()}}>
                                         <FaUserPlus style={{height: '25px', width: '25px'}}/>
                                     </Fab>
-                                    <h1 className='mt-3'><strogn>Add New User</strogn></h1>
+                                    {/* <h1 className='mt-3'><strogn>Add New User</strogn></h1> */}
                                 </div>
                                 <div className='col-start-2 col-end-3 flex flex-col justify-center items-center w-full h-full'>
-                                    <Fab size="large" color="secondary" aria-label="add">
+                                    <Fab size="large" color="secondary" aria-label="add" onClick={() => {openNewTeam()}}>
                                         <MdGroupAdd style={{height: '30px', width: '30px'}}/>
                                     </Fab>
-                                    <h1 className='mt-3'><strogn>Add New Team</strogn></h1>
+                                    {/* <h1 className='mt-3'><strogn>Add New Team</strogn></h1> */}
                                 </div>
                                 <div className='col-start-3 col-end-4 flex flex-col justify-center items-center w-full h-full'>
-                                    <Fab size="large" color="extended" aria-label="add">
+                                    <Fab size="large" color="extended" aria-label="add" onClick={() => {openNewMatch()}}>
                                         <IoIosFootball style={{height: '30px', width: '30px'}}/>
                                     </Fab>
-                                    <h1 className='mt-3'><strogn>Create New Match</strogn></h1>
+                                    {/* <h1 className='mt-3'><strogn>Create New Match</strogn></h1> */}
                                 </div>
                             </div>
 
@@ -274,7 +304,8 @@ const AdminPage = () => {
                 <AdminFooter />
             </footer>
 
-            <Dialog open={isPopupOpen} onClose={closeMatch}>
+            {/* this displays all of the match info of the selected match in the upcoming matches */}
+            <Dialog open={isMatchDialogOpen} onClose={closeMatch}>
                 <DialogTitle sx={{textAlign: 'center'}}>Match Details</DialogTitle>
                 <DialogContent sx={{ minWidth: '300px' }}>
                     {selectedMatch && (
@@ -310,6 +341,77 @@ const AdminPage = () => {
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
                     <Button onClick={closeMatch}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* This opens up a form that allows you to make a new user */}
+            <Dialog open={isUserDialogOpen} onClose={closeNewUser}>
+                <DialogTitle sx={{textAlign: 'center'}}>Add New User</DialogTitle>
+                <DialogContent sx={{ minWidth: '300px' }}>
+                    <div className="flex flex-col gap-5 items-center justify-center pt-3 mx-5">
+                        <TextField id="outlined-basic" label="Name" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Address" variant="outlined" sx={{width: '100%'}}/>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DemoContainer components={['DatePicker']} sx={{display: 'flex', justifyContent: 'center' }} >
+                                <DatePicker label="Date" sx={{width: '250px'}}/>
+                            </DemoContainer>
+                        </LocalizationProvider>
+                        <TextField id="outlined-basic" label="Email" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Phone" variant="outlined" sx={{width: '100%'}}/>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                            <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
+                                <MenuItem value={'Admin'}>Admin</MenuItem>
+                                <MenuItem value={'Referee'}>Referee</MenuItem>
+                                <MenuItem value={'Field Owner'}>Field Owner</MenuItem>
+                                <MenuItem value={'Team Manager'}>Team Manager</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', marginBottom: '10px' }}>
+                    <Button variant="contained">Add New User</Button>
+                    <Button onClick={closeNewUser} variant="outlined">Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* this opens a form that allows you to make a new user */}
+            <Dialog open={isAddTeamOpen} onClose={closeNewTeam}>
+                <DialogTitle sx={{textAlign: 'center'}}>Add New Team</DialogTitle>
+                <DialogContent sx={{ minWidth: '300px' }}>
+                    <div className="flex flex-col gap-5 items-center justify-center pt-3 mx-5">
+                        <TextField id="outlined-basic" label="Team Name" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Manager ID" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Location" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Age Group" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Contact Info" variant="outlined" sx={{width: '100%'}}/>
+                    </div>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', marginBottom: '10px' }}>
+                    <Button variant="contained">Add New Team</Button>
+                    <Button onClick={closeNewTeam} variant="outlined">Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* this opens up a form that allows you to make new matches */}
+            <Dialog open={isAddMatchOpen} onClose={closeNewMatch}>
+                <DialogTitle sx={{textAlign: 'center'}}>Create New Match</DialogTitle>
+                <DialogContent sx={{ minWidth: '300px' }}>
+                    <div className="flex flex-col gap-5 items-center justify-center pt-3 mx-5">
+                        <TextField id="outlined-basic" label="Home Team" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Away Team" variant="outlined" sx={{width: '100%'}}/>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DemoContainer components={['DatePicker']} sx={{display: 'flex', justifyContent: 'center' }} >
+                                <DatePicker label="Date" sx={{width: '250px'}}/>
+                            </DemoContainer>
+                        </LocalizationProvider>
+                        <TextField id="outlined-basic" label="Referee" variant="outlined" sx={{width: '100%'}}/>
+                        <TextField id="outlined-basic" label="Venue" variant="outlined" sx={{width: '100%'}}/>
+                    </div>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', marginBottom: '10px' }}>
+                    <Button variant="contained">Add New Team</Button>
+                    <Button onClick={closeNewMatch} variant="outlined">Close</Button>
                 </DialogActions>
             </Dialog>
         </div>

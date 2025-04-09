@@ -3,30 +3,32 @@ import TeamManagerNav from '@/app/Components/TeamManagerNav';
 import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
 import { useState } from 'react';
+import LargeCalendar from '@/app/Components/LargeCalendar';
 
-const Calendar = () => {
+const CalendarPage = () => {
     return (
-        <div>
-            <header>
-                <TeamManagerNav/>
+        <div className="flex flex-col h-screen">
+
+            <header className="flex-shrink-0">
+                <TeamManagerNav />
             </header>
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <TeamManagerSideBar className='col-start-1 col-end-2'/>
+            <main className="flex-1 flex overflow-hidden">
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-10">
-                        <h1 className="text-xl"><strong>Calendar</strong></h1>
-                        
+                <TeamManagerSideBar className="w-[260px] h-full" />
+
+                <div className="flex-1 overflow-auto p-4 flex justify-center items-start">
+                    <div className="w-full">
+                        <LargeCalendar />
                     </div>
                 </div>
             </main>
 
-            <footer>
-                <TeamManagerFooter/>
+            <footer className="flex-shrink-0">
+                <TeamManagerFooter />
             </footer>
         </div>
     );
 };
 
-export default Calendar;
+export default CalendarPage;

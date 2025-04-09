@@ -54,7 +54,6 @@ model Team {
   location    String
   ageGroup    String
   contactInfo String?
-
   manager     User           @relation(fields: [managerId], references: [id], name: "Manager")
   players     Player[]
   rosters     TeamRoster[]
@@ -74,6 +73,7 @@ model Player {
   rosters    TeamRoster[]
   incidents  IncidentsReporting[]
   matchStats MatchRelatedStats[]
+  disciplinaryActions DisciplinaryActions[]
 }
 
 model TeamRoster {
@@ -145,6 +145,8 @@ model Matches {
   incidents  IncidentsReporting[]
   bookings   FieldBooking[]
   matchStats MatchRelatedStats[]
+  disciplinaryActions DisciplinaryActions[]
+
 }
 
 model MatchResult {
@@ -157,8 +159,8 @@ model MatchResult {
   assists       Int?
   yellowCard    Int?
   redCard       Int?
-  penalties     Int?
-  shotsOnTarget Int?
+  fouls         Int?     // Add this
+  shotsOnTarget Int?     // Change from optional to required
 
   match Matches @relation(fields: [matchId], references: [id])
 }
@@ -184,7 +186,7 @@ model RevenueAnalytics {
 }
 
 model MatchRelatedStats {
-  id            Int  @id @default(autoincrement())
+  id            Int    @id @default(autoincrement())
   matchId       Int
   playerId      Int
   goals         Int?
@@ -193,6 +195,17 @@ model MatchRelatedStats {
   redCard       Int?
   fouls         Int?
   shotsOnTarget Int?
+
+  match  Matches @relation(fields: [matchId], references: [id])
+  player Player  @relation(fields: [playerId], references: [id])
+}
+
+model DisciplinaryActions {
+  id        Int    @id @default(autoincrement())
+  matchId   Int
+  playerId  Int
+  type      String
+  action    String
 
   match  Matches @relation(fields: [matchId], references: [id])
   player Player  @relation(fields: [playerId], references: [id])

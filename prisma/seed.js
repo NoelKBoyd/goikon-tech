@@ -624,6 +624,13 @@ async function main() {
                 date: new Date('2023-09-24T14:00:00Z'),
                 fieldId: 2, // Griffith Park Stadium
                 refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 1, // Team Alpha
+                awayTeamId: 2, // Team Beta
+                date: new Date('2025-04-23T14:00:00Z'),
+                fieldId: 1, // Central Park Field
+                refereeId: 5 // Mike Reff
             }
         ],
         skipDuplicates: true

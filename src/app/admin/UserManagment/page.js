@@ -2,7 +2,7 @@
 import AdminNav from "@/app/Components/AdminNav";
 import AdminSideBar from "@/app/Components/AdminSideBar";
 import AdminFooter from "@/app/Components/AdminFooter";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -42,244 +42,315 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+  position: 'relative',
+  borderRadius: `${theme.shape.borderRadius * 20}px !important`,
+  backgroundColor: alpha(theme.palette.common.white, 1),
+  '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 1),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 1),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '30ch',
-        },
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: '20ch',
+      '&:focus': {
+        width: '30ch',
       },
     },
-  }));
+  },
+}));
 
 
-  function userData(userId, name, address, dateOfBirth, email, phone, roleId) {
-    return { userId, name, address, dateOfBirth, email, phone, roleId };
-  }
-  
-  const users = [
-    userData(1, "Alice Johnson", "123 Main St, Springfield", "15-05-1990", "alice.johnson@example.com", "1234567890", 2),
-    userData(2, "Bob Smith", "456 Elm St, Springfield", "22-08-1985", "bob.smith@example.com", "9876543210", 1),
-    userData(3, "Charlie Brown", "789 Oak St, Springfield", "30-11-1992", "charlie.brown@example.com", "4567891230", 3),
-    userData(4, "Diana Prince", "321 Maple St, Springfield", "12-03-1988", "diana.prince@example.com", "7891234560", 4),
-    userData(5, "Ethan Hunt", "654 Pine St, Springfield", "19-07-1995", "ethan.hunt@example.com", "3216549870", 1),
-    userData(6, "Fiona Gallagher", "987 Birch St, Springfield", "25-02-1993", "fiona.gallagher@example.com", "6549873210", 3),
-    userData(7, "George Miller", "159 Cedar St, Springfield", "10-09-1987", "george.miller@example.com", "7896541230", 2),
-    userData(8, "Hannah Baker", "753 Walnut St, Springfield", "05-12-1991", "hannah.baker@example.com", "1237894560", 4),
-    userData(9, "Ian Wright", "852 Chestnut St, Springfield", "18-06-1989", "ian.wright@example.com", "9873216540", 1),
-    userData(10, "Julia Roberts", "951 Aspen St, Springfield", "22-04-1994", "julia.roberts@example.com", "4561237890", 2),
-    userData(11, "Michael Scott", "1725 Slough Ave, Scranton", "15-03-1975", "michael.scott@example.com", "1239874560", 3),
-    userData(12, "Pam Beesly", "112 Paper St, Scranton", "25-06-1980", "pam.beesly@example.com", "4567893210", 2),
-    userData(13, "Jim Halpert", "456 Dwight St, Scranton", "20-10-1978", "jim.halpert@example.com", "7891236540", 4),
-    userData(14, "Dwight Schrute", "123 Beet Farm Rd, Scranton", "04-01-1976", "dwight.schrute@example.com", "3216549870", 1),
-    userData(15, "Angela Martin", "789 Cat Ln, Scranton", "14-09-1982", "angela.martin@example.com", "6543217890", 2),
-    userData(16, "Kevin Malone", "951 Chili St, Scranton", "01-07-1979", "kevin.malone@example.com", "9876541230", 3),
-    userData(17, "Stanley Hudson", "753 Pretzel Ave, Scranton", "19-08-1968", "stanley.hudson@example.com", "1234569870", 4),
-    userData(18, "Kelly Kapoor", "852 Gossip Rd, Scranton", "05-02-1985", "kelly.kapoor@example.com", "7896543210", 1),
-    userData(19, "Ryan Howard", "369 Temp St, Scranton", "30-11-1983", "ryan.howard@example.com", "4561237890", 2),
-    userData(20, "Toby Flenderson", "147 HR Blvd, Scranton", "12-05-1974", "toby.flenderson@example.com", "3219876540", 3),
-];
+function userData(userId, name, address, dateOfBirth, email, phone, roleId) {
+  return { userId, name, address, dateOfBirth, email, phone, roleId };
+}
 
 const Reports = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
+  const [users, setUsers] = useState([]); // Replace static array with state
+  const [usersToShow] = useState(20); // You can adjust this
+  const [selectedUser, setSelectedMatch] = useState(null);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isEditMode, setEditMode] = useState(false);
+  const [editableData, setEdit] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedTeamId, setSelectedTeamId] = useState(null);
-    const [usersToShow] = useState(users.length);
-    const [selectedUser, setSelectedMatch] = useState(null);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [isEditMode, setEditMode] = useState(false); 
-    const [editableData, setEdit] = useState(null); 
-
-    const filteredRows = users.filter((user) =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const rowClick = (name) => {
-        setSelectedTeamId(name);
-    };
-
-    const openPopup = (user) => {
-        setSelectedMatch(user);
-        setEdit({ ...user });
-        setPopupOpen(true);
-    };
-
-    const closePopup = () => {
-        setSelectedMatch(null);
-        setEditMode(false); 
-        setPopupOpen(false);
-    };
-
-    const handleEditClick = () => {
-        setEditMode(true); 
-    };
-
-    const SaveClick = () => {
- 
-        setSelectedMatch(editableData);
-
-        const userIndex = users.findIndex((user) => user.userId === editableData.userId);
-        
-        if (userIndex !== -1) {
-            users[userIndex] = { ...editableData };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/auth/admin/userManagement/viewUsers');
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
         }
-
-        setEditMode(false);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleInputChange = (field, value) => {
-        setEdit((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
+    fetchUsers();
+  }, []);
 
-    return (
-        <div>
-            <header>
-                <AdminNav />
-            </header>
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <AdminSideBar className='col-start-1 col-end-2'/>
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
-                    <div className="pt-5">
+  const filteredRows = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-                            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
-                                <strong>User Management</strong>
-                            </h1>
+  const rowClick = (name) => {
+    setSelectedTeamId(name);
+  };
 
-                        <div className="flex justify-left">
-                            <Search sx={{marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)',}}>
-                                <SearchIconWrapper>
-                                    <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{ 'aria-label': 'search' }}
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </Search>
-                        </div>
+  const openPopup = (user) => {
+    setSelectedMatch(user);
+    setEdit({ ...user });
+    setPopupOpen(true);
+  };
 
-                        <div className="pt-1">
-                            <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table stickyHeader sx={{ minWidth: 800 }} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell align="center">User ID</StyledTableCell>
-                                            <StyledTableCell align="center">Name</StyledTableCell>
-                                            <StyledTableCell align="center">Address</StyledTableCell>
-                                            <StyledTableCell align="center">Date of birth</StyledTableCell>
-                                            <StyledTableCell align="center">Email</StyledTableCell>
-                                            <StyledTableCell align="center">Phone</StyledTableCell>
-                                            <StyledTableCell align="center">Role ID</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {filteredRows.slice(0, usersToShow).map((user) => (
-                                            <StyledTableRow
-                                                key={user.name}
-                                                onClick={() => {
-                                                    openPopup(user);
-                                                }}
-                                                onMouseOver={() => rowClick(user.name)}
-                                                style={{
-                                                    backgroundColor: user.name === selectedTeamId ? '#cae2fc' : 'inherit',
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                <StyledTableCell component="th" scope="row" align="center">{user.userId}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.name}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.address}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.dateOfBirth}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.email}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.phone}</StyledTableCell>
-                                                <StyledTableCell align="center">{user.roleId}</StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </div>
-                    </div>
-                </div>
-            </main>
+  const closePopup = () => {
+    setSelectedMatch(null);
+    setEditMode(false);
+    setPopupOpen(false);
+  };
 
-            <footer>
-                <AdminFooter />
-            </footer>
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
 
-            <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center'}}>
-                <DialogTitle>User Details</DialogTitle>
-                <DialogContent sx={{ width: '600px' }}>
-                    {selectedUser && (
-                        <div>
-                            {isEditMode ? (
-                                <div className="flex flex-col gap-5 items-center justify-center pt-3">
-                                    <TextField id="outlined-basic" label="Name" variant="outlined" value={editableData.name} onChange={(e) => handleInputChange('name', e.target.value)}/>
-                                    <TextField id="outlined-basic" label="Address" variant="outlined" value={editableData.address} onChange={(e) => handleInputChange('address', e.target.value)}/>
-                                    <TextField id="outlined-basic" label="Date of birth" variant="outlined" value={editableData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}/>
-                                    <TextField id="outlined-basic" label="Email" variant="outlined" value={editableData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
-                                    <TextField id="outlined-basic" label="Phone" variant="outlined" value={editableData.phone} onChange={(e) => handleInputChange('phone', e.target.value)}/>
-                                    <TextField id="outlined-basic" label="Role" variant="outlined" value={editableData.roleId} onChange={(e) => handleInputChange('roleId', e.target.value)}/>
-                                </div>
-                            ) : (
-                                <div>
-                                    <h2 className="p-2"><strong>Name: </strong> {selectedUser.name}</h2>
-                                    <h2 className="p-2"><strong>Address: </strong> {selectedUser.address}</h2>
-                                    <h2 className="p-2"><strong>Date of birth: </strong> {selectedUser.dateOfBirth}</h2>
-                                    <h2 className="p-2"><strong>Email: </strong> {selectedUser.email}</h2>
-                                    <h2 className="p-2"><strong>Phone: </strong> {selectedUser.phone}</h2>
-                                    <h2 className="p-2"><strong>Role ID: </strong> {selectedUser.roleId}</h2>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </DialogContent>
-                <DialogActions sx={{ justifyContent: 'center' }}>
-                    {isEditMode ? (
-                        <Button onClick={SaveClick}>Save</Button>
-                    ) : (
-                        <Button onClick={handleEditClick}>Edit</Button>
-                    )}
-                    <Button onClick={closePopup}>Close</Button>
-                </DialogActions>
-            </Dialog>
+  const SaveClick = async () => {
+    try {
+      if (!editableData.id) {
+        console.error("User ID is missing");
+        return;
+      }
+  
+      console.log("Sending update request for user:", editableData.id);
+  
+      const response = await fetch(`/api/auth/admin/userManagement/editUsers`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editableData.id,  // Send ID in the body
+          name: editableData.name || "",
+          address: editableData.address || "",
+          dateOfBirth: editableData.dateOfBirth ? new Date(editableData.dateOfBirth).toISOString() : "",
+          email: editableData.email || "",
+          phone: editableData.phone || "",
+          roleId: Number(editableData.roleId) || 0,
+        }),
+      });
+      
+  
+      console.log("Response received:", response);
+  
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Unexpected response format:", await response.text());
+        throw new Error("Received non-JSON response (API might be misconfigured)");
+      }
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update user");
+      }
+  
+      const updatedUser = await response.json();
+      console.log("User updated successfully:", updatedUser);
+  
+      setUsers(users.map(user => (user.id === updatedUser.id ? updatedUser : user)));
+      setEditMode(false);
+    } catch (error) {
+      console.error("Error updating user:", error.message);
+    }
+  };
+  
+  const handleInputChange = (field, value) => {
+    setEdit((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  return (
+    <div>
+      <header>
+        <AdminNav />
+      </header>
+
+      <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
+        <AdminSideBar className='col-start-1 col-end-2' />
+
+        <div className='col-start-2 col-end-3 flex justify-center text-center'>
+          <div className="pt-5">
+            <h1 className="text-3xl pb-3 pl-2 flex justify-left">
+              <strong>User Management</strong>
+            </h1>
+
+            <div className="flex justify-left">
+              <Search sx={{ marginBottom: '15px', boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.1)' }}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Search>
+            </div>
+
+            <div className="pt-1">
+              {loading ? (
+                <div>Loading users...</div>
+              ) : (
+                <TableContainer component={Paper} style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                  <Table stickyHeader sx={{ minWidth: 800 }} aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell align="center">User ID</StyledTableCell>
+                        <StyledTableCell align="center">Name</StyledTableCell>
+                        <StyledTableCell align="center">Address</StyledTableCell>
+                        <StyledTableCell align="center">Date of birth</StyledTableCell>
+                        <StyledTableCell align="center">Email</StyledTableCell>
+                        <StyledTableCell align="center">Phone</StyledTableCell>
+                        <StyledTableCell align="center">Role ID</StyledTableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredRows.slice(0, usersToShow).map((user) => (
+                        <StyledTableRow
+                          key={user.id} // Changed from user.name to user.id
+                          onClick={() => {
+                            openPopup(user);
+                          }}
+                          onMouseOver={() => rowClick(user.name)}
+                          style={{
+                            backgroundColor: user.name === selectedTeamId ? '#cae2fc' : 'inherit',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <StyledTableCell component="th" scope="row" align="center">{user.id}</StyledTableCell>
+                          <StyledTableCell align="center">{user.name}</StyledTableCell>
+                          <StyledTableCell align="center">{user.address || 'N/A'}</StyledTableCell>
+                          <StyledTableCell align="center">{user.dateOfBirth}</StyledTableCell>
+                          <StyledTableCell align="center">{user.email}</StyledTableCell>
+                          <StyledTableCell align="center">{user.phone || 'N/A'}</StyledTableCell>
+                          <StyledTableCell align="center">{user.roleId}</StyledTableCell>
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+            </div>
+          </div>
         </div>
-    );
+      </main>
+
+      <footer>
+        <AdminFooter />
+      </footer>
+
+      <Dialog open={isPopupOpen} onClose={closePopup} sx={{ textAlign: 'center' }}>
+        <DialogTitle>User Details</DialogTitle>
+        <DialogContent sx={{ width: '600px' }}>
+          {selectedUser && (
+            <div>
+              {isEditMode ? (
+                <div className="flex flex-col gap-5 items-center justify-center pt-3">
+                  <TextField
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                    value={editableData.name || ""}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Address"
+                    variant="outlined"
+                    value={editableData.address || ""}
+                    onChange={(e) => handleInputChange('address', e.target.value)}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Date of birth"
+                    variant="outlined"
+                    value={editableData.dateOfBirth || ""}
+                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Email"
+                    variant="outlined"
+                    value={editableData.email || ""}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Phone"
+                    variant="outlined"
+                    value={editableData.phone || ""}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                  />
+
+                </div>
+              ) : (
+                <div>
+                  <h2 className="p-2"><strong>Name: </strong> {selectedUser.name}</h2>
+                  <h2 className="p-2"><strong>Address: </strong> {selectedUser.address}</h2>
+                  <h2 className="p-2"><strong>Date of birth: </strong> {selectedUser.dateOfBirth}</h2>
+                  <h2 className="p-2"><strong>Email: </strong> {selectedUser.email}</h2>
+                  <h2 className="p-2"><strong>Phone: </strong> {selectedUser.phone}</h2>
+                  <h2 className="p-2"><strong>Role ID: </strong> {selectedUser.roleId}</h2>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          {isEditMode ? (
+            <Button onClick={SaveClick}>Save</Button>
+          ) : (
+            <Button onClick={handleEditClick}>Edit</Button>
+          )}
+          <Button onClick={closePopup}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 };
 
 export default Reports;

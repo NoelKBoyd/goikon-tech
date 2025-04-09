@@ -1,45 +1,101 @@
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
 export async function DELETE(req) {
   try {
     const { teamId } = await req.json();
+    const teamIdInt = parseInt(teamId);
 
-    console.log('Received data:', { teamId });
-
-    // Ensure teamId is provided
-    if (!teamId) {
-      return new Response(JSON.stringify({ error: 'Missing teamId' }), { status: 400 });
-    }
-
-    // Convert teamId to integer
-    const teamIdInt = parseInt(teamId, 10);
-
-    // Check if teamId is a valid integer
-    if (isNaN(teamIdInt)) {
-      return new Response(JSON.stringify({ error: 'Invalid teamId' }), { status: 400 });
-    }
-
-    // Check if the team exists
-    const teamExists = await prisma.team.findUnique({
-      where: { id: teamIdInt },
+    // Step 1: Delete match-related stats (by match → team)
+    await prisma.matchRelatedStats.deleteMany({
+      where: {
+        match: {
+          OR: [
+            { homeTeamId: teamIdInt },
+            { awayTeamId: teamIdInt },
+          ],
+        },
+      },
     });
 
-    if (!teamExists) {
-      return new Response(JSON.stringify({ error: 'Team not found' }), { status: 404 });
-    }
-
-    // Delete the team
-    await prisma.team.delete({
-      where: { id: teamIdInt },
+    // Step 2: Delete incidents
+    await prisma.incidentsReporting.deleteMany({
+      where: {
+        match: {
+          OR: [
+            { homeTeamId: teamIdInt },
+            { awayTeamId: teamIdInt },
+          ],
+        },
+      },
     });
 
-    console.log('Team deleted:', teamIdInt);
+    // Step 3: Delete field bookings (by match of team or team itself)
+    await prisma.fieldBooking.deleteMany({
+      where: {
+        OR: [
+          {
+            match: {
+              OR: [
+                { homeTeamId: teamIdInt },
+                { awayTeamId: teamIdInt },
+              ],
+            },
+          },
+          { teamId: teamIdInt },
+        ],
+      },
+    });
 
-    return new Response(JSON.stringify({ message: 'Team deleted successfully' }), { status: 200 });
-  } catch (error) {
-    console.error('Error in API route:', error);
-    return new Response(JSON.stringify({ error: 'Failed to delete team' }), { status: 500 });
+    // Step 4: Delete match results
+    await prisma.matchResult.deleteMany({
+      where: {
+        match: {
+          OR: [
+            { homeTeamId: teamIdInt },
+            { awayTeamId: teamIdInt },
+          ],
+        },
+      },
+    });
+
+    // Step 5: Delete matches
+    await prisma.matches.deleteMany({
+      where: {
+        OR: [
+          { homeTeamId: teamIdInt },
+          { awayTeamId: teamIdInt },
+        ],
+      },
+    });
+
+    // Step 6: Delete team rosters
+    await prisma.teamRoster.deleteMany({
+      where: { teamId: teamIdInt },
+    });
+
+    // Step 7: Delete players
+    await prisma.player.deleteMany({
+      where: { teamId: teamIdInt },
+    });
+
+    // Step 8: Delete the team
+    const existingTeam = await prisma.team.findUnique({
+      where: { id: teamIdInt },
+    });
+    
+    if (existingTeam) {
+      await prisma.team.delete({
+        where: { id: teamIdInt },
+      });
+    }
+    
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Error deleting team:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

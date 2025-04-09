@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, isSameMonth, isSameDay } from 'date-fns';
 
-export default function Calendar() {
+export default function LargeCalendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [matches, setMatches] = useState([]);
@@ -59,7 +59,7 @@ export default function Calendar() {
         days.push(
           <div
             key={day}
-            className={`relative p-2 text-center border border-gray-300 cursor-pointer ${
+            className={`relative p-4 text-center border border-gray-300 cursor-pointer ${
               !isSameMonth(day, monthStart) ? 'text-gray-400' : ''
             } ${isSameDay(day, selectedDate) ? 'bg-black text-white rounded-full' : ''}`}
             onClick={() => setSelectedDate(day)}
@@ -83,10 +83,10 @@ export default function Calendar() {
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
 
   return (
-    <div className="relative max-w-md mx-auto bg-white p-4 border-2 border-black rounded-lg shadow">
+    <div className="relative w-full h-full p-4 bg-white border-2 border-black rounded-lg shadow-lg">
       {renderHeader()}
       {renderDays()}
-      {renderCells()}
+      <div className="overflow-auto h-[calc(100%-150px)]">{renderCells()}</div> {/* Adjust height here */}
       {hoveredMatch && hoveredMatch.length > 0 && (
         <div className="absolute bg-black text-white p-2 rounded shadow top-0 left-1/2 transform -translate-x-1/2 mt-2 z-10" style={{top: '40px'}}>
           {hoveredMatch.map(matches => (

@@ -6,14 +6,24 @@ export default function NextMatch() {
   const [nextMatch, setNextMatch] = useState(null);
 
   useEffect(() => {
-    fetch('/api/auth/matches')
+    fetch('/api/auth/admin/matches/getMatches')
       .then(res => res.json())
       .then(data => {
         if (data.matches && data.matches.length > 0) {
-          const upcomingMatch = data.matches.sort(
-            (a, b) => new Date(a.date) - new Date(b.date)
-          )[0];
-          setNextMatch(upcomingMatch);
+          const now = new Date();
+
+          // Filter for only future matches
+          const futureMatches = data.matches.filter(
+            (match) => new Date(match.date) > now
+          );
+
+          if (futureMatches.length > 0) {
+            // Sort to find the nearest upcoming match
+            const upcomingMatch = futureMatches.sort(
+              (a, b) => new Date(a.date) - new Date(b.date)
+            )[0];
+            setNextMatch(upcomingMatch);
+          }
         }
       })
       .catch(err => console.error(err));

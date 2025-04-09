@@ -7,21 +7,25 @@ import SubmitMatchResult from '@/app/Components/SubmitMatchResult';
 
 const SubmitResults = () => {
     return (
-        <div className="flex flex-col h-screen"> {/* Make the entire page a flex container */}
+        <div>
             <header>
-                <RefereeNav />
+                <RefereeNav/>
             </header>
 
-            <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 flex-grow"> {/* This takes up the remaining space */}
-                <RefereeSideBar className="col-start-1 col-end-2" />
+            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
+                <RefereeSideBar/>
 
-                <div className="col-start-2 col-end-3 flex justify-center text-center">
+                <div className='text-center px-6'>
                     <div className="pt-10">
-                        <h1 className="text-xl"><strong>Submit Results</strong></h1>
+                        <h1 className="text-2xl font-bold mb-2">Submit Match Results</h1>
                         <SubmitMatchResult />
                     </div>
                 </div>
             </main>
+
+            <footer className="mt-auto w-full mb-40">
+                    <RefereeFooter />
+                  </footer>
         </div>
     );
 };
