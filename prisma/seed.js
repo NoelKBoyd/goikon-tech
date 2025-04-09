@@ -631,6 +631,27 @@ async function main() {
                 date: new Date('2025-04-23T14:00:00Z'),
                 fieldId: 1, // Central Park Field
                 refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 4, // Team Alpha
+                awayTeamId: 1, // Team Beta
+                date: new Date('2025-04-25T14:00:00Z'),
+                fieldId: 2, // Central Park Field
+                refereeId: 3 // Mike Reff
+            },
+            {
+                homeTeamId: 5, // Team Alpha
+                awayTeamId: 3, // Team Beta
+                date: new Date('2025-04-26T14:00:00Z'),
+                fieldId: 3, // Central Park Field
+                refereeId: 2 // Mike Reffs
+            },
+            {
+                homeTeamId: 3, // Team Alpha
+                awayTeamId: 1, // Team Beta
+                date: new Date('2025-04-28T14:00:00Z'),
+                fieldId: 1, // Central Park Field
+                refereeId: 5 // Mike Reff
             }
         ],
         skipDuplicates: true

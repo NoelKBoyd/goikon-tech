@@ -34,7 +34,7 @@ const TeamManagerPage = () => {
                             <Calendar />
                         </div>
 
-                        <div className="row-start-2 col-start-3 flex justify-end">
+                        <div className="row-start-2 col-start-3 flex justify-end pb-15">
                             <MessagingPanel />
                         </div>
 
