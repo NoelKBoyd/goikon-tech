@@ -6,6 +6,8 @@ import Calendar from '../Components/Calendar';
 import UpcomingMatch from '../Components/UpcomingMatch';
 import MessagingPanel from '../Components/MessagingPanel';
 import TeamStats from '../Components/TeamStats';
+import UpcomingMatch from '../Components/UpcomingMatch'
+import NestedModal from '../Components/MatchPreparation';
 
 const TeamManagerPage = () => {
     return (
@@ -38,7 +40,9 @@ const TeamManagerPage = () => {
                         </div>
 
                         {/* Future placeholders */}
-                        <div className="row-start-1 col-start-3">{/* Top Right Component */}</div>
+                        <div className="row-start-1 col-start-3">
+                            <NestedModal />
+                        </div>
                         <div className="row-start-2 col-start-2">{/* Bottom Middle Component */}</div>
                     </div>
                 </div>
