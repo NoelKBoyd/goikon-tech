@@ -6,7 +6,6 @@ import Calendar from '../Components/Calendar';
 import UpcomingMatch from '../Components/UpcomingMatch';
 import MessagingPanel from '../Components/MessagingPanel';
 import TeamStats from '../Components/TeamStats';
-import UpcomingMatch from '../Components/UpcomingMatch'
 import NestedModal from '../Components/MatchPreparation';
 
 const TeamManagerPage = () => {
