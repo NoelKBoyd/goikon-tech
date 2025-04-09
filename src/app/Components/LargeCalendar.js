@@ -86,7 +86,7 @@ export default function LargeCalendar() {
     <div className="relative w-full h-full p-4 bg-white border-2 border-black rounded-lg shadow-lg">
       {renderHeader()}
       {renderDays()}
-      <div className="overflow-auto h-[calc(100%-150px)]">{renderCells()}</div> {/* Adjust height here */}
+      <div className="overflow-auto h-[calc(100%-150px)]">{renderCells()}</div>
       {hoveredMatch && hoveredMatch.length > 0 && (
         <div className="absolute bg-black text-white p-2 rounded shadow top-0 left-1/2 transform -translate-x-1/2 mt-2 z-10" style={{top: '40px'}}>
           {hoveredMatch.map(matches => (
