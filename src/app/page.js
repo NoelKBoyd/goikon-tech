@@ -7,8 +7,70 @@ import { GiWhistle, GiSoccerField } from "react-icons/gi";
 import Link from 'next/link';
 import Calendar from './Components/Calendar';
 import MatchSchedule from './Components/MatchSchedule';
+import React, { useRef, useEffect } from 'react';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+
 
 export default function Homepage() {
+
+    const mountRef = useRef(null);
+
+    useEffect(() => {
+        // Set up the scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true }); // Enable transparency
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Transparent background
+        mountRef.current.appendChild(renderer.domElement);
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+         // Load the GLB model
+        const loader = new GLTFLoader();
+        let model = null;;
+
+        loader.load(
+            '/3D-Objects/football_court.glb', // Replace with the path to your GLB file
+            (gltf) => {
+                model = gltf.scene;
+                model.scale.set(0.09, 0.09, 0.09); // Adjust the scale of the model
+                model.position.set(0, 0.1, -1); // Adjust the position of the model
+                scene.add(model);
+            },
+            undefined,
+            (error) => {
+                console.error('An error occurred while loading the GLB model:', error);
+            }
+        );
+
+        camera.position.z = 0.1;
+        camera.position.y = 0.9;
+        camera.rotateX(-0.5);
+
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            if (model) {
+                model.rotation.y += 0.002; // Rotate the model for some basic animation
+            }
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        // Cleanup on component unmount
+        return () => {
+            mountRef.current.removeChild(renderer.domElement);
+        };
+    }, []);
+    
     const features = [
         { icon: <MdAdminPanelSettings size={60} />, title: "Admin", description: "Manage users, teams, matches, and system settings efficiently." },
         { icon: <GrUserManager size={60} />, title: "Team Manager", description: "Oversee team rosters, match strategies, and player communication." },
@@ -17,11 +79,15 @@ export default function Homepage() {
     ];
 
     return (
-        <main className="bg-gray-100 text-black min-h-screen">
-            <header className='bg-white'>
+        <main className="bg-gray-100 text-black min-h-screen relative">
+            {/* Background Canvas */}
+            <div ref={mountRef} className="absolute top-0 left-0 w-full h-full z-10 fixed"></div>
+
+            {/* Main Content */}
+            <header className="bg-white relative z-10">
                 <HomeNav />
             </header>
-            <div className="flex flex-col items-center justify-center px-4 py-10">
+            <div className="flex flex-col items-center justify-center px-4 py-10 relative z-10">
                 <h1 className="text-4xl font-extrabold mb-4 text-center">
                     Streamline Football Operations with Our All-in-One Platform
                 </h1>
@@ -29,7 +95,7 @@ export default function Homepage() {
                     Simplify team management, match coordination, and field bookings with dedicated dashboards for Admins, Team Managers, Referees, and Field Owners.
                 </p>
 
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="mt-80 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {features.map((feature, index) => (
                         <div key={index} className="bg-white border border-gray-300 p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
                             <div className="text-gray-700 mb-3">

@@ -24,6 +24,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { Button } from '@mui/material';
+import { BarChart } from '@mui/x-charts/BarChart';
 
 
 function createData(homeTeam, awwayTeam, date, referee, venue) {
@@ -88,10 +89,10 @@ const MatchSchedule = () => {
                 <FieldOwnerNav/>
             </header>
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
+            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 min-h-screen mb-20'>
                 <FieldOwnerSideBar className='col-start-1 col-end-2'/>
 
-                <div className='col-start-2 col-end-3 flex justify-center text-center'>
+                <div className='col-start-2 col-end-3 flex justify-center text-center h-full'>
                     <div className="pt-10 w-full max-w-3xl mx-auto">
                         <h1 className="text-3xl"><strong>Match Schedule</strong></h1>
 
@@ -140,6 +141,19 @@ const MatchSchedule = () => {
                                     ))}
                             </div>
                         </div> 
+
+                        <div className='w-full my-5 bg-white rounded-lg shadow-xl border border-gray-300 pt-3 flex flex-col justify-center items-center'>
+                            <h2 className='text-center mb-5'><strong>Week Breakdown</strong></h2>
+                            <div className='flex justify-center items-center w-full'>
+                                <BarChart
+                                    sx={{ margin: 'auto' }}
+                                    xAxis={[{ scaleType: 'band', data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] }]}
+                                    series={[{ data: [4, 3, 5, 2, 4, 1, 3]}, {data: [2, 1, 4, 5, 0, 4, 3] }]}
+                                    width={700} 
+                                    height={400} 
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -155,11 +169,11 @@ const MatchSchedule = () => {
                     {selectedMatch && (
                         <div>
                             <div className='flex pb-5'>
-                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center', marginLeft: '50px'}}>
                                     <Avatar src="/" style={{backgroundColor: '#baffcd', color: 'black'}}>{selectedMatch.homeTeam.charAt(0)}</Avatar>
                                 </ListItemAvatar>    
                                     <ListItemText sx={{textAlign: 'center'}}><strong>VS</strong></ListItemText>
-                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center'}}>
+                                <ListItemAvatar sx={{display: 'flex', justifyContent: 'center', marginRight: '50px'}}>
                                     <Avatar src="/" style={{backgroundColor: '#ffbaba', color: 'black'}}>{selectedMatch.awwayTeam.charAt(0)}</Avatar>
                                 </ListItemAvatar>
                             </div>
