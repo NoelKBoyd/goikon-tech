@@ -10,14 +10,6 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-// Sample players list
-const players = [
-  'Manuel Nuer', 'Kompany', 'Vidic', 'Marcelo',
-  'Reece James', 'Ngolo Kante', 'Xavi', 'Ozil',
-  'Cristiano Ronaldo', 'Lionel Messi', 'Neymar Jr', '...Ali Abbas',
-];
-
-// Sample formations
 const formations = [
   { id: 1, name: '4-4-2', image: '/images/Formation-4-4-2.webp' },
   { id: 2, name: '4-3-3', image: '/images/Formation-4-3-3.webp' },
@@ -30,8 +22,20 @@ const PlayerStats = () => {
   const [startingLineup, setStartingLineup] = useState(Array(11).fill(''));
   const [open, setOpen] = useState(false);
   const [selectedFormation, setSelectedFormation] = useState('4-4-2'); // Default
+  const [players, setPlayers] = useState([]);
 
-  // Formations and positions
+  // Fetch player names from the new API route
+  useEffect(() => {
+    fetch('/api/auth/players')  // Fetch from the new players API route
+      .then(res => res.json())
+      .then(data => {
+        if (data.players) {
+          setPlayers(data.players);
+        }
+      })
+      .catch(err => console.error('Error fetching player names:', err));
+  }, []);
+
   const formationLayouts = {
     '4-4-2': ['Goalkeeper', 'Right-back', 'Center-back', 'Center-back', 'Left-back', 'Right-midfield', 'Center-midfield', 'Center-midfield', 'Left-midfield', 'Striker', 'Striker'],
     '4-3-3': ['Goalkeeper', 'Right-back', 'Center-back', 'Center-back', 'Left-back', 'Center-midfield', 'Center-midfield', 'Center-midfield', 'Right-wing', 'Striker', 'Left-wing'],
@@ -152,9 +156,13 @@ const PlayerStats = () => {
                     onChange={(e) => handleSelect(index, e.target.value)}
                   >
                     <option value="">Select player</option>
-                    {players.map((player, idx) => (
-                      <option key={idx} value={player} disabled={startingLineup.includes(player)}>
-                        {player}
+                    {players.map((player) => (
+                      <option
+                        key={player.id}
+                        value={player.name}
+                        disabled={startingLineup.includes(player.name)}
+                      >
+                        {player.name}
                       </option>
                     ))}
                   </select>
@@ -163,7 +171,6 @@ const PlayerStats = () => {
             </div>
           </div>
         </div>
-
       </main>
 
       <footer>
