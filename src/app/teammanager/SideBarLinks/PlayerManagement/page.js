@@ -86,26 +86,6 @@ const PlayerStats = () => {
         <div className="col-start-2 col-end-3 p-10 pb-28">
           <h1 className="text-3xl font-bold mb-8 text-center">Player Management</h1>
 
-          <div className="space-y-4 max-w-3xl mx-auto">
-            {positions.map((pos, index) => (
-              <div key={index} className="flex items-center justify-between border p-4 rounded bg-white shadow">
-                <span className="font-medium">{pos}</span>
-                <select
-                  className="border px-4 py-2 rounded"
-                  value={startingLineup[index]}
-                  onChange={(e) => handleSelect(index, e.target.value)}
-                >
-                  <option value="">Select player</option>
-                  {players.map((player, idx) => (
-                    <option key={idx} value={player} disabled={startingLineup.includes(player)}>
-                      {player}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-          </div>
-
           <div className="mt-8 text-center">
             <Button variant="outlined" onClick={handleClickOpen}>
               View formations
@@ -151,11 +131,39 @@ const PlayerStats = () => {
             </DialogContent>
           </Dialog>
 
-          {/* Formation Pitch with gap below */}
-          <div className="mt-10">
-            <FormationPitch formation={selectedFormation} lineup={startingLineup} />
+          {/* Split layout: pitch on left, selector on right */}
+          <div className="mt-10 flex gap-6">
+            {/* Left: Pitch */}
+            <div className="flex-shrink-0 w-[55%] overflow-hidden rounded-lg shadow bg-white p-4">
+              <FormationPitch formation={selectedFormation} lineup={startingLineup} />
+            </div>
+
+            {/* Right: Player Selector */}
+            <div className="flex-grow space-y-4 max-w-md">
+              {positions.map((pos, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between border p-2 rounded bg-white shadow-sm text-sm"
+                >
+                  <span className="font-medium">{pos}</span>
+                  <select
+                    className="border px-2 py-1 rounded w-[60%]"
+                    value={startingLineup[index]}
+                    onChange={(e) => handleSelect(index, e.target.value)}
+                  >
+                    <option value="">Select player</option>
+                    {players.map((player, idx) => (
+                      <option key={idx} value={player} disabled={startingLineup.includes(player)}>
+                        {player}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
       </main>
 
       <footer>
