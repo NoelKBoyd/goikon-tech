@@ -12,9 +12,9 @@ import { Grid } from '@mui/material';
 
 // Sample players list
 const players = [
-  'John Smith', 'Mike Johnson', 'Alex Brown', 'David Wilson',
-  'Chris Evans', 'Ryan Walker', 'Tom Harris', 'Ben Lewis',
-  'Jake Young', 'Liam White', 'Sam Green', 'Oliver King',
+  'Manuel Nuer', 'Kompany', 'Vidic', 'Marcelo',
+  'Reece James', 'Ngolo Kante', 'Xavi', 'Ozil',
+  'Cristiano Ronaldo', 'Lionel Messi', 'Neymar Jr', '...Ali Abbas',
 ];
 
 // Sample formations
