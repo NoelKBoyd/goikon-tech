@@ -6,15 +6,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { Grid } from '@mui/material';
+import { Grid, Box, Typography, Paper } from '@mui/material';
 import Link from 'next/link';
 
 // Sample formations
 const formations = [
-  { id: 1, name: '4-4-2', image: '/images/Formation-4-4-2.png' },
-  { id: 2, name: '4-3-3', image: '/images/Formation-4-3-3.png' },
-  { id: 3, name: '4-2-4', image: '/images/Formation-4-2-4.png' },
-  { id: 4, name: '3-4-3', image: '/images/Formation-3-4-3.png' },
+  { id: 1, name: '4-4-2', image: '/images/Formation-4-4-2.webp' },
+  { id: 2, name: '4-3-3', image: '/images/Formation-4-3-3.webp' },
+  { id: 3, name: '4-2-4', image: '/images/Formation-4-2-4.webp' },
+  { id: 4, name: '3-4-3', image: '/images/Formation-3-4-3.webp' },
 ];
 
 export default function ExampleDialog() {
@@ -31,63 +31,101 @@ export default function ExampleDialog() {
 
   const handleFormationSelect = (formation) => {
     setSelectedFormation(formation);
-    localStorage.setItem('selectedFormation', JSON.stringify(formation.name)); // Save to localStorage
+    localStorage.setItem('selectedFormation', JSON.stringify(formation.name));
   };
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        View formations
-      </Button>
+    <Paper
+      elevation={3}
+      sx={{
+        padding: 4,
+        marginBottom: 4,
+        maxWidth: 800,
+        marginX: 'auto',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '12px',
+      }}
+    >
+      <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+        Player Management
+      </Typography>
+
+      <Typography variant="body1" textAlign="center" color="text.secondary" mb={3}>
+      Pick your squad and shape your team just the way you like it. 
+      Explore different formations to see how your players line up on the pitch — strategy starts here.
+      </Typography>
+
+      <Box display="flex" justifyContent="center">
+        <Button
+          onClick={handleClickOpen}
+          variant="outlined"
+          sx={{
+            backgroundColor: '#000',
+            color: '#fff',
+            borderColor: '#000',
+            fontWeight: 'bold',
+            textTransform: 'none',
+            paddingX: 3,
+            paddingY: 1.5,
+            borderRadius: '8px',
+            '&:hover': {
+              backgroundColor: '#fff',
+              color: '#000',
+              borderColor: '#000',
+            },
+          }}
+        >
+          View formations
+        </Button>
+      </Box>
+
+      {/* Formation dialog */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select a Formation</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} justifyContent="center">
             {formations.map((formation) => (
-              <Grid item xs={6} sm={4} md={3} key={formation.id}>
+              <Grid item xs={12} sm={6} md={4} key={formation.id}>
                 <Button
                   onClick={() => handleFormationSelect(formation)}
                   fullWidth
                   variant={selectedFormation?.id === formation.id ? 'contained' : 'outlined'}
                   color="primary"
-                  style={{
+                  sx={{
                     textAlign: 'center',
-                    padding: '10px', // Adjust padding
+                    padding: '10px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    borderRadius: '8px',
                   }}
                 >
                   <img
                     src={formation.image}
                     alt={formation.name}
                     style={{
-                      width: '300px',  // Adjust width
-                      height: '200px', // Adjust height
+                      width: '100%',
+                      height: '150px',
                       objectFit: 'cover',
                       borderRadius: '8px',
-                      marginBottom: '8px', // Space between image and name
+                      marginBottom: '8px',
                     }}
                   />
-                  <div style={{ fontWeight: 'bold', fontSize: '16px' }}>{formation.name}</div>
+                  <Typography fontWeight="bold">{formation.name}</Typography>
                 </Button>
               </Grid>
             ))}
           </Grid>
         </DialogContent>
+
         <DialogActions>
-          {/* Use Link to navigate to player-management page */}
           <Link href="../teammanager/SideBarLinks/PlayerManagement" passHref>
-            <Button color="primary">
-              Pick Players
-            </Button>
+            <Button color="primary">Pick Players</Button>
           </Link>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
+          <Button onClick={handleClose} color="primary">Close</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Paper>
   );
 }

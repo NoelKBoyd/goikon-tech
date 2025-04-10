@@ -280,77 +280,77 @@ async function main() {
         data: [
             // Team Alpha players
             {
-                name: 'Player One',
+                name: 'John Cena',
                 dateOfBirth: new Date('2005-03-10'),
                 teamId: 1, // Team Alpha
                 position: 'Forward'
             },
             {
-                name: 'Player Two',
+                name: 'Dwayne Johnson',
                 dateOfBirth: new Date('2005-07-22'),
                 teamId: 1, // Team Alpha
                 position: 'Midfielder'
             },
             {
-                name: 'Player Three',
+                name: 'The Great Khali',
                 dateOfBirth: new Date('2005-11-05'),
                 teamId: 1, // Team Alpha
                 position: 'Defender'
             },
             {
-                name: 'Player Four',
+                name: 'Andre Onana',
                 dateOfBirth: new Date('2005-05-18'),
                 teamId: 1, // Team Alpha
                 position: 'Goalkeeper'
             },
             // Team Beta players
             {
-                name: 'Player Five',
+                name: 'Sportacus',
                 dateOfBirth: new Date('2003-09-30'),
                 teamId: 2, // Team Beta
                 position: 'Forward'
             },
             {
-                name: 'Player Six',
+                name: 'Affy',
                 dateOfBirth: new Date('2003-02-14'),
                 teamId: 2, // Team Beta
                 position: 'Midfielder'
             },
             {
-                name: 'Player Seven',
+                name: 'Lisandro Martinez',
                 dateOfBirth: new Date('2003-08-20'),
                 teamId: 2, // Team Beta
                 position: 'Defender'
             },
             // Team Gamma players
             {
-                name: 'Player Eight',
+                name: 'Lionel Messi',
                 dateOfBirth: new Date('2007-04-25'),
                 teamId: 3, // Team Gamma
                 position: 'Forward'
             },
             {
-                name: 'Player Nine',
+                name: 'Wayne Rooney',
                 dateOfBirth: new Date('2007-06-15'),
                 teamId: 3, // Team Gamma
                 position: 'Midfielder'
             },
             // Team Delta players
             {
-                name: 'Player Ten',
+                name: 'Harry Potter',
                 dateOfBirth: new Date('2005-01-30'),
                 teamId: 4, // Team Delta
                 position: 'Defender'
             },
             {
-                name: 'Player Eleven',
+                name: 'Zakwan Ibrahim',
                 dateOfBirth: new Date('2005-12-10'),
                 teamId: 4, // Team Delta
                 position: 'Goalkeeper'
             },
             // Team Epsilon players
             {
-                name: 'Player Twelve',
+                name: 'Ali Abbas',
                 dateOfBirth: new Date('2003-07-05'),
                 teamId: 5, // Team Epsilon
                 position: 'Forward'
@@ -672,7 +672,6 @@ async function main() {
                 assists: 5,
                 yellowCard: 2,
                 redCard: 0,
-                penalties: 0,
                 shotsOnTarget: 12
             },
             {
@@ -684,7 +683,6 @@ async function main() {
                 assists: 4,
                 yellowCard: 1,
                 redCard: 1,
-                penalties: 0,
                 shotsOnTarget: 8
             },
             {
@@ -696,7 +694,6 @@ async function main() {
                 assists: 1,
                 yellowCard: 3,
                 redCard: 0,
-                penalties: 0,
                 shotsOnTarget: 5
             }
         ],
@@ -782,15 +779,65 @@ async function main() {
                 shotsOnTarget: 2
             },
             {
+                matchId: 1,
+                playerId: 3,
+                goals: 2,
+                assists: 0,
+                yellowCard: 1,
+                redCard: 0,
+                fouls: 3,
+                shotsOnTarget: 4
+            },
+            {
                 matchId: 3,
-                playerId: 12, // Player Twelve (Team Epsilon)
+                playerId: 12, 
                 goals: 0,
                 assists: 0,
                 yellowCard: 0,
                 redCard: 0,
                 fouls: 1,
                 shotsOnTarget: 3
-            }
+            },
+            {
+                matchId: 1,
+                playerId: 6, 
+                goals: 3,
+                assists: 4,
+                yellowCard: 0,
+                redCard: 1,
+                fouls: 5,
+                shotsOnTarget: 3
+            },
+            {
+                matchId: 3,
+                playerId: 4, 
+                goals: 1,
+                assists: 0,
+                yellowCard: 1,
+                redCard: 0,
+                fouls: 2,
+                shotsOnTarget: 2
+            },
+            {
+                matchId: 3,
+                playerId: 7, // Player Five (Team Beta)
+                goals: 0,
+                assists: 0,
+                yellowCard: 0,
+                redCard: 0,
+                fouls: 2,
+                shotsOnTarget: 2
+            },
+            {
+                matchId: 3,
+                playerId: 11, // Player Five (Team Beta)
+                goals: 3,
+                assists: 0,
+                yellowCard: 1,
+                redCard: 0,
+                fouls: 2,
+                shotsOnTarget: 8
+            },
         ],
         skipDuplicates: true
     });

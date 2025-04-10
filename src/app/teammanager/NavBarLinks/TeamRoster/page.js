@@ -19,7 +19,7 @@ const TeamRoster = () => {
         <div className="col-start-2 col-end-3 p-10">
           <h1 className="text-3xl font-bold mb-8 text-center">Team Roster</h1>
 
-          <div className="bg-white p-6 rounded-lg shadow-md overflow-auto">
+          <div className="bg-white p-6 rounded-lg shadow-md overflow-auto pb-20">
             <BasicTable />
           </div>
         </div>
