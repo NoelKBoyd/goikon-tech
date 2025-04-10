@@ -7,6 +7,7 @@ import UpcomingMatch from '../Components/UpcomingMatch';
 import MessagingPanel from '../Components/MessagingPanel';
 import TeamStats from '../Components/TeamStats';
 import NestedModal from '../Components/MatchPreparation';
+import PlayerStats from '../Components/PlayerStats';
 
 const TeamManagerPage = () => {
     return (
@@ -42,7 +43,9 @@ const TeamManagerPage = () => {
                         <div className="row-start-1 col-start-3">
                             <NestedModal />
                         </div>
-                        <div className="row-start-2 col-start-2">{/* Bottom Middle Component */}</div>
+                        <div className="row-start-2 col-start-2">
+                            <PlayerStats />
+                        </div>
                     </div>
                 </div>
             </main>
