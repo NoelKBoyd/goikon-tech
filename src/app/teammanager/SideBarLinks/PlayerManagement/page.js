@@ -19,10 +19,10 @@ const players = [
 
 // Sample formations
 const formations = [
-  { id: 1, name: '4-4-2', image: '/images/Formation-4-4-2.png' },
-  { id: 2, name: '4-3-3', image: '/images/Formation-4-3-3.png' },
-  { id: 3, name: '4-2-4', image: '/images/Formation-4-2-4.png' },
-  { id: 4, name: '3-4-3', image: '/images/Formation-3-4-3.png' },
+  { id: 1, name: '4-4-2', image: '/images/Formation-4-4-2.webp' },
+  { id: 2, name: '4-3-3', image: '/images/Formation-4-3-3.webp' },
+  { id: 3, name: '4-2-4', image: '/images/Formation-4-2-4.webp' },
+  { id: 4, name: '3-4-3', image: '/images/Formation-3-4-3.webp' },
 ];
 
 const PlayerStats = () => {
