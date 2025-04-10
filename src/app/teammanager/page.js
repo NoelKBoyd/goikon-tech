@@ -23,15 +23,15 @@ const TeamManagerPage = () => {
 
                 <div className="flex-1 p-4">
                     <div className="grid grid-cols-3 grid-rows-[auto,auto] gap-4 items-start">
-                        <div className="row-start-1 col-start-1">
+                        <div className="row-start-1 col-start-1 bg-white p-4 border-2 border-black rounded-lg shadow">
                             <TeamStats />
                         </div>
 
-                        <div className="row-start-1 col-start-2">
+                        <div className="row-start-1 col-start-2 bg-white p-4 border-2 border-black rounded-lg shadow">
                             <UpcomingMatch />
                         </div>
 
-                        <div className="row-start-1 col-start-3">
+                        <div className="row-start-1 col-start-3 bg-white p-4 border-2 border-black rounded-lg shadow">
                             <NestedModal />
                         </div>
 
@@ -39,11 +39,11 @@ const TeamManagerPage = () => {
                             <Calendar />
                         </div>
 
-                        <div className="row-start-2 col-start-2 max-h-[350px] overflow-auto">
+                        <div className="row-start-2 col-start-2 max-h-[350px] overflow-auto bg-white p-4 border-2 border-black rounded-lg shadow">
                             <PlayerStats />
                         </div>
 
-                        <div className="row-start-2 col-start-3 pb-15">
+                        <div className="row-start-2 col-start-3 pb-15 bg-white p-4 border-2 border-black rounded-lg shadow">
                             <MessagingPanel />
                         </div>
                     </div>
