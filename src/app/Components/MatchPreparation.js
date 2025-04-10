@@ -1,4 +1,4 @@
-'use client'; // Ensure this is at the very top of the file
+'use client';
 
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
-import Link from 'next/link'; // Import Link from next/link
+import Link from 'next/link';
 
 // Sample formations
 const formations = [
