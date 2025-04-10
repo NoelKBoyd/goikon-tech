@@ -51,8 +51,8 @@ export default function ExampleDialog() {
       </Typography>
 
       <Typography variant="body1" textAlign="center" color="text.secondary" mb={3}>
-        Use this section to choose your team's starting lineup based on your preferred formation.
-        You can view and select different formations to see how they will shape your team on the pitch.
+      Pick your squad and shape your team just the way you like it. 
+      Explore different formations to see how your players line up on the pitch — strategy starts here.
       </Typography>
 
       <Box display="flex" justifyContent="center">
