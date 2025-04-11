@@ -8,20 +8,21 @@ export async function GET(req) {
 
         const matches = await prisma.matches.findMany({
             where: {
-                refereeId,
-            },
-            orderBy: {
-                date: 'desc', 
+              refereeId,
+              result: {
+                isNot: null,
+              },
             },
             include: {
-                homeTeam: true,
-                awayTeam: true,
-                field: true,
-                result: true,
-                incidents: true,
+              homeTeam: true,
+              awayTeam: true,
+              field: true,
+              result: true,
             },
-            take: 5, 
-        });
+            orderBy: {
+              date: 'desc',
+            },
+          });
 
         
         const incidentReports = await prisma.incidentsReporting.findMany({
