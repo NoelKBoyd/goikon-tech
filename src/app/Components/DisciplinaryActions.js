@@ -12,6 +12,10 @@ export default function DisciplinaryActions() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMatchID('');
+    setPlayerID('');
+    setType('');
+    setAction('');
     setError('');
     setSuccess(false);
 
@@ -29,11 +33,14 @@ export default function DisciplinaryActions() {
     }
 
     try {
-      const response = await fetch('/api/auth/disciplinaryaction', {
+      const response = await fetch('/api/auth/disciplinaryactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          matchid: parsedMatchID,
           playerid: parsedPlayerID,
+          type,
+          action,
         }),
       });
 
