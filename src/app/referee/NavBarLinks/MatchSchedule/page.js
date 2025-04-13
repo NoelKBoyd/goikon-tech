@@ -4,31 +4,36 @@ import RefereeNav from '@/app/Components/RefereeNav';
 import RefereeSideBar from '@/app/Components/RefereeSideBar';
 import RefereeFooter from '@/app/Components/RefereeFooter';
 import AssignedMatchesDashboard from '@/app/Components/RefereeAssignedMatchesDashboard';
-import { useState } from 'react';
 
 const MatchSchedule = () => {
-    return (
-        <div>
-            <header>
-                <RefereeNav />
-            </header>
+  return (
+    <div className="flex flex-col h-screen bg-gray-50">
 
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen'>
-                <RefereeSideBar />
+      <header>
+        <RefereeNav />
+      </header>
 
-                <div className='text-center px-6'>
-                    <div className="pt-10">
-                        <h1 className="text-2xl font-bold mb-2"> Match Schedule</h1>
-                        <AssignedMatchesDashboard />
-                    </div>
-                </div>
-            </main>
 
-            <footer>
-                <RefereeFooter />
-            </footer>
+      <div className="flex flex-1 overflow-hidden">
+
+        <div >
+          <RefereeSideBar />
         </div>
-    );
+
+
+        <div className="flex-1 p-10 overflow-y-auto">
+          <div className="bg-white shadow-lg rounded-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Match Schedule</h2>
+            <AssignedMatchesDashboard />
+          </div>
+        </div>
+      </div>
+
+      <footer className="w-full bg-white shadow-md mt-auto">
+        <RefereeFooter />
+      </footer>
+    </div>
+  );
 };
 
 export default MatchSchedule;
