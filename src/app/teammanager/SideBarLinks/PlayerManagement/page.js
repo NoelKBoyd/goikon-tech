@@ -59,44 +59,55 @@ const MatchSettings = () => {
       <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 min-h-screen'>
         <TeamManagerSideBar className='col-start-1 col-end-2' />
 
-        <div className='col-start-2 col-end-3 p-10 flex flex-col items-center space-y-10'>
-          <h1 className="text-3xl font-bold text-center">Player Management</h1>
+        <div className='col-start-2 col-end-3 p-10'>
+          <h1 className="text-3xl font-bold text-center mb-10">Player Management</h1>
 
-          {/* Static Formation Pitch */}
-          <div className="w-full max-w-4xl">
-            <FormationPitch formation={selectedFormation} lineup={[]} highlightPlayer={assignedRoles[selectedRole]} />
-          </div>
-
-          {/* Role Assignment Panel */}
-          <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Assign Roles</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {rolesList.map((role) => (
-                <div
-                  key={role.id}
-                  onClick={() => handleRoleSelect(role.id)}
-                  className={`border rounded p-3 cursor-pointer text-center ${selectedRole === role.id ? 'bg-purple-200 border-purple-400' : 'hover:bg-gray-100'}`}
-                >
-                  <div className="font-bold">{role.label}</div>
-                  <div className="text-sm mt-1 text-gray-600">{assignedRoles[role.id] || 'Unassigned'}</div>
-                </div>
-              ))}
+          {/* SIDE BY SIDE Layout */}
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Formation Pitch */}
+            <div className="w-full lg:w-1/2 bg-white shadow-md rounded-lg p-4">
+              <FormationPitch
+                formation={selectedFormation}
+                lineup={[]}
+                highlightPlayer={assignedRoles[selectedRole]}
+              />
             </div>
 
-            {/* Player Selection */}
-            <div className="mt-6 flex justify-center">
-              <select
-                className="border p-2 rounded"
-                value={assignedRoles[selectedRole] || ''}
-                onChange={handlePlayerAssign}
-              >
-                <option value="">Select Player</option>
-                {players.map((player) => (
-                  <option key={player} value={player}>
-                    {player}
-                  </option>
+            {/* Role Assignment Panel */}
+            <div className="w-full lg:w-1/2 bg-white shadow-md rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">Assign Roles</h2>
+
+              <div className="grid grid-cols-2 gap-4">
+                {rolesList.map((role) => (
+                  <div
+                    key={role.id}
+                    onClick={() => handleRoleSelect(role.id)}
+                    className={`border rounded p-3 cursor-pointer text-center ${
+                      selectedRole === role.id ? 'bg-purple-200 border-purple-400' : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="font-bold">{role.label}</div>
+                    <div className="text-sm mt-1 text-gray-600">{assignedRoles[role.id] || 'Unassigned'}</div>
+                  </div>
                 ))}
-              </select>
+              </div>
+
+              {/* Player Selection */}
+              <div className="mt-6">
+                <label className="block mb-2 font-medium">Assign Player to {rolesList.find(r => r.id === selectedRole)?.label}:</label>
+                <select
+                  className="w-full border p-2 rounded"
+                  value={assignedRoles[selectedRole] || ''}
+                  onChange={handlePlayerAssign}
+                >
+                  <option value="">Select Player</option>
+                  {players.map((player) => (
+                    <option key={player} value={player}>
+                      {player}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>
