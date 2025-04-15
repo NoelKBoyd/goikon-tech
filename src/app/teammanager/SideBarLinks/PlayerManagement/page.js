@@ -15,25 +15,32 @@ const rolesList = [
   { id: 'rightCorner', label: 'Right Corner' },
 ];
 
-// Sample players
-const players = [
-  'Reus', 'Sancho', 'Guerreiro', 'Haaland', 'Bellingham',
-  'Brandt', 'Hummels', 'Can', 'Schlotterbeck', 'Adeyemi', 'Kobel'
-];
-
 const MatchSettings = () => {
   const [selectedFormation, setSelectedFormation] = useState('4-4-2');
   const [selectedRole, setSelectedRole] = useState('captain');
   const [assignedRoles, setAssignedRoles] = useState({});
+  const [lineupWithPositions, setLineupWithPositions] = useState([]); // NEW: holds lineup with positions
 
-  // Load formation from local storage
+  // Load formation from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem('selectedFormation');
-    if (stored) {
+    const storedFormation = localStorage.getItem('selectedFormation');
+    if (storedFormation) {
       try {
-        setSelectedFormation(JSON.parse(stored));
+        setSelectedFormation(JSON.parse(storedFormation));
       } catch (e) {
         console.error('Failed to parse stored formation:', e);
+      }
+    }
+  }, []);
+
+  // Load saved lineup from localStorage
+  useEffect(() => {
+    const savedLineup = localStorage.getItem('lineupWithPositions');
+    if (savedLineup) {
+      try {
+        setLineupWithPositions(JSON.parse(savedLineup));
+      } catch (e) {
+        console.error('Failed to parse lineupWithPositions from localStorage:', e);
       }
     }
   }, []);
@@ -49,6 +56,8 @@ const MatchSettings = () => {
       [selectedRole]: player
     }));
   };
+
+  const playerNames = lineupWithPositions.map(p => p.player).filter(p => p); // Filter out empty slots
 
   return (
     <div>
@@ -68,7 +77,7 @@ const MatchSettings = () => {
             <div className="w-full lg:w-1/2 bg-white shadow-md rounded-lg p-4">
               <FormationPitch
                 formation={selectedFormation}
-                lineup={[]}
+                lineup={lineupWithPositions.map(p => p.player)}
                 highlightPlayer={assignedRoles[selectedRole]}
               />
             </div>
@@ -101,7 +110,7 @@ const MatchSettings = () => {
                   onChange={handlePlayerAssign}
                 >
                   <option value="">Select Player</option>
-                  {players.map((player) => (
+                  {playerNames.map((player) => (
                     <option key={player} value={player}>
                       {player}
                     </option>

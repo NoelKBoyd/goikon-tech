@@ -46,10 +46,22 @@ const PlayerStats = () => {
 
   const handleSelect = (positionIndex, player) => {
     if (startingLineup.includes(player)) return;
+  
     const newLineup = [...startingLineup];
     newLineup[positionIndex] = player;
     setStartingLineup(newLineup);
+  
+    // Save just the player names
+    localStorage.setItem('startingLineup', JSON.stringify(newLineup));
+  
+    // Save player-position pairs too
+    const positionPairs = newLineup.map((p, i) => ({
+      position: positions[i],
+      player: p
+    }));
+    localStorage.setItem('lineupWithPositions', JSON.stringify(positionPairs));
   };
+  
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
