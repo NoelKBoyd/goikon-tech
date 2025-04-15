@@ -17,8 +17,6 @@ export default function ReportedIncidentsDashboard() {
     setError('');
     setSuccess('');
 
-    
-
     try {
       const response = await fetch('/api/auth/incidentreport');
       const data = await response.json();
@@ -102,7 +100,7 @@ export default function ReportedIncidentsDashboard() {
               onClick={() => setIncidentType(incident)}
             >
               <h2 className="text-md font-semibold">
-                {`${incident.player.name} (${incident.player.team.name})`}
+                {`${incident.player.name} (ID: ${incident.player.id}) — ${incident.player.team.name}`}
               </h2>
               <p className="text-sm text-gray-600">
                 Match: {incident.match.homeTeam.name} vs {incident.match.awayTeam.name}
@@ -125,7 +123,9 @@ export default function ReportedIncidentsDashboard() {
       {IncidentType && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-lg font-bold mb-2">{IncidentType.player.name}</h2>
+            <h2 className="text-lg font-bold mb-2">
+              {IncidentType.player.name} (ID: {IncidentType.player.id})
+            </h2>
             <p className="text-sm text-gray-700">Team: {IncidentType.player.team.name}</p>
             <p className="text-sm text-gray-700 mb-1">
               Match: {IncidentType.match.homeTeam.name} vs {IncidentType.match.awayTeam.name}

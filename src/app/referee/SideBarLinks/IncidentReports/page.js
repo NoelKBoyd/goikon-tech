@@ -8,27 +8,36 @@ import ViewIncidents from '@/app/Components/ViewIncidents';
 
 const IncidentReports = () => {
   return (
-    <div>
-      <header>
+    <div className="flex flex-col h-screen bg-gray-50">
+  
+      <header >
         <RefereeNav />
       </header>
 
-      <main className="grid w-full grid-cols-[260px_auto] bg-gray-100 h-screen">
-        <RefereeSideBar />
+      <div className="flex flex-1 overflow-hidden">
 
-        <div className="col-start-2 col-end-3 p-8">
-          <div className="grid grid-cols-2 gap-6 h-full">
-            <div className="overflow-auto">
-              <SubmitReport />
-            </div>
-            <div className="overflow-auto">
-              <ViewIncidents />
+        <div >
+          <RefereeSideBar />
+        </div>
+
+        <div className="flex-1 p-10 overflow-y-auto">
+          <div className="space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="bg-white shadow-lg rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Submit Incident Report</h2>
+                <SubmitReport />
+              </div>
+
+              <div className="bg-white shadow-lg rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">View Incident Reports</h2>
+                <ViewIncidents />
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
-      <footer>
+      <footer className="w-full bg-white shadow-md mt-auto">
         <RefereeFooter />
       </footer>
     </div>

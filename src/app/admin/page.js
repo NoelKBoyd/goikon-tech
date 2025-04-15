@@ -156,7 +156,7 @@ const AdminPage = () => {
                 <AdminNav />
             </header>
         
-            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 h-full'>
+            <main className='grid w-full grid-cols-[260px_auto] bg-gray-100 min-h-screen'>
                 <AdminSideBar className='col-start-1 col-end-2'/>
         
                 <div className='col-start-2 col-end-3 flex flex-col justify-center text-center'>

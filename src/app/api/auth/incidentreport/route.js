@@ -33,3 +33,50 @@ export async function POST(req) {
         return NextResponse.json({ message: 'Error submitting incident report', error: error.message }, { status: 500 });
     }
 }
+
+export async function GET() {
+    try {
+      const incidents = await prisma.incidentsReporting.findMany({
+        include: {
+          player: {
+            select: {
+              id: true,
+              name: true,
+              team: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          match: {
+            include: {
+              homeTeam: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              awayTeam: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          id: 'desc',
+        },
+      });
+  
+      return NextResponse.json({ incidents }, { status: 200 });
+    } catch (error) {
+      console.error('Error fetching incidents:', error);
+      return NextResponse.json({ message: 'Error fetching incidents', error: error.message }, { status: 500 });
+    }
+  }
+  
+  
