@@ -29,7 +29,8 @@ model User {
   managedTeams    Team[]            @relation("Manager")
   activityLogs    UserActivityLog[]
   fields          Field[]
-  refereedMatches Matches[]         @relation("Referee") // ✅ Only specify relation name, no `fields` or `references`
+  refereedMatches Matches[]         @relation("Referee") //
+  refereePerformances RefereePerformance[] @relation("RefereePerformance")
 }
 
 model UserActivityLog {
@@ -146,6 +147,8 @@ model Matches {
   bookings   FieldBooking[]
   matchStats MatchRelatedStats[]
   disciplinaryActions DisciplinaryActions[]
+  refereePerformances RefereePerformance[] @relation("MatchPerformance")
+
 
 }
 
@@ -210,3 +213,16 @@ model DisciplinaryActions {
   match  Matches @relation(fields: [matchId], references: [id])
   player Player  @relation(fields: [playerId], references: [id])
 }
+
+model RefereePerformance {
+  matchId       Int
+  refereeId     Int
+  refereeRating Int
+
+  match   Matches @relation(fields: [matchId], references: [id], name: "MatchPerformance")
+  referee User    @relation(fields: [refereeId], references: [id], name: "RefereePerformance")
+
+  @@id([matchId, refereeId])
+}
+
+

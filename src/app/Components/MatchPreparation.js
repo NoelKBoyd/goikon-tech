@@ -120,7 +120,7 @@ export default function ExampleDialog() {
         </DialogContent>
 
         <DialogActions>
-          <Link href="../teammanager/SideBarLinks/PlayerManagement" passHref>
+          <Link href="../teammanager/SideBarLinks/MatchSettings" passHref>
             <Button color="primary">Pick Players</Button>
           </Link>
           <Button onClick={handleClose} color="primary">Close</Button>
