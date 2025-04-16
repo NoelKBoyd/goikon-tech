@@ -1,4 +1,4 @@
-'use client'; // Ensure this is at the very top of the file
+'use client';
 import React from 'react';
 
 const FormationPitch = ({ formation, lineup }) => {
@@ -24,6 +24,13 @@ const FormationPitch = ({ formation, lineup }) => {
           [2, 3, 4], 
           [5, 6, 7, 8], 
           [9, 10, 11]
+        ];
+      case '4-2-4':
+        return [
+          [1], 
+          [2, 3, 4, 5], 
+          [6, 7], 
+          [8, 9, 10, 11]
         ];
       default:
         return [
