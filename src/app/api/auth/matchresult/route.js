@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { matchid, homeTeamScore, awayTeamScore, status, timeStamp, assists, yellowCard, redCard, penalties, shotsOnTarget } = body;
+        const { matchid, homeTeamScore, awayTeamScore, status, timeStamp, assists, yellowCard, redCard, fouls, shotsOnTarget } = body;
 
         
         if (!matchid || homeTeamScore === undefined || awayTeamScore === undefined || !status || !timeStamp) 
@@ -29,7 +29,7 @@ export async function POST(req) {
                 assists: NotNegative(assists),
                 yellowCard: NotNegative(yellowCard),
                 redCard: NotNegative(redCard),
-                penalties: NotNegative(penalties),
+                fouls: NotNegative(fouls),
                 shotsOnTarget: NotNegative(shotsOnTarget),
             },
         });

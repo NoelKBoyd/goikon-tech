@@ -11,7 +11,7 @@ export default function SubmitMatchResult() {
   const [assists, setAssists] = useState('');
   const [yellowCard, setYellowCard] = useState('');
   const [redCard, setRedCard] = useState('');
-  const [penalties, setPenalties] = useState('');
+  const [fouls, setFouls] = useState('');
   const [shotsOnTarget, setShotsOnTarget] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -27,7 +27,7 @@ export default function SubmitMatchResult() {
     setAssists('');
     setYellowCard('');
     setRedCard('');
-    setPenalties('');
+    setFouls('');
     setShotsOnTarget('');
     setError('');
     setSuccess('');
@@ -50,7 +50,7 @@ export default function SubmitMatchResult() {
           assists,
           yellowCard,
           redCard,
-          penalties,
+          fouls,
           shotsOnTarget,
         }),
       });
@@ -81,6 +81,7 @@ export default function SubmitMatchResult() {
               value={matchid}
               onChange={(e) => setMatchID(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -91,6 +92,7 @@ export default function SubmitMatchResult() {
               value={homeTeamScore}
               onChange={(e) => setHomeTeamScore(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -101,6 +103,7 @@ export default function SubmitMatchResult() {
               value={awayTeamScore}
               onChange={(e) => setAwayTeamScore(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -110,6 +113,7 @@ export default function SubmitMatchResult() {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             >
               <option value="">Select the match status type</option>
               <option value="Complete">Complete</option>
@@ -127,6 +131,7 @@ export default function SubmitMatchResult() {
               onChange={(e) => setTimeStamp(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="YYYY-MM-DDTHH:MM"
+              required
             />
           </div>
 
@@ -161,11 +166,11 @@ export default function SubmitMatchResult() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Total Penalties Awarded</label>
+            <label className="text-sm font-medium text-gray-700">Number Of Fouls</label>
             <input
               type="number"
-              value={penalties}
-              onChange={(e) => setPenalties(e.target.value)}
+              value={fouls}
+              onChange={(e) => setFouls(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -176,6 +181,7 @@ export default function SubmitMatchResult() {
               type="number"
               value={shotsOnTarget}
               onChange={(e) => setShotsOnTarget(e.target.value)}
+              required
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -186,8 +192,9 @@ export default function SubmitMatchResult() {
           <button
             type="submit"
             className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300"
+            disabled={loading}
           >
-            Submit Report
+            {loading ? "Submitting..." : "Submit Report"}
           </button>
         </div>
       </form>
