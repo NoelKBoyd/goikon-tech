@@ -24,7 +24,7 @@ export default function Homepage() {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0x000000, 0); // Transparent background
         mountRef.current.appendChild(renderer.domElement);
-        scene.fog = new THREE.FogExp2(0xF3F4F6, 0.1);
+        scene.fog = new THREE.FogExp2(0xF3F4F6, 0);
 
         // Add lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // Soft white light
@@ -33,6 +33,7 @@ export default function Homepage() {
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
         directionalLight.position.set(5, 10, 7.5);
         scene.add(directionalLight);
+
 
          // Load the GLB model
         const loader = new GLTFLoader();
@@ -57,14 +58,14 @@ export default function Homepage() {
         camera.rotateX(-0.4);
 
         document.body.onscroll = () => {
-            scene.fog.density = Math.min(2, window.scrollY / 1000); // Adjust fog density based on scroll position
+            scene.fog.density = Math.min(20, window.scrollY / 400); // Adjust fog density based on scroll position
         }
 
         // Animation loop
         const animate = () => {
             requestAnimationFrame(animate);
             if (model) {
-                model.rotation.y += 0.0015; // Rotate the model for some basic animation
+                model.rotation.y += 0.0005; // Rotate the model for some basic animation
             }
             renderer.render(scene, camera);
         };

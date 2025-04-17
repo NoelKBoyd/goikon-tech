@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import TeamManagerNav from '@/app/Components/TeamManagerNav';
 import TeamManagerSideBar from '@/app/Components/TeamManagerSideBar';
 import TeamManagerFooter from '@/app/Components/TeamManagerFooter';
-import FormationPitch from '@/app/Components/FormationPitch'; // Assuming same component for static visual
+import FormationPitch from '@/app/Components/FormationPitch';
 
 const rolesList = [
   { id: 'captain', label: 'Captain' },
@@ -19,7 +19,7 @@ const MatchSettings = () => {
   const [selectedFormation, setSelectedFormation] = useState('4-4-2');
   const [selectedRole, setSelectedRole] = useState('captain');
   const [assignedRoles, setAssignedRoles] = useState({});
-  const [lineupWithPositions, setLineupWithPositions] = useState([]); // NEW: holds lineup with positions
+  const [lineupWithPositions, setLineupWithPositions] = useState([]);
 
   // Load formation from localStorage
   useEffect(() => {
@@ -40,24 +40,40 @@ const MatchSettings = () => {
       try {
         setLineupWithPositions(JSON.parse(savedLineup));
       } catch (e) {
-        console.error('Failed to parse lineupWithPositions from localStorage:', e);
+        console.error('Failed to parse lineupWithPositions:', e);
       }
     }
   }, []);
 
+  // Load saved roles from localStorage
+  useEffect(() => {
+    const savedRoles = localStorage.getItem('assignedRoles');
+    if (savedRoles) {
+      try {
+        setAssignedRoles(JSON.parse(savedRoles));
+      } catch (e) {
+        console.error('Failed to parse assignedRoles:', e);
+      }
+    }
+  }, []);
+
+  // Handle selecting a role
   const handleRoleSelect = (roleId) => {
     setSelectedRole(roleId);
   };
 
+  // Handle assigning a player to a role
   const handlePlayerAssign = (e) => {
     const player = e.target.value;
-    setAssignedRoles((prev) => ({
-      ...prev,
-      [selectedRole]: player
-    }));
+    const updatedRoles = {
+      ...assignedRoles,
+      [selectedRole]: player,
+    };
+    setAssignedRoles(updatedRoles);
+    localStorage.setItem('assignedRoles', JSON.stringify(updatedRoles)); // Save to localStorage
   };
 
-  const playerNames = lineupWithPositions.map(p => p.player).filter(p => p); // Filter out empty slots
+  const playerNames = lineupWithPositions.map((p) => p.player).filter(Boolean);
 
   return (
     <div>
@@ -71,7 +87,6 @@ const MatchSettings = () => {
         <div className='col-start-2 col-end-3 p-10'>
           <h1 className="text-3xl font-bold text-center mb-10">Player Management</h1>
 
-          {/* SIDE BY SIDE Layout */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Formation Pitch */}
             <div className="w-full lg:w-1/2 bg-white shadow-md rounded-lg p-4">
@@ -96,14 +111,18 @@ const MatchSettings = () => {
                     }`}
                   >
                     <div className="font-bold">{role.label}</div>
-                    <div className="text-sm mt-1 text-gray-600">{assignedRoles[role.id] || 'Unassigned'}</div>
+                    <div className="text-sm mt-1 text-gray-600">
+                      {assignedRoles[role.id] || 'Unassigned'}
+                    </div>
                   </div>
                 ))}
               </div>
 
               {/* Player Selection */}
               <div className="mt-6">
-                <label className="block mb-2 font-medium">Assign Player to {rolesList.find(r => r.id === selectedRole)?.label}:</label>
+                <label className="block mb-2 font-medium">
+                  Assign Player to {rolesList.find(r => r.id === selectedRole)?.label}:
+                </label>
                 <select
                   className="w-full border p-2 rounded"
                   value={assignedRoles[selectedRole] || ''}
