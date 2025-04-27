@@ -100,8 +100,8 @@ const FieldBookings = () => {
                                         <td className="py-2 px-3">
                                             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                                 booking.acceptReject === 'Accepted' 
-                                                    ? 'bg-green-200 text-green-800' 
-                                                    : 'bg-yellow-200 text-yellow-800'
+                                                    ? 'bg-green-200 text-black-800' 
+                                                    : 'bg-yellow-200 text-black-800'
                                             }`}>
                                                 {booking.acceptReject}
                                             </span>
@@ -109,8 +109,8 @@ const FieldBookings = () => {
                                         <td className="py-2 px-3">
                                             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                                 booking.status === 'Confirmed' 
-                                                    ? 'bg-blue-200 text-blue-800' 
-                                                    : 'bg-gray-300 text-gray-800'
+                                                    ? 'bg-blue-200 text-black-800' 
+                                                    : 'bg-gray-300 text-black-800'
                                             }`}>
                                                 {booking.status}
                                             </span>
