@@ -43,8 +43,8 @@ export default function Homepage() {
             '/3D-Objects/stadium.glb', // Replace with the path to your GLB file
             (gltf) => {
                 model = gltf.scene;
-                model.scale.set(0.09, 0.09, 0.09); // Adjust the scale of the model
-                model.position.set(0, 0.1, -1); // Adjust the position of the model
+                model.scale.set(0.09, 0.09, 0.09); 
+                model.position.set(0, 0.1, -1); 
                 scene.add(model);
             },
             undefined,
@@ -133,11 +133,6 @@ export default function Homepage() {
 
                     <h2 className="text-2xl font-bold mt-8 mb-2">Future Enhancements</h2>
                     <p className="opacity-80">Look forward to mobile app integration, advanced analytics, and social media sharing for enhanced engagement.</p>
-                    <ul><li>Scaffolding: <Link href='./referee'>Referee page   </Link></li>
-                    <li><Link href='./fieldowner'>Field owner page   </Link></li>
-                    <li><Link href='./teammanager'>Team Manager page   </Link></li>
-                    <li><Link href='./admin'>Admin page   </Link></li>
-                    </ul> 
                 </div>
             </div>
         </main>
