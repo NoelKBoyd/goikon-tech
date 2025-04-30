@@ -47,7 +47,7 @@ export default function ExampleDialog() {
       }}
     >
       <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
-        Player Management
+        Match Settings
       </Typography>
 
       <Typography variant="body1" textAlign="center" color="text.secondary" mb={3}>

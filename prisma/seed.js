@@ -652,6 +652,34 @@ async function main() {
                 date: new Date('2025-04-28T14:00:00Z'),
                 fieldId: 1, // Central Park Field
                 refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 1, // Team Alpha
+                awayTeamId: 2, // Team Beta
+                date: new Date('2025-09-02T14:00:00Z'),
+                fieldId: 1, // Central Park Field
+                refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 3, // Team Gamma
+                awayTeamId: 4, // Team Delta
+                date: new Date('2025-09-03T14:00:00Z'),
+                fieldId: 2, // Griffith Park Stadium
+                refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 2, // Team Beta
+                awayTeamId: 5, // Team Epsilon
+                date: new Date('2025-09-09T14:00:00Z'),
+                fieldId: 1, // Central Park Field
+                refereeId: 5 // Mike Reff
+            },
+            {
+                homeTeamId: 4, // Team Delta
+                awayTeamId: 1, // Team Alpha
+                date: new Date('2025-09-10T14:00:00Z'),
+                fieldId: 4, // Sunset Valley Field
+                refereeId: 5 // Mike Reff
             }
         ],
         skipDuplicates: true
